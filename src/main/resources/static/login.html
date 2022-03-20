@@ -13,13 +13,13 @@
         $(function () {
             $('#submit_button').click(() => {
                 $.ajax({
-                    type: "GET",
-                    url: "login",
+                    type: "post",
+                    url: "login2",
                     data: {
-                        mess:"message"
+                        message:"message"
                     },
-                    success: ()=>{
-                        console.log('yes');
+                    success: (data)=>{
+                        console.log(data);
                     },
                 });
             })
