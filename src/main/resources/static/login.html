@@ -12,17 +12,17 @@
     <script>
         $(function () {
             $('#submit_button').click(() => {
-                let data= new FormData();
-                data.append('userID','admin');
-                data.append('password','12345');
-                console.log($('loginform').serialize());
+                let data1= new FormData();
+                data1.append('userID','admin');
+                data1.append('password','12345');
+                // console.log($('loginform').serialize());
                 $.ajax({
                     type: "post",
                     url: "login2",
-                    dataType:"json",
-                    data: {
-                        message:$('loginform').serialize(),
-                    },
+                    // dataType:"json",
+                    contentType:false,
+                    processData:false,
+                    data: data1,
                     success: (data)=>{
                         console.log(data);
                     },

@@ -4,6 +4,7 @@ import com.csci6050.ebooking.bean.users;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
@@ -22,11 +23,10 @@ public class loginController {
 
     @ResponseBody
     @RequestMapping("/login2")
-    public String test(users message) throws ServletException, IOException {
-        String username = message.getEmail();
-        String password = message.getPassword();
-        System.out.println(username);
-        System.out.println(password);
-        return "yes";
+    public String hello(@RequestParam("userID") String name,
+                        @RequestParam("password") String age) {
+        System.out.print(name+""+age);
+        return "name：" + name + "\nage：" + age;
     }
+
 }
