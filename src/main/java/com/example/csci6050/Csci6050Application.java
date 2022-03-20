@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Csci6050Application {
 
-    public static void main(String[] args) {
+    public static void Csci650Application(String[] args) {
         SpringApplication.run(Csci6050Application.class, args);
     }
 
