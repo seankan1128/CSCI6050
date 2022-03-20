@@ -15,7 +15,9 @@
                 $.ajax({
                     type: "POST",
                     url: "register",
-                    data: "message",
+                    data: {
+                        mess:"message"
+                    },
                     success: ()=>{
                         console.log('yes');
                     },
@@ -78,7 +80,7 @@
                         <label for="checkbox1"></label>
                     </div>
                     <span class="text">Remember me</span>
-                    <a href="index_login.html" id="submit_button" type="button" class="btn btn-success">Login</a>
+                    <a href="#" id="submit_button" type="button" class="btn btn-success">Login</a>
                     <a type="submit"  class="btn btn-warning" href="register.html">Register</a>
                 </div>
                 <div class="form-group" style="margin-top: 100px">
