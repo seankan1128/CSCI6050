@@ -26,7 +26,7 @@ public class loginController {
     @RequestMapping("/login2")
     public String hello(@RequestParam("userID") String name,
                         @RequestParam("password") String age) {
-        System.out.print(name+""+age);
+        System.out.print(name+""+age+"\n");
         return "name：" + name + "\nage：" + age;
     }
 

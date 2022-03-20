@@ -12,17 +12,14 @@
     <script>
         $(function () {
             $('#submit_button').click(() => {
-                let data1= new FormData();
-                data1.append('userID','admin');
-                data1.append('password','12345');
-                // console.log($('loginform').serialize());
+
                 $.ajax({
                     type: "post",
                     url: "login2",
                     // dataType:"json",
                     contentType:false,
                     processData:false,
-                    data: data1,
+                    data:$('#loginform').serialize(),
                     success: (data)=>{
                         console.log(data);
                     },
@@ -68,6 +65,11 @@
 <div class="container " style="margin-top: 250px">
     <div class="row">
         <div class="offset-3 col-6">
+            <form id="testform">
+                <input type="password" id="email1"  value="admin">
+                <input type="password" id="email2"  value="admin2">
+                <input type="password" id="email3"  value="admin4">
+            </form>
             <form class="form-horizontal" id="loginform">
                 <span class="heading">Login</span>
                 <div class="form-group">
@@ -80,10 +82,10 @@
                     <a href="#" class="fa fa-question-circle"></a>
                 </div>
                 <div class="form-group">
-                    <div class="main-checkbox">
-                        <input type="checkbox" value="None" id="checkbox1" name="check"/>
-                        <label for="checkbox1"></label>
-                    </div>
+<!--                    <div class="main-checkbox">-->
+<!--                        <input type="checkbox" value="None" id="checkbox1" name="check"/>-->
+<!--                        <label for="checkbox1"></label>-->
+<!--                    </div>-->
                     <span class="text">Remember me</span>
                     <a href="#" id="submit_button" type="button" class="btn btn-success">Login</a>
                     <a type="submit"  class="btn btn-warning" href="register.html">Register</a>
