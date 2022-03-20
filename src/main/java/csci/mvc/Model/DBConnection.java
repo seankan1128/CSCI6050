@@ -19,13 +19,13 @@ public class DBConnection {
 
     public boolean isAdmin(String adminID, String adminPassword){
         try {
-            String SQL = "SELECT * FROM usrating";
+            String SQL = "SELECT * FROM users";
             rs = st.executeQuery(SQL);
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int colNum = rsmd.getColumnCount();
             while (rs.next()){
-                for(int i = 1; i < colNum; i++) {
+                for(int i = 1; i <= colNum; i++) {
                     if (i > 1) System.out.print(", ");
                     String colVal = rs.getString(i);
                     System.out.print(colVal + " " + rsmd.getColumnName(i));
