@@ -8,6 +8,9 @@ public class DBConnection {
     private ResultSet rs;
 
     public DBConnection() {
+    }
+
+    public Statement connect(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/moviebookings","root","TeamB6");
@@ -15,31 +18,6 @@ public class DBConnection {
         } catch (Exception e) {
             System.out.println("Failed to connect Database" + e.getMessage());
         }
+        return st;
     }
-
-    public boolean isAdmin(String adminID, String adminPassword){
-        try {
-            String SQL = "SELECT * FROM users";
-            rs = st.executeQuery(SQL);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int colNum = rsmd.getColumnCount();
-            while (rs.next()){
-                for(int i = 1; i <= colNum; i++) {
-                    if (i > 1) System.out.print(", ");
-                    String colVal = rs.getString(i);
-                    System.out.print(colVal + " " + rsmd.getColumnName(i));
-                }
-                System.out.println("");
-            }
-
-            if(rs.next()){
-                return true;
-            }
-        } catch (Exception e) {
-            System.out.println("Wrong Admin ID or PW" + e.getMessage());
-        }
-        return false;
-    }
-
 }
