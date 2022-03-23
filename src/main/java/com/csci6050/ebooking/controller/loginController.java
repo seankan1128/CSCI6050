@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +22,17 @@ public class loginController {
         return "login";
     }
 
+    //    @ResponseBody
+//    @RequestMapping("/login2")
+//    public String hello(@RequestParam("userID") String name,
+//                        @RequestParam("password") String age) {
+//        System.out.print(name+""+age+"\n");
+//        return "name：" + name + "\nage：" + age;
+//    }
     @ResponseBody
     @RequestMapping("/login2")
-    public String hello(@RequestParam("userID") String name,
-                        @RequestParam("password") String age) {
-        System.out.print(name+""+age+"\n");
-        return "name：" + name + "\nage：" + age;
+    public String hello(users name) {
+        System.out.print(name.getEmail());
+        return "name：" + name.getPassword();
     }
-
 }
