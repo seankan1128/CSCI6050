@@ -36,7 +36,7 @@ public class loginController {
         User n = userRepository.findByEmail(user.getEmail());
 
         passwordDecrypt de = new passwordDecrypt();
-        String decrypt = decrypt(user.getPassword());
+        String decrypt = de.decrypt(n.getPassword());
 
         System.out.print(decrypt);
 
