@@ -1,38 +1,36 @@
 package com.csci6050.ebooking.controller;
 
+import com.csci6050.ebooking.encrypt.passwordEncrypt;
+import com.csci6050.ebooking.entity.User;
+import com.csci6050.ebooking.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * Class userController: Connection between back-end logic layer and front-end.
- */
-@Controller
+@Controller // This means that this class is a Controller
 public class registrationController {
+    @Autowired
+    private UserRepository userRepository;
 
-    /**
-     * The registration page of the system
-     * @return HTML file name
-     */
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registerPage(){
+
         return "register";
     }
-//
-    @RequestMapping(value = "/")
-    public String mainPage() {return "dsa";}
 
-//    @RequestMapping("/channel/query")
-//    public String Query(@RequestParam("query") String query, Model model){
-//        if (user.getUserID(query) != null){
-//            return "register";
-//        }
-//        else if (channelService.getChannelByFollowerName(query).size() != 0){
-//            model.addAttribute("followerChannelList", channelService.getChannelByFollowerName(query));
-//            model.addAttribute("followerDetail", channelService.getFollowerByFollowerName(query));
-//            return "followerDetail";
-//        }
-//        else
-//            return "register";
-//    }
+    @ResponseBody
+    @RequestMapping("/register2")
+    public String addNewUser (User user) {
+        passwordEncrypt pe = new passwordEncrypt();
+        String encrypt = pe.encrypt(user.getPassword());
+
+        User n = new User();
+        n.setEmail(user.getEmail());
+        n.setPassword(encrypt);
+        n.setUserType(2);
+        n.setStatus(2);
+        userRepository.save(n);
+
+        return "login";
+    }
 }

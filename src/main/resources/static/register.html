@@ -12,6 +12,28 @@
     <script src="js/moment.js"></script>
     <script src="tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
     <link href="tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet">
+    <script>
+        $(function () {
+            $('#submit_button').click(() => {
+                console.info($('#register_form').serialize())
+                console.info($('#register_form').serializeArray())
+                console.log($('#register_form')[0])
+                let data1=new FormData($('#register_form')[0])
+                $.ajax({
+                    type: "post",
+                    url: "register2",
+                    // dataType:"json",
+                    contentType:false,
+                    processData:false,
+                    // data: $('#loginform').serializeArray(),
+                    data:data1,
+                    success: (data)=>{
+                        console.log(data);
+                    },
+                });
+            })
+        });
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -50,34 +72,38 @@
 <div class="container " style="margin-top: 250px">
     <div class="row">
         <div class="offset-3 col-6">
-            <form class="form-horizontal">
+            <form class="form-horizontal" id="register_form">
                 <span class="heading">Register</span>
                 <div class="form-group">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Email" value="fsfs">
                     <i class="bi bi-person-fill"></i>
                 </div>
-                <div class="form-group help">
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                    <i class="bi bi-shield-lock-fill"></i>
-                    <a href="#" class="fa fa-question-circle"></a>
-                </div>
-                <div class="form-group help">
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password Again">
+                <div class="form-group">
+                    <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password">
                     <i class="bi bi-shield-lock-fill"></i>
                     <a href="#" class="fa fa-question-circle"></a>
                 </div>
                 <div class="form-group">
-<!--                    <input type="email" class="form-control" id="inputAge" placeholder="age">-->
-<!--                    <i class="">age</i>-->
+                    <input type="password" class="form-control" id="inputPassword4" name="password_again" placeholder="Password Again">
+                    <i class="bi bi-shield-lock-fill"></i>
+                    <a href="#" class="fa fa-question-circle"></a>
+                </div>
+                <div class="form-group">
+                    <!--                    <input type="date" class="form-control" id="birthday" placeholder="Birthday" max="">-->
+                    <!--                    <i class="bi bi-calendar"></i>-->
                     <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker" placeholder="Birthday">
+                        <input type="text" class="form-control datetimepicker-input" name="birthday" data-target="#datetimepicker" placeholder="Birthday">
                         <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="bi bi-calendar" style="position: relative;top: 0;left: 0;"></i></div>
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <input class="form-check-input" type="checkbox" name="promotion_register" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">Promotion register</label>
+                </div>
                 <div class="form-group offset-5 col-8">
-                    <a href="register_finish.html" type="submit" class="btn btn-warning">Submit</a>
+                    <a id="submit_button" href="#" type="button" class="btn btn-warning">Submit</a>
                 </div>
             </form>
         </div>

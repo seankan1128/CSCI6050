@@ -1,23 +1,42 @@
-package com.csci6050.ebooking.bean;
+package com.csci6050.ebooking.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class users {
-    private int userID;
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="userid")
+    private int id;
+    @Column(name="firstname")
     private String firstName;
+    @Column(name="lastname")
     private String lastName;
+    @Column(name="email")
     private String email;
+    @Column(name="password")
     private String password;
+    @Column(name="phone")
     private String phone;
+    @Column(name="status")
     private int status;
-    private int enrolledForPromotion;
+    @Column(name="enrolledforpromotions")
+    private int enrolledForPromotions;
+    @Column(name="usertype")
     private int userType;
 
-    public int getUserID() {
-        return userID;
+    public int getId() {
+        return id;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -69,11 +88,11 @@ public class users {
     }
 
     public int getEnrolledForPromotion() {
-        return enrolledForPromotion;
+        return enrolledForPromotions;
     }
 
     public void setEnrolledForPromotion(int enrolledForPromotion) {
-        this.enrolledForPromotion = enrolledForPromotion;
+        this.enrolledForPromotions = enrolledForPromotion;
     }
 
     public int getUserType() {
@@ -83,4 +102,10 @@ public class users {
     public void setUserType(int userType) {
         this.userType = userType;
     }
+
+    public User() {
+        super();
+        this.status = 0;
+    }
+
 }
