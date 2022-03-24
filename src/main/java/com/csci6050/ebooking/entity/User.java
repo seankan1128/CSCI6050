@@ -1,11 +1,7 @@
 package com.csci6050.ebooking.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,9 +23,12 @@ public class User {
     @Column(name="status")
     private int status;
     @Column(name="enrolledforpromotions")
-    private int enrolledForPromotions;
+    private String enrolledForPromotions;
     @Column(name="usertype")
     private int userType;
+
+    @OneToMany (mappedBy = "user")
+    private List<Paymentcard> paymentcardList;
 
     public int getId() {
         return id;
@@ -87,12 +86,12 @@ public class User {
         this.status = status;
     }
 
-    public int getEnrolledForPromotion() {
+    public String getEnrolledForPromotions() {
         return enrolledForPromotions;
     }
 
-    public void setEnrolledForPromotion(int enrolledForPromotion) {
-        this.enrolledForPromotions = enrolledForPromotion;
+    public void setEnrolledForPromotions(String enrolledForPromotions) {
+        this.enrolledForPromotions = enrolledForPromotions;
     }
 
     public int getUserType() {
@@ -103,9 +102,11 @@ public class User {
         this.userType = userType;
     }
 
-    public User() {
-        super();
-        this.status = 0;
+    public List<Paymentcard> getPaymentcardList() {
+        return paymentcardList;
     }
 
+    public void setPaymentcardList(List<Paymentcard> paymentcardList) {
+        this.paymentcardList = paymentcardList;
+    }
 }
