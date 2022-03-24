@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-//import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 import static com.csci6050.ebooking.encrypt.passwordDecrypt.decrypt;
 
 @Controller
@@ -24,7 +22,7 @@ public class loginController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/LogIn", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(){
 
         return "login";
