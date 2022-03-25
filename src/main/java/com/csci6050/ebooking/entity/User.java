@@ -30,6 +30,9 @@ public class User {
     @OneToMany (mappedBy = "user")
     private List<Paymentcard> paymentcardList;
 
+    @Column(name = "verificationcode", length = 64)
+    private String verificationCode;
+
     public int getId() {
         return id;
     }
@@ -108,5 +111,13 @@ public class User {
 
     public void setPaymentcardList(List<Paymentcard> paymentcardList) {
         this.paymentcardList = paymentcardList;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 }

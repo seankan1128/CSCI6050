@@ -5,9 +5,15 @@ import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
+import com.csci6050.ebooking.tool.Email;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
 @Controller // This means that this class is a Controller
 public class registrationController {
@@ -23,9 +29,14 @@ public class registrationController {
         return "register2";
     }
 
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
+    }
+
     @ResponseBody
     @RequestMapping("registerform")
-    public String addNewUser (User user, Paymentcard paymentcard) {
+    public String addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         passwordEncrypt pe = new passwordEncrypt();
         String encrypt = pe.encrypt(user.getPassword());
 
@@ -38,7 +49,14 @@ public class registrationController {
         n.setStatus(2);
         n.setEnrolledForPromotions(user.getEnrolledForPromotions());
         n.setUserType(2);
+
+        String randomCode = RandomString.make(64);
+        n.setVerificationCode(randomCode);
+
         userRepository.save(n);
+
+        Email verificationmail = new Email();
+        verificationmail.testmail();
 
         Paymentcard p = new Paymentcard();
         p.setCardno(paymentcard.getCardno());
