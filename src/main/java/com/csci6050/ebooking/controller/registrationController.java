@@ -55,8 +55,10 @@ public class registrationController {
 
         userRepository.save(n);
 
-        Email verificationmail = new Email();
-        verificationmail.testmail();
+        Email verifyEmail = new Email();
+        verifyEmail.verificationEmail(n, request.getRequestURL().toString());
+//        Email verificationmail = new Email();
+//        verificationmail.testmail();
 
         Paymentcard p = new Paymentcard();
         p.setCardno(paymentcard.getCardno());
