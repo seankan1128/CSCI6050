@@ -134,4 +134,64 @@ public class Email {
             throw new RuntimeException(e);
         }
     }
+
+    public void resetPassword(User user, String pw)
+    {
+        // Recipient's email ID needs to be mentioned.
+        String to = user.getEmail();
+
+        // Sender's email ID needs to be mentioned
+        String from = "se22springb6@gmail.com";
+        final String username = "se22springb6@gmail.com";//change accordingly
+        final String password = "TeamB6Spring22";//change accordingly
+
+        // Assuming you are sending email through relay.jangosmtp.net
+        String host = "smtp.gmail.com";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "587");
+
+        // Get the Session object.
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            Message message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+
+            // Set Subject: header field
+            message.setSubject("New Temporary Password");
+
+            String content = "Dear [[name]],\n"
+                    + "Here is your temporary password\n"
+                    + pw + "\n"
+                    + "Please log in with it\n"
+                    + "Thank you,\n"
+                    + "Cinema E-booking System TeamB6";
+
+            content = content.replace("[[name]]", user.getFirstName());
+
+            message.setText(content);
+            Transport.send(message);
+
+            System.out.println("Sent message successfully....");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
