@@ -8,11 +8,14 @@ import com.csci6050.ebooking.repository.UserRepository;
 import com.csci6050.ebooking.tool.Email;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @Controller // This means that this class is a Controller
@@ -36,7 +39,7 @@ public class registrationController {
 
     @ResponseBody
     @RequestMapping("registerform")
-    public String addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+    public void addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
         passwordEncrypt pe = new passwordEncrypt();
         String encrypt = pe.encrypt(user.getPassword());
 
@@ -57,11 +60,12 @@ public class registrationController {
 
         Email verifyEmail = new Email();
         verifyEmail.verificationEmail(n, request.getRequestURL().toString());
-//        Email verificationmail = new Email();
-//        verificationmail.testmail();
 
         Paymentcard p = new Paymentcard();
-        p.setCardno(paymentcard.getCardno());
+
+        String cardencrypt = pe.encrypt(paymentcard.getCardno());
+        p.setCardno(cardencrypt);
+
         p.setExpirationdate(paymentcard.getExpirationdate());
         if (p.getCardno().substring(0, 1).equals("4")){
             p.setType("Visa");
@@ -79,6 +83,28 @@ public class registrationController {
 
         paymentcardRepository.save(p);
 
-        return "register_finish";
+//        response.sendRedirect("register_finish");
+    }
+
+    public boolean verify(String verificationCode) {
+        User user = userRepository.findByVerificationCode(verificationCode);
+
+        if (user == null || user.getStatus() == 1) {
+            return false;
+        } else {
+            user.setVerificationCode(null);
+            user.setStatus(1);
+            userRepository.save(user);
+
+            return true;
+        }
+    }
+    @GetMapping("registerform/verify")
+    public String verifyUser(@Param("verificationcode") String code) {
+        if (verify(code)) {
+            return "verify_success";
+        } else {
+            return "verify_fail";
+        }
     }
 }
