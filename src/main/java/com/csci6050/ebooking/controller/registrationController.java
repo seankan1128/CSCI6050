@@ -13,13 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @Controller // This means that this class is a Controller
-public class registrationController {
+public class registrationController extends HttpServlet {
     @Autowired
     private UserRepository userRepository;
 
@@ -30,6 +31,12 @@ public class registrationController {
     public String registerPage(){
 
         return "register2";
+    }
+
+    @RequestMapping(value = "/register_finish", method = RequestMethod.GET)
+    public String registerFinishPage(){
+
+        return "register_finish";
     }
 
     private String getSiteURL(HttpServletRequest request) {
@@ -52,6 +59,12 @@ public class registrationController {
         n.setStatus(2);
         n.setEnrolledForPromotions(user.getEnrolledForPromotions());
         n.setUserType(2);
+
+//        User m = userRepository.findByEmail(user.getEmail());
+//        if(m != null){
+//            //Look at tomorrow
+//            return "register_fail";
+//        }
 
         String randomCode = RandomString.make(64);
         n.setVerificationCode(randomCode);
@@ -83,7 +96,7 @@ public class registrationController {
 
         paymentcardRepository.save(p);
 
-//        response.sendRedirect("register_finish");
+        response.sendRedirect("register_finish");
     }
 
     public boolean verify(String verificationCode) {

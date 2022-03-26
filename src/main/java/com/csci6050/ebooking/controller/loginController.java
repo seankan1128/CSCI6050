@@ -6,10 +6,7 @@ import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +27,8 @@ public class loginController {
 
     @ResponseBody
     @RequestMapping("/login2")
-    public String submitLogin (User user) {
+    @GetMapping
+    public String submitLogin (User user, HttpServletResponse response) throws IOException {
         User n = userRepository.findByEmail(user.getEmail());
 
         passwordDecrypt de = new passwordDecrypt();
@@ -59,6 +57,7 @@ public class loginController {
                 }
                 if(n.getStatus() == 2){
                     System.out.println("Your account is inactive");
+                    return "login_inactive";
                 }
                 if(n.getStatus() == 3){
                     System.out.println("Your account is suspended");
@@ -68,4 +67,46 @@ public class loginController {
 
         return "login";
     }
+
+//    @ResponseBody
+//    @RequestMapping("/login2")
+//    public String submitLogin (User user, HttpServletResponse response) throws IOException {
+//        User n = userRepository.findByEmail(user.getEmail());
+//
+//        passwordDecrypt de = new passwordDecrypt();
+//        String decrypt = de.decrypt(n.getPassword());
+//
+//        System.out.print(decrypt);
+//
+//        if(n == null){
+//            System.out.println("Email not found");
+//        }
+//        else{
+//            if(!(decrypt.equals(user.getPassword()))){
+//                System.out.println("Password is wrong");
+//            }
+//            else{
+//                if(n.getStatus() == 1){
+//                    if(n.getUserType() == 1) {
+//                        System.out.println("You are an admin");
+//                    }
+//                    else if(n.getUserType() == 2) {
+//                        System.out.println("You are a customer");
+//                    }
+//                    else if(n.getUserType() == 3) {
+//                        System.out.println("You are an employee");
+//                    }
+//                }
+//                if(n.getStatus() == 2){
+//                    System.out.println("Your account is inactive");
+//                    response.sendRedirect("login_inactive");
+//                }
+//                if(n.getStatus() == 3){
+//                    System.out.println("Your account is suspended");
+//                }
+//            }
+//        }
+//
+//        return "login";
+//    }
 }
