@@ -75,70 +75,77 @@ public class loginController {
 //
 //        return "login";
 //    }
-    @ResponseBody
-    @RequestMapping("/login2")
-//    @PostMapping("/login2")
-    public Map<String, Object> test(User data) {
+//    @ResponseBody
+//    @RequestMapping("/login2")
+    public Map<String, Object> test(User data, int status, String description) {
         Map<String, Object> returnMap = new HashMap<>(3);
         List loginStatus = new ArrayList<>();
-        loginStatus.add(1);
-        loginStatus.add("Success");
+        loginStatus.add(status);
+        loginStatus.add(description);
 
-        returnMap.put("User", data);
+        if(status == 1) {
+            User n = userRepository.findByEmail(data.getEmail());
+            data.setFirstName(n.getFirstName());
+            data.setLastName(n.getLastName());
+            data.setEmail(n.getEmail());
+            data.setPassword(n.getPassword());
+            data.setPhone(n.getPhone());
+            data.setStatus(n.getStatus());
+            data.setEnrolledForPromotions(n.getEnrolledForPromotions());
+            returnMap.put("User", data);
+        }
+
         returnMap.put("Status", loginStatus);
-//        returnMap.put()
-
-//        User n = userRepository.findByEmail(data.getEmail());
-//        data.setFirstName(n.getFirstName());
-//        data.setLastName(n.getLastName());
-//        data.setEmail(n.getEmail());
-//        data.setPassword(n.getPassword());
-//        data.setPhone(n.getPhone());
-//        data.setStatus(n.getStatus());
-//        data.setEnrolledForPromotions(n.getEnrolledForPromotions());
+        returnMap.put("Description", description);
 
         return returnMap;
     }
 
-//    @ResponseBody
-//    @RequestMapping("/login2")
-//    public Object submitLogin (User user, HttpServletResponse response) throws IOException {
-//        User n = userRepository.findByEmail(user.getEmail());
-//
-//        passwordDecrypt de = new passwordDecrypt();
-//        String decrypt = de.decrypt(n.getPassword());
-//
-//        System.out.print(decrypt);
-//
-//        if(n == null){
-//            System.out.println("Email not found");
-//        }
-//        else{
-//            if(!(decrypt.equals(user.getPassword()))){
-//                System.out.println("Password is wrong");
-//            }
-//            else{
-//                if(n.getStatus() == 1){
-//                    if(n.getUserType() == 1) {
-//                        System.out.println("You are an admin");
-//                    }
-//                    else if(n.getUserType() == 2) {
-//                        System.out.println("You are a customer");
-//                    }
-//                    else if(n.getUserType() == 3) {
-//                        System.out.println("You are an employee");
-//                    }
-//                }
-//                if(n.getStatus() == 2){
-//                    System.out.println("Your account is inactive");
-//                    response.sendRedirect("login_inactive");
-//                }
-//                if(n.getStatus() == 3){
-//                    System.out.println("Your account is suspended");
-//                }
-//            }
-//        }
-//
+    @ResponseBody
+    @RequestMapping("/login2")
+    public void submitLogin (User user, HttpServletResponse response) throws IOException {
+        User n = userRepository.findByEmail(user.getEmail());
+
+        passwordDecrypt de = new passwordDecrypt();
+        String decrypt = de.decrypt(n.getPassword());
+
+        System.out.print(decrypt);
+
+        if(n == null){
+            System.out.println("Email not found");
+            test(n, 0, "You do not have an account.");
+        }
+        else{
+            if(!(decrypt.equals(user.getPassword()))){
+                System.out.println("Password is wrong");
+                test(n, 0, "Your password is incorrect.");
+            }
+            else{
+                if(n.getStatus() == 1){
+                    if(n.getUserType() == 1) {
+                        System.out.println("You are an admin");
+                        test(n, 1, "You are an admin");
+                    }
+                    else if(n.getUserType() == 2) {
+                        System.out.println("You are a customer");
+                        test(n, 1, "You are a customer");
+                    }
+                    else if(n.getUserType() == 3) {
+                        System.out.println("You are an employee");
+                        test(n, 1, "You are an employee");
+                    }
+                }
+                if(n.getStatus() == 2){
+                    System.out.println("Your account is inactive");
+                    test(n, 0, "Your account is inactive");
+                }
+                if(n.getStatus() == 3){
+                    System.out.println("Your account is suspended");
+                    test(n, 0, "Your account is suspended. Please contact an administrator.");
+                }
+            }
+        }
+
 //        return n;
-//    }
+    }
 }
