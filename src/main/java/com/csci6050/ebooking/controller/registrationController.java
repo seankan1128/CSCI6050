@@ -29,7 +29,6 @@ public class registrationController extends HttpServlet {
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registerPage(){
-
         return "register2";
     }
 
