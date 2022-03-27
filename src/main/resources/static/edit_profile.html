@@ -55,7 +55,8 @@
                 <img src="image/UGA.png" class="rounded-circle" style="width: 4vh;height: 4vh;" alt="">
             </div>
             <div class="dropdown" style="display: inline-block">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-expanded="false">
                     user_name
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -73,9 +74,15 @@
         <div class="text-center h1">Personal Information</div>
         <div>
             <form>
-                <div class="form-group">
-                    <label for="Name">Name</label>
-                    <input type="text" class="form-control" id="Name" placeholder="" value="Sean">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="FirstName">First Name</label>
+                        <input type="text" class="form-control" id="FirstName" placeholder="" value="Sean">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="LastName">Last Name</label>
+                        <input type="text" class="form-control" id="LastName" placeholder="" value="Kan">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="Email">Email</label>
@@ -91,31 +98,72 @@
             <a href="#" type="button" class="btn btn-warning">Change Password</a>
         </div>
     </div>
+
     <div class="dropdown-divider "></div>
     <div class="container">
         <div class="text-center h1">Payment Information</div>
-        <div class="row">
-            <div class="col-3 mt-4" >
-                <div class="card">
-                    <div class="card-header btn text-left">
-                        xxxxBank <br/> ......7324
+        <form>
+            <div class="row">
+                <div class="col-3 mt-4">
+                    <div class="card">
+                        <div class="card-header btn text-left">
+                            xxxxBank <br/> ......7324
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-3 mt-4" >
-                <div class="card">
-                    <div class="card-header btn text-left">
-                        xxxxBank <br/> ......5678
+                <div class="col-3 mt-4">
+                    <div class="card">
+                        <div class="card-header btn text-left">
+                            xxxxBank <br/> ......5678
+                        </div>
                     </div>
+                </div>
+
+            </div>
+        </form>
+        <div class="col-2 offset-5 my-4">
+            <button class="col-12 btn badge-primary text-center" data-toggle="modal" data-target="#staticBackdrop">Add
+                card
+            </button>
+        </div>
+    <div class="dropdown-divider "></div>
+    <div class="container">
+        <div class="text-center h1">Billing Address</div>
+        <form>
+            <div class="form-group">
+                <label for="Address">Address</label>
+                <input type="text" class="form-control" id="Address" name="Address" placeholder="" value="xxxxx">
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label for="City">City</label>
+                    <input type="text" class="form-control" id="City" name="City" placeholder="" value="Athens">
+
+                </div>
+
+                <div class="col-3">
+                    <label for="Country">Country</label>
+                    <input type="text" class="form-control" id="Country" name="Country" placeholder="" value="GA">
+
+                </div>
+
+                <div class="col-4">
+                    <label for="Zipcode">Zip Code</label>
+                    <input type="text" class="form-control" id="Zipcode" name="Zipcode" placeholder="" value="30601">
 
                 </div>
             </div>
+            <br>
+            <div style="display: flex; justify-content: center">
+                <a href="#" type="button" class="btn btn-warning">Change Billing Address</a>
+            </div>
+        </form>
 
-        </div>
-        <div class="col-2 offset-5 my-4" >
-            <button class="col-12 btn badge-primary text-center" data-toggle="modal" data-target="#staticBackdrop">Add card</button>
-        </div>
-        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    </div>
+
+
+        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -156,7 +204,8 @@
                 <input class="form-check-input input-group-lg" type="checkbox" value="" checked id="flexCheckDefault">
             </div>
             <div class="col-8">
-                <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send their latest promotion and released movie promotion to my personal email.</p>
+                <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send
+                    their latest promotion and released movie promotion to my personal email.</p>
             </div>
         </div>
     </div>
@@ -169,7 +218,7 @@
 <script type="text/javascript">
     $(function () {
         $('#datetimepicker').datetimepicker();
-            console.log($('#Birthday'));
+        console.log($('#Birthday'));
     });
 </script>
 <div id="footer" class="container-fluid " style="background: black; color: white; margin-top: 50px;padding: 40px">
