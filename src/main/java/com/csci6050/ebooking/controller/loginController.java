@@ -6,6 +6,7 @@ import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
@@ -28,7 +29,7 @@ public class loginController {
     @ResponseBody
     @RequestMapping("/login2")
     @GetMapping
-    public String submitLogin (User user, HttpServletResponse response) throws IOException {
+    public String submitLogin (User user, HttpServletResponse response, Model model) throws IOException {
         User n = userRepository.findByEmail(user.getEmail());
 
 //        System.out.print(decrypt);
@@ -44,6 +45,7 @@ public class loginController {
                 System.out.println("Password is wrong");
             }
             else{
+                model.addAttribute("User", n);
                 if(n.getStatus() == 1){
                     if(n.getUserType() == 1) {
                         System.out.println("You are an admin");
