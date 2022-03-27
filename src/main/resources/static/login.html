@@ -12,21 +12,29 @@
     <script>
         $(function () {
             $('#submit_button').click(() => {
-                console.info($('#loginform').serializeArray())
-                console.log($('#loginform')[0])
-                let data1=new FormData($('#loginform')[0])
+                console.info($('#loginform').serializeArray());
+                // console.log($('#loginform')[0]);
+                let data1 = new FormData($('#loginform')[0]);
+
                 $.ajax({
                     type: "post",
                     url: "login2",
                     // dataType:"json",
-                    contentType:false,
-                    processData:false,
+                    contentType: false,
+                    processData: false,
                     // data: $('#loginform').serializeArray(),
-                    data:data1,
-                    success: (data)=>{
-                        console.log(data);
+                    data: data1,
+                    success: (data, statue, xhr) => {
+                        document.cookie
+                        console.log(data + "," + statue);
+                        console.info(xhr);
                     },
-                });
+                    error:(jqXHR, textStatus,errorThrown ) => {
+                        console.log(jqXHR + "," + textStatus);
+                        console.info(jqXHR);
+                        console.info(errorThrown)
+                    }
+                })
             })
         });
     </script>
@@ -75,7 +83,8 @@
                     <i class="bi bi-person-fill"></i>
                 </div>
                 <div class="form-group help">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="13234">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                           value="13234">
                     <i class="bi bi-shield-lock-fill"></i>
                     <a href="#" class="fa fa-question-circle"></a>
                 </div>
@@ -86,7 +95,7 @@
                     </div>
                     <span class="text">Remember me</span>
                     <a href="#" id="submit_button" type="button" class="btn btn-success">Login</a>
-                    <a type="submit"  class="btn btn-warning" href="register.html">Register</a>
+                    <a type="submit" class="btn btn-warning" href="register.html">Register</a>
                 </div>
                 <div class="form-group" style="margin-top: 100px">
                     <a href="forget_password.html" class="">Forget Password?</a>
