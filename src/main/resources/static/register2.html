@@ -15,9 +15,9 @@
     <script>
         $(function () {
             $('#submit_button').click(() => {
-                console.info($('#register_form').serialize())
-                console.info($('#register_form').serializeArray())
-                console.log($('#register_form')[0])
+                // console.info($('#register_form').serialize())
+                // console.info($('#register_form').serializeArray())
+                // console.log($('#register_form')[0])
                 let data1 = new FormData($('#register_form')[0])
                 if ($("#password").val() == $("#password_again").val()) {
                     $.ajax({

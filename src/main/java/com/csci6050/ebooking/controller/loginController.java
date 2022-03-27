@@ -31,15 +31,15 @@ public class loginController {
     public String submitLogin (User user, HttpServletResponse response) throws IOException {
         User n = userRepository.findByEmail(user.getEmail());
 
-        passwordDecrypt de = new passwordDecrypt();
-        String decrypt = de.decrypt(n.getPassword());
-
-        System.out.print(decrypt);
+//        System.out.print(decrypt);
 
         if(n == null){
             System.out.println("Email not found");
         }
         else{
+            passwordDecrypt de = new passwordDecrypt();
+            String decrypt = de.decrypt(n.getPassword());
+
             if(!(decrypt.equals(user.getPassword()))){
                 System.out.println("Password is wrong");
             }

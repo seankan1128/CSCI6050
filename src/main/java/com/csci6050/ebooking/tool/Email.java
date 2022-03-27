@@ -139,7 +139,7 @@ public class Email {
     {
         // Recipient's email ID needs to be mentioned.
         String to = user.getEmail();
-
+        System.out.println(to);
         // Sender's email ID needs to be mentioned
         String from = "se22springb6@gmail.com";
         final String username = "se22springb6@gmail.com";//change accordingly

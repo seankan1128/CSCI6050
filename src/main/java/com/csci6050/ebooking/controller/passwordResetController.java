@@ -21,6 +21,7 @@ public class passwordResetController {
     }
 
     @ResponseBody
+    @RequestMapping("resetpassword")
     public void reset(@RequestParam String email) {
         User n = userRepository.findByEmail(email);
 
