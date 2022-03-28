@@ -53,6 +53,7 @@ public class loginController {
 
             data.setFirstName(n.getFirstName());
             data.setLastName(n.getLastName());
+            data.setPassword("");
             data.setEmail(n.getEmail());
             data.setPhone(n.getPhone());
             data.setStatus(n.getStatus());
