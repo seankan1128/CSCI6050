@@ -14,40 +14,47 @@
         $(function () {
             $('#submit_button').click(() => {
                 // console.info($('#loginform').serializeArray());
-                // console.log($('#loginform')[0]);
-                let data1 = new FormData($('#loginform')[0]);
-                if ($.cookie('name') != undefined) {
-                    console.log("already login");
+                // if ($.cookie('name') != undefined) {
+                //     console.log("already login");
+                // }
+                if($("#email").val() ===''){
+                    alert('please input email');
+                }else if($("#password").val() ===''){
+                    alert('please input password');
                 }
-                // if()
-                $.ajax({
-                    type: "post",
-                    url: "login2",
-                    // dataType:"json",
-                    contentType: false,
-                    processData: false,
-                    // data: $('#loginform').serializeArray(),
-                    data: data1,
-                    success: (data, statue, xhr) => {
-                        console.info(data);
-                        if (data.Status === 1) {
-                            console.log('yes');
-                            alert(data.Description);
-                            $.cookie('name', 'value', {expires: 7, path: '/', secure: true});
-                            console.log("cookie has save");
-                            // location.href="index"
-                        } else {
-                            console.log('no');
-                            alert(data.Description);
+                else if(/^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test($('#email').val())) {
+                    $.ajax({
+                        type: "post",
+                        url: "login2",
+                        contentType: false,
+                        processData: false,
+                        // data: $('#loginform').serializeArray(),
+                        data: new FormData($('#loginform')[0]),
+                        success: (data, statue, xhr) => {
+                            console.info(data);
+                            console.log(typeof data)
+                            if (data.Status === 1) {
+                                // delete  data.User.password;
+                                // alert(data.Description);
+                                // data.email=$("#email").val();
+                                console.info(data);
+                                $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
+                                // console.log("cookie has save");
+                                // location.href="index"
+                            } else {
+                                alert(data.Description);
+                            }
+                        },
+                        error: (jqXHR, textStatus, errorThrown) => {
+                            console.log(jqXHR + "," + textStatus);
+                            console.info(jqXHR);
+                            console.info(errorThrown)
                         }
-                        // console.info(xhr);
-                    },
-                    error: (jqXHR, textStatus, errorThrown) => {
-                        console.log(jqXHR + "," + textStatus);
-                        console.info(jqXHR);
-                        console.info(errorThrown)
-                    }
-                })
+                    })
+                }
+                else{
+                    alert("please input a real email");
+                }
             })
         });
     </script>
@@ -59,31 +66,6 @@
             <img src="image/UGA.png" width="30" height="30" class="d-inline-block align-top" alt=""> CSCI 6050 Movie
             Booking
         </a>
-        <!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"-->
-        <!--                aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">-->
-        <!--            <span class="navbar-toggler-icon"> sd</span>-->
-        <!--        </button>-->
-        <!--        <div class="col-3" id="">-->
-        <!--            <ul class="navbar-nav mr-auto col-4">-->
-        <!--                <li class="nav-item active">-->
-        <!--                    <a class="nav-link" href="#">Home </a>-->
-        <!--                </li>-->
-        <!--                <li class="nav-item">-->
-        <!--                    <a class="nav-link" href="#">Features</a>-->
-        <!--                </li>-->
-        <!--                <li class="nav-item">-->
-        <!--                    <a class="nav-link" href="#">Pricing</a>-->
-        <!--                </li>-->
-        <!--                <li class="nav-item">-->
-        <!--                    <a class="nav-link" href="#">About</a>-->
-        <!--                </li>-->
-        <!--            </ul>-->
-        <!--        </div>-->
-        <!--        <form class="form-inline col-4">-->
-        <!--            <input class="form-control col-10" type="search" placeholder="Search" aria-label="Search">-->
-        <!--            <button class="btn btn-outline-primary col-2" type="submit">Search</button>-->
-        <!--        </form>-->
-        <!--        <button class="btn btn-primary col-1 offset-1">Login</button>-->
     </nav>
 </div>
 <div class="container " style="margin-top: 250px">
@@ -92,19 +74,17 @@
             <form class="form-horizontal" id="loginform">
                 <span class="heading">Login</span>
                 <div class="form-group">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                           value="691143946@qq.com">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="691143946@qq.com">
                     <i class="bi bi-person-fill"></i>
                 </div>
                 <div class="form-group help">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                           value="1">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="1">
                     <i class="bi bi-shield-lock-fill"></i>
                     <a href="#" class="fa fa-question-circle"></a>
                 </div>
                 <div class="form-group">
                     <div class="main-checkbox">
-                        <input type="checkbox" value="" id="checkbox1" name="check"/>
+                        <input type="checkbox" id="checkbox1" name="check"/>
                         <label for="checkbox1"></label>
                     </div>
                     <span class="text">Remember me</span>
@@ -118,29 +98,6 @@
         </div>
     </div>
 </div>
-<!--<div id="footer" class="container-fluid " style="background: black; color: white; margin-top: 50px;padding: 40px">-->
-<!--    <div class="container">-->
-<!--        <div class="row text-center">-->
-<!--            <div class="col-4">-->
-<!--                <a>Conditions of Use</a>-->
-<!--            </div>-->
-
-<!--            <div class="col-4">-->
-<!--                <a>Privacy & Policy</a>-->
-<!--            </div>-->
-
-<!--            <div class="col-4">-->
-<!--                <a>Press Room</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="row copyright-bottom text-center">-->
-<!--            <div class=" col-12 text-center">-->
-<!--                <p>© 2022 Cinema E-Booking by CSCI 6050 Team B6</p>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--    </div>-->
-<!--</div>-->
 </body>
 
 </html>
