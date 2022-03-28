@@ -1,29 +1,24 @@
 package com.csci6050.ebooking.controller;
 
 import com.csci6050.ebooking.encrypt.passwordDecrypt;
-import com.csci6050.ebooking.encrypt.passwordEncrypt;
+import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
+import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static com.csci6050.ebooking.encrypt.passwordDecrypt.decrypt;
 
 @Controller
 public class loginController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PaymentcardRepository paymentcardRepository;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(){
@@ -34,7 +29,7 @@ public class loginController {
     @ResponseBody
     @RequestMapping("/login2")
     public Map<String, Object> returnJson(User data) throws IOException {
-        Map<String, Object> returnMap = new HashMap<>(3);
+        Map<String, Object> returnMap = new HashMap<>(4);
         User n = userRepository.findByEmail(data.getEmail());
         String description = "";
 
@@ -63,6 +58,15 @@ public class loginController {
             data.setStatus(n.getStatus());
             data.setEnrolledForPromotions(n.getEnrolledForPromotions());
             returnMap.put("User", data);
+
+            Paymentcard p = paymentcardRepository.findByUser(n);
+            Paymentcard temp = new Paymentcard();
+            temp.setCardno(de.decrypt(p.getCardno()));
+            returnMap.put("PaymentCard", temp);
+
+//            for(int i = 0; i < 3; i++){
+//
+//            }
 
             int status = 0;
 
