@@ -16,7 +16,7 @@
                 // console.info($('#loginform').serializeArray());
                 // console.log($('#loginform')[0]);
                 let data1 = new FormData($('#loginform')[0]);
-                if($.cookie('name')!=undefined){
+                if ($.cookie('name') != undefined) {
                     console.log("already login");
                 }
                 // if()
@@ -30,15 +30,15 @@
                     data: data1,
                     success: (data, statue, xhr) => {
                         console.info(data);
-                        if(data.Status[0]==1){
+                        if (data.Status === 1) {
                             console.log('yes');
-                            alert(data.Status[1]);
-                            $.cookie('name', 'value', { expires: 7, path: '/' ,secure:true});
+                            alert(data.Description);
+                            $.cookie('name', 'value', {expires: 7, path: '/', secure: true});
                             console.log("cookie has save");
-                            location.href="index.html"
-                        }else {
+                            // location.href="index"
+                        } else {
                             console.log('no');
-                            alert(data.Status[1]);
+                            alert(data.Description);
                         }
                         // console.info(xhr);
                     },
@@ -92,11 +92,13 @@
             <form class="form-horizontal" id="loginform">
                 <span class="heading">Login</span>
                 <div class="form-group">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="691143946@qq.com">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                           value="691143946@qq.com">
                     <i class="bi bi-person-fill"></i>
                 </div>
                 <div class="form-group help">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="1">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                           value="1">
                     <i class="bi bi-shield-lock-fill"></i>
                     <a href="#" class="fa fa-question-circle"></a>
                 </div>
