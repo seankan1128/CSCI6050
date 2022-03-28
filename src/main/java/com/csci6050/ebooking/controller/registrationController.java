@@ -11,13 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 @Controller // This means that this class is a Controller
 public class registrationController extends HttpServlet {
@@ -34,13 +32,7 @@ public class registrationController extends HttpServlet {
 
     @RequestMapping(value = "/register_finish", method = RequestMethod.GET)
     public String registerFinishPage(){
-
         return "register_finish";
-    }
-
-    private String getSiteURL(HttpServletRequest request) {
-        String siteURL = request.getRequestURL().toString();
-        return siteURL.replace(request.getServletPath(), "");
     }
 
     @ResponseBody
