@@ -62,7 +62,7 @@ public class loginController {
 
             Paymentcard p = paymentcardRepository.findByUser(n);
             Paymentcard temp = new Paymentcard();
-            temp.setCardno(de.decrypt(p.getCardno()));
+            temp.setCardno(de.decrypt(p.getCardno()).substring(de.decrypt(p.getCardno()).length()-4));
             returnMap.put("PaymentCard", temp);
 
 //            for(int i = 0; i < 3; i++){
