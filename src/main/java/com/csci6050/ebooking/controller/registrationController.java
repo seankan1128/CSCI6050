@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller // This means that this class is a Controller
 public class registrationController extends HttpServlet {
@@ -37,7 +39,19 @@ public class registrationController extends HttpServlet {
 
     @ResponseBody
     @RequestMapping("registerform")
-    public void addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
+    public Map<String, Object> addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
+
+        Map<String, Object> returnMap = new HashMap<>(2);
+
+        User m = userRepository.findByEmail(user.getEmail());
+        if(m != null){
+            System.out.println("Email is already registered");
+            String description = "Email is already registered";
+            returnMap.put("Status", 0);
+            returnMap.put("Description", description);
+            return returnMap;
+        }
+
         passwordEncrypt pe = new passwordEncrypt();
         String encrypt = pe.encrypt(user.getPassword());
 
@@ -87,7 +101,11 @@ public class registrationController extends HttpServlet {
 
         paymentcardRepository.save(p);
 
-        response.sendRedirect("register_finish");
+        System.out.println("Successfully registered");
+        String description = "Successfully registered";
+        returnMap.put("Status", 1);
+        returnMap.put("Description", description);
+        return returnMap;
     }
 
     public boolean verify(String verificationCode) {
