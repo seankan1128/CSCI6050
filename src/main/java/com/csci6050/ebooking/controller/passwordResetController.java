@@ -36,7 +36,7 @@ public class passwordResetController {
     }
 
     @ResponseBody
-    @RequestMapping("resetpassword")
+    @RequestMapping("forgetpw")
     public Map<String, Object> reset(@RequestParam String email, HttpServletRequest request) {
 
         Map<String, Object> returnMap = new HashMap<>();
@@ -67,7 +67,7 @@ public class passwordResetController {
         }
     }
 
-    @GetMapping("resetpassword/verify")
+    @GetMapping("forgetpw/verify")
     public String verifyUser(@Param("pwresetcode") String code) {
         System.out.println("Verifying");
         if (verify(code)) {
