@@ -19,6 +19,17 @@ public class Paymentcard {
     private String expirationdate;
     @Column(name="billingaddress")
     private String billingaddress;
+    @Column(name="lastfourdigits")
+    private String lastfourdigits;
+    @Column(name="securitycode")
+    private String securitycode;
+    @Column(name="billingcity")
+    private String billingcity;
+    @Column(name="billingstate")
+    private String billingstate;
+    @Column(name="billingzipcode")
+    private String billingzipcode;
+
 
     public String getCardno() {
         return cardno;
@@ -58,5 +69,45 @@ public class Paymentcard {
 
     public void setBillingaddress(String billingaddress) {
         this.billingaddress = billingaddress;
+    }
+
+    public String getLastfourdigits() {
+        return lastfourdigits;
+    }
+
+    public void setLastfourdigits(String lastfourdigits) {
+        this.lastfourdigits = lastfourdigits;
+    }
+
+    public String getSecuritycode() {
+        return securitycode;
+    }
+
+    public void setSecuritycode(String securitycode) {
+        this.securitycode = securitycode;
+    }
+
+    public String getBillingcity() {
+        return billingcity;
+    }
+
+    public void setBillingcity(String billingcity) {
+        this.billingcity = billingcity;
+    }
+
+    public String getBillingstate() {
+        return billingstate;
+    }
+
+    public void setBillingstate(String billingstate) {
+        this.billingstate = billingstate;
+    }
+
+    public String getBillingzipcode() {
+        return billingzipcode;
+    }
+
+    public void setBillingzipcode(String billingzipcode) {
+        this.billingzipcode = billingzipcode;
     }
 }

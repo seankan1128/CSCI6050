@@ -26,9 +26,11 @@ public class User {
     private String enrolledForPromotions;
     @Column(name="usertype")
     private int userType;
+    @Column(name="birthday")
+    private String birthday;
 
-    @OneToMany (mappedBy = "user")
-    private List<Paymentcard> paymentcardList;
+//    @OneToMany (mappedBy = "user")
+//    private List<Paymentcard> paymentcardList;
 
     @Column(name = "verificationcode", length = 64)
     private String verificationCode;
@@ -105,13 +107,13 @@ public class User {
         this.userType = userType;
     }
 
-    public List<Paymentcard> getPaymentcardList() {
-        return paymentcardList;
-    }
-
-    public void setPaymentcardList(List<Paymentcard> paymentcardList) {
-        this.paymentcardList = paymentcardList;
-    }
+//    public List<Paymentcard> getPaymentcardList() {
+//        return paymentcardList;
+//    }
+//
+//    public void setPaymentcardList(List<Paymentcard> paymentcardList) {
+//        this.paymentcardList = paymentcardList;
+//    }
 
     public String getVerificationCode() {
         return verificationCode;
@@ -119,5 +121,13 @@ public class User {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

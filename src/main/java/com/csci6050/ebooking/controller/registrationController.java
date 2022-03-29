@@ -1,11 +1,13 @@
 package com.csci6050.ebooking.controller;
 
+import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.encrypt.passwordEncrypt;
 import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
 import com.csci6050.ebooking.tool.Email;
+import jdk.jshell.Snippet;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,14 +44,18 @@ public class registrationController extends HttpServlet {
     @RequestMapping("registerform")
     public Map<String, Object> addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
 
-        Map<String, Object> returnMap = new HashMap<>(2);
+        Map<String, Object> returnMap = new HashMap<>();
 
         User m = userRepository.findByEmail(user.getEmail());
         if(m != null){
             System.out.println("Email is already registered");
             String description = "Email is already registered";
-            returnMap.put("Status", 0);
-            returnMap.put("Description", description);
+//            returnMap.put("Status", 0);
+//            returnMap.put("Description", description);
+            StatusNDescription returnJson = new StatusNDescription();
+            returnJson.setStatus(0);
+            returnJson.setDescription("Email is already registered");
+            returnMap.put("ReturnStatus", returnJson);
             return returnMap;
         }
 
@@ -64,12 +71,7 @@ public class registrationController extends HttpServlet {
         n.setStatus(2);
         n.setEnrolledForPromotions(user.getEnrolledForPromotions());
         n.setUserType(2);
-
-//        User m = userRepository.findByEmail(user.getEmail());
-//        if(m != null){
-//            //Look at tomorrow
-//            return "register_fail";
-//        }
+        n.setBirthday(user.getBirthday());
 
         String randomCode = RandomString.make(64);
         n.setVerificationCode(randomCode);
@@ -83,6 +85,7 @@ public class registrationController extends HttpServlet {
 
         String cardencrypt = pe.encrypt(paymentcard.getCardno());
         p.setCardno(cardencrypt);
+        p.setLastfourdigits(paymentcard.getCardno().substring(paymentcard.getCardno().length()-4));
 
         p.setExpirationdate(paymentcard.getExpirationdate());
         if (p.getCardno().substring(0, 1).equals("4")){
@@ -98,13 +101,21 @@ public class registrationController extends HttpServlet {
         }
         p.setUser(n);
         p.setBillingaddress(paymentcard.getBillingaddress());
+        p.setBillingcity(paymentcard.getBillingcity());
+        p.setBillingstate(paymentcard.getBillingstate());
+        p.setSecuritycode(paymentcard.getSecuritycode());
+        p.setBillingzipcode(paymentcard.getBillingzipcode());
 
         paymentcardRepository.save(p);
 
         System.out.println("Successfully registered");
-        String description = "Successfully registered";
-        returnMap.put("Status", 1);
-        returnMap.put("Description", description);
+        StatusNDescription returnJson = new StatusNDescription();
+        returnJson.setStatus(1);
+        returnJson.setDescription("Successfully registered");
+//        String description = "Successfully registered";
+//        returnMap.put("Status", 1);
+//        returnMap.put("Description", description);
+        returnMap.put("ReturnStatus", returnJson);
         return returnMap;
     }
 

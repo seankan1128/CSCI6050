@@ -16,7 +16,6 @@ public class editController {
 
     @RequestMapping(value = "/editprofile", method = RequestMethod.GET)
     public String editProfilePage(){
-
         return "edit_profile";
     }
 }
