@@ -46,10 +46,11 @@
                                     $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
                                     $.session.set('userInfo',$.param(data));
                                     console.info($.deparam(decodeURIComponent($.cookie('userInfo'))))
-                                    // location.href="index.html"
+                                    location.href="index.html"
                                 }
                                 else {
-                                    console.log('admin');
+                                    alert('admin');
+                                    location.href="admin.html"
                                 }
                             }
                             else {
