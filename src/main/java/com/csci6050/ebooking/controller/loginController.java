@@ -1,6 +1,5 @@
 package com.csci6050.ebooking.controller;
 
-import com.csci6050.ebooking.encrypt.passwordDecrypt;
 import com.csci6050.ebooking.encrypt.passwordEncrypt;
 import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
@@ -41,9 +40,6 @@ public class loginController {
             returnMap.put("Description", description);
             return returnMap;
         } else {
-            passwordDecrypt de = new passwordDecrypt();
-//            String decrypt = de.decrypt(n.getPassword()); //correct pw from db
-
             passwordEncrypt en = new passwordEncrypt();
             String encrypt = en.encrypt(data.getPassword());
 
@@ -58,6 +54,7 @@ public class loginController {
             data.setFirstName(n.getFirstName());
             data.setLastName(n.getLastName());
             data.setPassword("");
+            data.setUserType(n.getUserType());
             data.setEmail(n.getEmail());
             data.setPhone(n.getPhone());
             data.setStatus(n.getStatus());
@@ -65,9 +62,7 @@ public class loginController {
             returnMap.put("User", data);
 
             Paymentcard p = paymentcardRepository.findByUser(n);
-            Paymentcard temp = new Paymentcard();
-            temp.setCardno(de.decrypt(p.getCardno()).substring(de.decrypt(p.getCardno()).length()-4));
-            returnMap.put("PaymentCard", temp);
+            returnMap.put("PaymentCard", p.getLastfourdigits());
 
 //            for(int i = 0; i < 3; i++){
 //

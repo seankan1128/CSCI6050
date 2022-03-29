@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +65,7 @@ public class registrationController extends HttpServlet {
         n.setStatus(2);
         n.setEnrolledForPromotions(user.getEnrolledForPromotions());
         n.setUserType(2);
+        n.setBirthday(user.getBirthday());
 
 //        User m = userRepository.findByEmail(user.getEmail());
 //        if(m != null){
@@ -83,6 +85,7 @@ public class registrationController extends HttpServlet {
 
         String cardencrypt = pe.encrypt(paymentcard.getCardno());
         p.setCardno(cardencrypt);
+        p.setLastfourdigits(paymentcard.getCardno().substring(paymentcard.getCardno().length()-4));
 
         p.setExpirationdate(paymentcard.getExpirationdate());
         if (p.getCardno().substring(0, 1).equals("4")){
@@ -98,8 +101,15 @@ public class registrationController extends HttpServlet {
         }
         p.setUser(n);
         p.setBillingaddress(paymentcard.getBillingaddress());
+        p.setBillingcity(paymentcard.getBillingcity());
+        p.setBillingstate(paymentcard.getBillingstate());
+        p.setSecuritycode(paymentcard.getSecuritycode());
+        p.setBillingzipcode(paymentcard.getBillingzipcode());
 
         paymentcardRepository.save(p);
+
+        user.setPaymentcardList(new ArrayList<Paymentcard>());
+        user.getPaymentcardList().add(p);
 
         System.out.println("Successfully registered");
         String description = "Successfully registered";
