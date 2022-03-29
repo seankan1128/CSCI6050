@@ -13,7 +13,7 @@ public class login_UP {
     private String birthday;
     private String enrolledForPromotions;
     private int userType;
-    private List<Paymentcard> PaymentCardList;
+    private List<Login_Pay> PaymentCardList;
 
     public String getFirstname() {
         return firstName;
@@ -71,11 +71,11 @@ public class login_UP {
         this.userType = userType;
     }
 
-    public List<Paymentcard> getPaymentCardList() {
+    public List<Login_Pay> getPaymentCardList() {
         return PaymentCardList;
     }
 
-    public void setPaymentCardList(List<Paymentcard> paymentCardList) {
+    public void setPaymentCardList(List<Login_Pay> paymentCardList) {
         PaymentCardList = paymentCardList;
     }
 }
