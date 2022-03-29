@@ -1,6 +1,7 @@
 package com.csci6050.ebooking.controller;
 
 import com.csci6050.ebooking.encrypt.passwordDecrypt;
+import com.csci6050.ebooking.encrypt.passwordEncrypt;
 import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.PaymentcardRepository;
@@ -41,9 +42,12 @@ public class loginController {
             return returnMap;
         } else {
             passwordDecrypt de = new passwordDecrypt();
-            String decrypt = de.decrypt(n.getPassword()); //correct pw from db
+//            String decrypt = de.decrypt(n.getPassword()); //correct pw from db
 
-            if(!(decrypt.equals(data.getPassword()))){
+            passwordEncrypt en = new passwordEncrypt();
+            String encrypt = en.encrypt(data.getPassword());
+
+            if(!(encrypt.equals(n.getPassword()))){
                 System.out.println("Password is wrong");
                 description = "Your password is incorrect.";
                 returnMap.put("Status", 0);
