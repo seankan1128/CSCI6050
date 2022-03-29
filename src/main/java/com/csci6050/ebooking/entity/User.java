@@ -35,6 +35,9 @@ public class User {
     @Column(name = "verificationcode", length = 64)
     private String verificationCode;
 
+    @Column(name = "pwresetcode", length = 64)
+    private String pwresetcode;
+
     public int getId() {
         return id;
     }
@@ -129,5 +132,13 @@ public class User {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getPwresetcode() {
+        return pwresetcode;
+    }
+
+    public void setPwresetcode(String pwresetcode) {
+        this.pwresetcode = pwresetcode;
     }
 }
