@@ -9,6 +9,8 @@
     <link href="css/login.css" rel="stylesheet">
     <script src="js/jquery-3.5.1.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
+    <script src="js/jquery.session.js"></script>
+    <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script>
         $(function () {
@@ -17,12 +19,13 @@
                 // if ($.cookie('name') != undefined) {
                 //     console.log("already login");
                 // }
-                if($("#email").val() ===''){
+                if ($("#email").val() === '') {
                     alert('please input email');
-                }else if($("#password").val() ===''){
+                }
+                else if ($("#password").val() === '') {
                     alert('please input password');
                 }
-                else if(/^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test($('#email').val())) {
+                else if (/^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test($('#email').val())) {
                     $.ajax({
                         type: "post",
                         url: "login2",
@@ -34,25 +37,43 @@
                             console.info(data);
                             console.log(typeof data)
                             if (data.Status === 1) {
-                                // delete  data.User.password;
-                                // alert(data.Description);
-                                // data.email=$("#email").val();
-                                console.info(data);
-                                $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
-                                // console.log("cookie has save");
-                                // location.href="index"
-                            } else {
+                                if (data.User.userType == 0) {
+                                    delete data.Status;
+                                    delete data.Description;
+                                    delete data.User.password;
+                                    delete data.User.id;
+                                    delete data.User.status;
+                                    delete data.User.userType;
+                                    delete data.User.verificationCode;
+                                    delete data.PaymentCard.expirationdate;
+                                    delete data.PaymentCard.type;
+                                    delete data.PaymentCard.user;
+                                    if ($("#Remember_me").is(':checked')) {
+                                        data.remember = true;
+                                    }
+                                    console.info(data);
+                                    $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
+                                    $.session.set('userInfo',$.param(data));
+                                    // console.info($.deparam(decodeURIComponent($.cookie('userInfo'))))
+                                    console.log("cookie has save");
+                                    location.href="index.html"
+                                }
+                                else {
+                                    console.log('admin');
+                                }
+                            }
+                            else {
                                 alert(data.Description);
                             }
                         },
                         error: (jqXHR, textStatus, errorThrown) => {
                             console.log(jqXHR + "," + textStatus);
                             console.info(jqXHR);
-                            console.info(errorThrown)
+                            console.info(errorThrown);
                         }
                     })
                 }
-                else{
+                else {
                     alert("please input a real email");
                 }
             })
@@ -74,18 +95,20 @@
             <form class="form-horizontal" id="loginform">
                 <span class="heading">Login</span>
                 <div class="form-group">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="691143946@qq.com">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                           value="691143946@qq.com">
                     <i class="bi bi-person-fill"></i>
                 </div>
                 <div class="form-group help">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="1">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                           value="1">
                     <i class="bi bi-shield-lock-fill"></i>
                     <a href="#" class="fa fa-question-circle"></a>
                 </div>
                 <div class="form-group">
                     <div class="main-checkbox">
-                        <input type="checkbox" id="checkbox1" name="check"/>
-                        <label for="checkbox1"></label>
+                        <input type="checkbox" id="Remember_me"/>
+                        <label for="Remember_me"></label>
                     </div>
                     <span class="text">Remember me</span>
                     <a href="#" id="submit_button" type="button" class="btn btn-success">Login</a>
