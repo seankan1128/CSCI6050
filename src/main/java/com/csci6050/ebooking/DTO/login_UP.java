@@ -6,8 +6,8 @@ import com.csci6050.ebooking.entity.User;
 import java.util.List;
 
 public class login_UP {
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phone;
     private String birthday;
@@ -16,19 +16,19 @@ public class login_UP {
     private List<Paymentcard> PaymentCardList;
 
     public String getFirstname() {
-        return firstname;
+        return firstName;
     }
 
     public void setFirstname(String firstname) {
-        this.firstname = firstname;
+        this.firstName = firstname;
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.lastName = lastname;
     }
 
     public String getEmail() {

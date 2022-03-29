@@ -89,10 +89,14 @@ public class loginController {
             up.setPhone(n.getPhone());
             up.setUserType(n.getUserType());
             up.setEnrolledForPromotions(n.getEnrolledForPromotions());
+            up.setBirthday(n.getBirthday());
 
             Iterable<Paymentcard> pList = paymentcardRepository.findAllByUser(n);
             List<Paymentcard> paymentcardlist = new ArrayList<>();
             pList.forEach(paymentcardlist::add);
+            for(int i = 0; i<paymentcardlist.size();i++){
+                paymentcardlist.get(i).setUser(null);
+            }
             up.setPaymentCardList(paymentcardlist);
 
             returnMap.put("ReturnUser", up);
