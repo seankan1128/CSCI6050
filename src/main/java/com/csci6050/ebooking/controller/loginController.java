@@ -1,5 +1,6 @@
 package com.csci6050.ebooking.controller;
 
+import com.csci6050.ebooking.DTO.login_UPSD;
 import com.csci6050.ebooking.encrypt.passwordEncrypt;
 import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,17 +31,20 @@ public class loginController {
 
     @ResponseBody
     @RequestMapping("/login2")
-    public Map<String, Object> returnJson(User data) throws IOException {
-        Map<String, Object> returnMap = new HashMap<>(4);
+    public login_UPSD returnJson(User data) throws IOException {
+//        Map<String, Object> returnMap = new HashMap<>(4);
         User n = userRepository.findByEmail(data.getEmail());
+        login_UPSD upsd = new login_UPSD();
         String description = "";
 
         if(n == null){
             System.out.println("Email not found");
             description = "You do not have an account.";
-            returnMap.put("Status", 0);
-            returnMap.put("Description", description);
-            return returnMap;
+//            returnMap.put("Status", 0);
+//            returnMap.put("Description", description);
+            upsd.setStatus(0);
+            upsd.setDescription(description);
+            return upsd;
         } else {
             passwordEncrypt en = new passwordEncrypt();
             String encrypt = en.encrypt(data.getPassword());
@@ -46,9 +52,11 @@ public class loginController {
             if(!(encrypt.equals(n.getPassword()))){
                 System.out.println("Password is wrong");
                 description = "Your password is incorrect.";
-                returnMap.put("Status", 0);
-                returnMap.put("Description", description);
-                return returnMap;
+//                returnMap.put("Status", 0);
+//                returnMap.put("Description", description);
+                upsd.setStatus(0);
+                upsd.setDescription(description);
+                return upsd;
             }
 
             data.setFirstName(n.getFirstName());
@@ -59,14 +67,13 @@ public class loginController {
             data.setPhone(n.getPhone());
             data.setStatus(n.getStatus());
             data.setEnrolledForPromotions(n.getEnrolledForPromotions());
-            returnMap.put("User", data);
+//            returnMap.put("User", data);
+            upsd.setUser(data);
 
-            Paymentcard p = paymentcardRepository.findByUser(n);
-            returnMap.put("PaymentCard", p.getLastfourdigits());
-
-//            for(int i = 0; i < 3; i++){
-//
-//            }
+            Iterable<Paymentcard> pList = paymentcardRepository.findAllByUser(n);
+            List<Paymentcard> paymentcardlist = new ArrayList<>();
+            pList.forEach(paymentcardlist::add);
+            upsd.setPaymentCardList(paymentcardlist);
 
             int status = 0;
 
@@ -95,9 +102,10 @@ public class loginController {
                 System.out.println("Your account is suspended");
                 description = "Your account is suspended. Please contact an administrator.";
             }
-            returnMap.put("Status", status);
-            returnMap.put("Description", description);
+            upsd.setStatus(status);
+            upsd.setDescription(description);
+
         }
-        return returnMap;
+        return upsd;
     }
 }

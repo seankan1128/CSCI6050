@@ -29,8 +29,8 @@ public class User {
     @Column(name="birthday")
     private String birthday;
 
-    @OneToMany (mappedBy = "user")
-    private List<Paymentcard> paymentcardList;
+//    @OneToMany (mappedBy = "user")
+//    private List<Paymentcard> paymentcardList;
 
     @Column(name = "verificationcode", length = 64)
     private String verificationCode;
@@ -107,13 +107,13 @@ public class User {
         this.userType = userType;
     }
 
-    public List<Paymentcard> getPaymentcardList() {
-        return paymentcardList;
-    }
-
-    public void setPaymentcardList(List<Paymentcard> paymentcardList) {
-        this.paymentcardList = paymentcardList;
-    }
+//    public List<Paymentcard> getPaymentcardList() {
+//        return paymentcardList;
+//    }
+//
+//    public void setPaymentcardList(List<Paymentcard> paymentcardList) {
+//        this.paymentcardList = paymentcardList;
+//    }
 
     public String getVerificationCode() {
         return verificationCode;
