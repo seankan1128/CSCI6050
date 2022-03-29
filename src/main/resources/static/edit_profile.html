@@ -96,12 +96,14 @@
                     alert('please input the full information');
                 }
                 else {
+                    let data_send=new FormData($('#add_card_form')[0]);
+                    data_send.append('email', user_info.ReturnUser.email);
                     $.ajax({
                         type: 'post',
                         url: '',//need change
                         contentType: false,
                         processData: false,
-                        data: new FormData($('#add_card_form')[0]),
+                        data:data_send ,
                         success: (data) => {
                             if (data.ReturnStatus.status === 1) {
                                 alert('add card successful');
@@ -262,11 +264,11 @@
                 </div>
                 <div class='form-group'>
                     <label for='email'>Email</label>
-                    <input type='text' class='form-control' id='email' name='email' placeholder='Email' disabled>
+                    <input type='text' class='form-control' id='email' name='email' placeholder='Email' readonly style="cursor: not-allowed;" >
                 </div>
                 <div class='form-group'>
                     <label for='birthday'>Birthday</label>
-                    <input type='date' class='form-control' id='birthday' disabled>
+                    <input type='date' class='form-control' id='birthday' readonly style="cursor: not-allowed;">
                 </div>
                 <div class='form-group'>
                     <label for='enrolledForPromotions'>Opt-in for promotion Email</label>
