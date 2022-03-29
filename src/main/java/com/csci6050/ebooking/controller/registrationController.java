@@ -1,11 +1,13 @@
 package com.csci6050.ebooking.controller;
 
+import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.encrypt.passwordEncrypt;
 import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
 import com.csci6050.ebooking.tool.Email;
+import jdk.jshell.Snippet;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -40,17 +42,20 @@ public class registrationController extends HttpServlet {
 
     @ResponseBody
     @RequestMapping("registerform")
-    public Map<String, Object> addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
+    public StatusNDescription addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
 
-        Map<String, Object> returnMap = new HashMap<>(2);
+//        Map<String, Object> returnMap = new HashMap<>(2);
 
         User m = userRepository.findByEmail(user.getEmail());
         if(m != null){
             System.out.println("Email is already registered");
             String description = "Email is already registered";
-            returnMap.put("Status", 0);
-            returnMap.put("Description", description);
-            return returnMap;
+//            returnMap.put("Status", 0);
+//            returnMap.put("Description", description);
+            StatusNDescription returnJson = new StatusNDescription();
+            returnJson.setStatus(0);
+            returnJson.setDescription("Email is already registered");
+            return returnJson;
         }
 
         passwordEncrypt pe = new passwordEncrypt();
@@ -66,12 +71,6 @@ public class registrationController extends HttpServlet {
         n.setEnrolledForPromotions(user.getEnrolledForPromotions());
         n.setUserType(2);
         n.setBirthday(user.getBirthday());
-
-//        User m = userRepository.findByEmail(user.getEmail());
-//        if(m != null){
-//            //Look at tomorrow
-//            return "register_fail";
-//        }
 
         String randomCode = RandomString.make(64);
         n.setVerificationCode(randomCode);
@@ -108,14 +107,14 @@ public class registrationController extends HttpServlet {
 
         paymentcardRepository.save(p);
 
-        user.setPaymentcardList(new ArrayList<Paymentcard>());
-        user.getPaymentcardList().add(p);
-
         System.out.println("Successfully registered");
-        String description = "Successfully registered";
-        returnMap.put("Status", 1);
-        returnMap.put("Description", description);
-        return returnMap;
+        StatusNDescription returnJson = new StatusNDescription();
+        returnJson.setStatus(1);
+        returnJson.setDescription("Successfully registered");
+//        String description = "Successfully registered";
+//        returnMap.put("Status", 1);
+//        returnMap.put("Description", description);
+        return returnJson;
     }
 
     public boolean verify(String verificationCode) {
