@@ -79,7 +79,7 @@
                 $('#card_number').val('');
                 $('#expiration_date').val('');
                 $('#security_number').val('');
-            })
+            });
 
             $('#add_card_submit').click(() => {
                 if ($('#card_number').val() === '' || $('#expiration_date').val() === '' || $('#security_number').val() === '') {
@@ -105,7 +105,39 @@
                         }
                     });
                 }
-            })
+            });
+
+            $('#account_submit').click(()=>{
+                if($('#first_name').val()==''||$('#last_name').val()==''){
+                    alert('the name could not be empty');
+                }
+                else {
+                    console.info($('#account_form').serializeArray());
+                    $.ajax({
+                        type: 'post',
+                        url: '',//need change
+                        contentType: false,
+                        processData: false,
+                        data: new FormData($('#account_form')[0]),
+                        success: (data) => {
+                            if (data.Status === 1) {
+                                alert('account info change successful');
+                                //todo
+                                //update account display again
+                            }
+                            else {
+                                alert(data.Description);
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#log_out').click(() => {
+                $.session.clear();
+                $.removeCookie('userInfo', {path: '/'});
+                location.href = "index.html";
+            });
         })
     </script>
 </head>
@@ -127,7 +159,7 @@
                 <div class='dropdown-menu' aria-labelledby='userMenuButton'>
                     <a class='dropdown-item' href='#'>Order</a>
                     <a class='dropdown-item' href='#'>Edit Profile</a>
-                    <a class='dropdown-item' href='index.html'>Log out</a>
+                    <a class='dropdown-item' id="log_out" href='#'>Log out</a>
                 </div>
             </div>
         </div>
@@ -135,9 +167,9 @@
 </div>
 <div class='container' style='margin-top: 100px;min-height: 70vh'>
     <div>
-        <div class='text-center h1'>Personal Information</div>
+        <div class='text-center h1'>Account Information</div>
         <div>
-            <form>
+            <form id="account_form">
                 <div class='row'>
                     <div class='form-group col-6'>
                         <label for='first_name'>First Name</label>
@@ -157,11 +189,41 @@
                     <label for='birthday'>Birthday</label>
                     <input type='date' class='form-control' id='birthday' disabled>
                 </div>
+                <div class='form-group'>
+                    <label for='enrolledForPromotions'>Opt-in for promotion Email</label>
+                    <div class='row mt-4'>
+                        <div class='form-check offset-2 col-1'>
+                            <input class='form-check-input input-group-lg' type='checkbox' name='enrolledForPromotions'
+                                   id='enrolledForPromotions'>
+                        </div>
+                        <div class='col-8'>
+                            <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send
+                                their latest promotion and released movie promotion to my personal email.</p>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
-        <div class='text-center'>
-            <a href='#' type='button' class='btn btn-warning'>Change Password</a>
+        <div class='row'>
+            <a href='#' type='button' class='offset-3 col-2 btn btn-warning'>Change Password</a>
+            <a href='#' id="account_submit" type='button' class='col-2 offset-2 btn btn-success'>Submit</a>
         </div>
+<!--        <div class='mt-4'>-->
+<!--            <div class='text-center h1'>Opt-in for promotion Email</div>-->
+<!--            <div class='row mt-4'>-->
+<!--                <div class='form-check offset-2 col-1'>-->
+<!--                    <input class='form-check-input input-group-lg' type='checkbox' name='enrolledForPromotions'-->
+<!--                           id='enrolledForPromotions'>-->
+<!--                </div>-->
+<!--                <div class='col-8'>-->
+<!--                    <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send-->
+<!--                        their latest promotion and released movie promotion to my personal email.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class='mx-auto px-auto'>-->
+<!--            <a href='index_login.html' type='button' class='col-2 offset-5 btn btn-success '>Submit</a>-->
+<!--        </div>-->
     </div>
     <div class='dropdown-divider'></div>
     <div>
@@ -279,24 +341,7 @@
             </div>
         </div>
     </div>
-    <div class='dropdown-divider '></div>
-    <div class='mt-4'>
-        <div class='text-center h1'>Opt-in for promotion Email</div>
-        <div class='row mt-4'>
-            <div class='form-check offset-2 col-1' style='width: 5px'>
-                <input class='form-check-input input-group-lg' type='checkbox' name='enrolledForPromotions'
-                       id='enrolledForPromotions'>
-            </div>
-            <div class='col-8'>
-                <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send
-                    their latest promotion and released movie promotion to my personal email.</p>
-            </div>
-        </div>
-    </div>
-    <div class='dropdown-divider '></div>
-    <div class='mx-auto px-auto'>
-        <a href='index_login.html' type='button' class='col-2 offset-5 btn btn-success '>Submit</a>
-    </div>
+
 </div>
 
 <div id='footer' class='container-fluid ' style='background: black; color: white; margin-top: 50px;padding: 40px'>

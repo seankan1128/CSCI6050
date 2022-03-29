@@ -13,20 +13,24 @@
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script>
         $(function () {
-            let user_info=undefined;
-            if ($.session.get('userInfo') != undefined) {
-                user_info = $.deparam(decodeURIComponent($.session.get('userInfo')));
+            let user_info = undefined;
+            let flag = 0;
+            let sessionTemp = $.session.get('userInfo');
+            let cookieTemp = $.cookie('userInfo');
+            console.info(cookieTemp)
+            if (sessionTemp != undefined) {
+                user_info = $.deparam(decodeURIComponent(sessionTemp));
+                flag = 1;
             }
-            else if($.cookie('userInfo') != undefined){
-                let temp=$.deparam(decodeURIComponent($.cookie('userInfo')));
-                console.info(temp)
-                if(temp.remember!=undefined){
-                    user_info=temp;
+            else if (cookieTemp != undefined) {
+                user_info = $.deparam(decodeURIComponent(cookieTemp));
+                if (user_info.remember !== undefined) {
+                    flag = 1;
                 }
             }
             console.log(user_info);
-            if(user_info!=undefined){
-                let user_btn=$('#user');
+            if (flag) {
+                let user_btn = $('#user');
                 user_btn.empty();
                 user_btn.append(
                     $('<div class="dropdown">').append(
@@ -39,10 +43,10 @@
                     ),
                 );
             }
-            $('#log_out').click(()=>{
+            $('#log_out').click(() => {
                 $.session.clear();
-                $.removeCookie('userInfo', { path: '/' });
-                location.href="index.html";
+                $.removeCookie('userInfo', {path: '/'});
+                location.href = "index.html";
             })
         })
     </script>
@@ -235,48 +239,48 @@
         </div>
     </div>
 </div>
-<div class="container" style="margin-top: 50px">
-    <div class="form-inline">
-        <div class="h1 col-4">
-            Trailers
-        </div>
-        <a class="h3 col-2 offset-6">
-            See more<i class=" bi bi-arrow-right-short"></i>
-        </a>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <div class="thumbnail">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"
-                            allowfullscreen></iframe>
-                </div>
-                <h3>MoonFall</h3>
-                <p>some words here</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="thumbnail">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"
-                            allowfullscreen></iframe>
-                </div>
-                <h3>Avenger:End Game</h3>
-                <p>some words here</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="thumbnail">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"
-                            allowfullscreen></iframe>
-                </div>
-                <h3>Uncharted</h3>
-                <p>some words here</p>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="container" style="margin-top: 50px">-->
+<!--    <div class="form-inline">-->
+<!--        <div class="h1 col-4">-->
+<!--            Trailers-->
+<!--        </div>-->
+<!--        <a class="h3 col-2 offset-6">-->
+<!--            See more<i class=" bi bi-arrow-right-short"></i>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--        <div class="col-4">-->
+<!--            <div class="thumbnail">-->
+<!--                <div class="embed-responsive embed-responsive-16by9">-->
+<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"-->
+<!--                            allowfullscreen></iframe>-->
+<!--                </div>-->
+<!--                <h3>MoonFall</h3>-->
+<!--                <p>some words here</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-4">-->
+<!--            <div class="thumbnail">-->
+<!--                <div class="embed-responsive embed-responsive-16by9">-->
+<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"-->
+<!--                            allowfullscreen></iframe>-->
+<!--                </div>-->
+<!--                <h3>Avenger:End Game</h3>-->
+<!--                <p>some words here</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-4">-->
+<!--            <div class="thumbnail">-->
+<!--                <div class="embed-responsive embed-responsive-16by9">-->
+<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"-->
+<!--                            allowfullscreen></iframe>-->
+<!--                </div>-->
+<!--                <h3>Uncharted</h3>-->
+<!--                <p>some words here</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <div id="footer" class="container-fluid " style="background: black; color: white; margin-top: 50px;padding: 40px">
     <div class="container">
         <div class="row text-center">
