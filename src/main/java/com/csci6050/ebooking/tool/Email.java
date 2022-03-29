@@ -135,7 +135,7 @@ public class Email {
         }
     }
 
-    public void resetPassword(User user, String pw)
+    public void resetPassword(User user, String siteURL)
     {
         // Recipient's email ID needs to be mentioned.
         String to = user.getEmail();
@@ -174,16 +174,17 @@ public class Email {
                     InternetAddress.parse(to));
 
             // Set Subject: header field
-            message.setSubject("New Temporary Password");
+            message.setSubject("Reset your password");
 
             String content = "Dear [[name]],\n"
-                    + "Here is your temporary password\n"
-                    + pw + "\n"
-                    + "Please log in with it\n"
+                    + "Please click the link below to change your password:\n"
+                    + "\"[[URL]]\"\n"
                     + "Thank you,\n"
                     + "Cinema E-booking System TeamB6";
 
             content = content.replace("[[name]]", user.getFirstName());
+            String verifyURL = siteURL + "/verify?code=" + user.getPwresetcode();
+            content = content.replace("[[URL]]", verifyURL);
 
             message.setText(content);
             Transport.send(message);
