@@ -26,6 +26,8 @@ public class User {
     private String enrolledForPromotions;
     @Column(name="usertype")
     private int userType;
+    @Column(name="birthday")
+    private String birthday;
 
     @OneToMany (mappedBy = "user")
     private List<Paymentcard> paymentcardList;
@@ -119,5 +121,13 @@ public class User {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }
