@@ -1,5 +1,6 @@
 package com.csci6050.ebooking.controller;
 
+import com.csci6050.ebooking.DTO.Login_Pay;
 import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.DTO.login_UP;
 import com.csci6050.ebooking.encrypt.passwordEncrypt;
@@ -89,10 +90,14 @@ public class loginController {
             up.setPhone(n.getPhone());
             up.setUserType(n.getUserType());
             up.setEnrolledForPromotions(n.getEnrolledForPromotions());
+            up.setBirthday(n.getBirthday());
 
             Iterable<Paymentcard> pList = paymentcardRepository.findAllByUser(n);
-            List<Paymentcard> paymentcardlist = new ArrayList<>();
-            pList.forEach(paymentcardlist::add);
+            List<Login_Pay> paymentcardlist = new ArrayList<>();
+//            pList.forEach(paymentcardlist::add);
+            for(Paymentcard p : pList){
+                paymentcardlist.add(new Login_Pay(p.getType(),p.getExpirationdate(),p.getBillingaddress(),p.getLastfourdigits(),p.getBillingcity(),p.getBillingstate(),p.getBillingzipcode()));
+            }
             up.setPaymentCardList(paymentcardlist);
 
             returnMap.put("ReturnUser", up);

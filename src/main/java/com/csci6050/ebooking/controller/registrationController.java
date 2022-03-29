@@ -84,7 +84,9 @@ public class registrationController extends HttpServlet {
         Paymentcard p = new Paymentcard();
 
         String cardencrypt = pe.encrypt(paymentcard.getCardno());
+        String scodeencrypt = pe.encrypt(paymentcard.getSecuritycode());
         p.setCardno(cardencrypt);
+        p.setSecuritycode(scodeencrypt);
         p.setLastfourdigits(paymentcard.getCardno().substring(paymentcard.getCardno().length()-4));
 
         p.setExpirationdate(paymentcard.getExpirationdate());
@@ -103,7 +105,6 @@ public class registrationController extends HttpServlet {
         p.setBillingaddress(paymentcard.getBillingaddress());
         p.setBillingcity(paymentcard.getBillingcity());
         p.setBillingstate(paymentcard.getBillingstate());
-        p.setSecuritycode(paymentcard.getSecuritycode());
         p.setBillingzipcode(paymentcard.getBillingzipcode());
 
         paymentcardRepository.save(p);

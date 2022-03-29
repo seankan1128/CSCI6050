@@ -6,29 +6,29 @@ import com.csci6050.ebooking.entity.User;
 import java.util.List;
 
 public class login_UP {
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phone;
     private String birthday;
     private String enrolledForPromotions;
     private int userType;
-    private List<Paymentcard> PaymentCardList;
+    private List<Login_Pay> PaymentCardList;
 
     public String getFirstname() {
-        return firstname;
+        return firstName;
     }
 
     public void setFirstname(String firstname) {
-        this.firstname = firstname;
+        this.firstName = firstname;
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.lastName = lastname;
     }
 
     public String getEmail() {
@@ -71,11 +71,11 @@ public class login_UP {
         this.userType = userType;
     }
 
-    public List<Paymentcard> getPaymentCardList() {
+    public List<Login_Pay> getPaymentCardList() {
         return PaymentCardList;
     }
 
-    public void setPaymentCardList(List<Paymentcard> paymentCardList) {
+    public void setPaymentCardList(List<Login_Pay> paymentCardList) {
         PaymentCardList = paymentCardList;
     }
 }
