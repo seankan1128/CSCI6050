@@ -42,9 +42,9 @@ public class registrationController extends HttpServlet {
 
     @ResponseBody
     @RequestMapping("registerform")
-    public StatusNDescription addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
+    public Map<String, Object> addNewUser (User user, Paymentcard paymentcard, HttpServletRequest request, HttpServletResponse response) throws MessagingException, IOException {
 
-//        Map<String, Object> returnMap = new HashMap<>(2);
+        Map<String, Object> returnMap = new HashMap<>();
 
         User m = userRepository.findByEmail(user.getEmail());
         if(m != null){
@@ -55,7 +55,8 @@ public class registrationController extends HttpServlet {
             StatusNDescription returnJson = new StatusNDescription();
             returnJson.setStatus(0);
             returnJson.setDescription("Email is already registered");
-            return returnJson;
+            returnMap.put("ReturnStatus", returnJson);
+            return returnMap;
         }
 
         passwordEncrypt pe = new passwordEncrypt();
@@ -114,7 +115,8 @@ public class registrationController extends HttpServlet {
 //        String description = "Successfully registered";
 //        returnMap.put("Status", 1);
 //        returnMap.put("Description", description);
-        return returnJson;
+        returnMap.put("ReturnStatus", returnJson);
+        return returnMap;
     }
 
     public boolean verify(String verificationCode) {
