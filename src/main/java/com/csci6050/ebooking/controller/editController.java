@@ -8,6 +8,7 @@ import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
+import com.csci6050.ebooking.tool.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,8 @@ public class editController {
         n.setLastName(user.getLastName());
         n.setEnrolledForPromotions(user.getEnrolledForPromotions());
         userRepository.save(n);
+        Email email = new Email();
+        email.editProfileNotification(n);
         return returnMap;
     }
 
@@ -103,25 +106,16 @@ public class editController {
 
         paymentcardRepository.save(p);
 
-        login_UP up = new login_UP();
-
-        up.setFirstname(n.getFirstName());
-        up.setLastname(n.getLastName());
-        up.setUserType(n.getUserType());
-        up.setEmail(n.getEmail());
-        up.setPhone(n.getPhone());
-        up.setUserType(n.getUserType());
-        up.setEnrolledForPromotions(n.getEnrolledForPromotions());
-        up.setBirthday(n.getBirthday());
         Iterable<Paymentcard> pList2 = paymentcardRepository.findAllByUser(n);
         List<Login_Pay> paymentcardlist2 = new ArrayList<>();
 //            pList.forEach(paymentcardlist2::add);
-        for(Paymentcard pay : pList){
+        for(Paymentcard pay : pList2){
             paymentcardlist2.add(new Login_Pay(pay.getType(),pay.getExpirationdate(),pay.getBillingaddress(),pay.getLastfourdigits(),pay.getBillingcity(),pay.getBillingstate(),pay.getBillingzipcode()));
         }
-        up.setPaymentCardList(paymentcardlist2);
 
-        returnMap.put("ReturnUser", up);
+        returnMap.put("paymentCardList", paymentcardlist2);
+        Email email2 = new Email();
+        email2.editProfileNotification(n);
         return returnMap;
     }
 
@@ -137,7 +131,7 @@ public class editController {
 
     @ResponseBody
     @RequestMapping("deletecard")
-    public Map<String, Object> addpaymentcard(@RequestParam("email") String email, @RequestParam("lastfourdigits") String lastfourdigits){
+    public Map<String, Object> deletepaymentcard(@RequestParam("email") String email, @RequestParam("lastfourdigits") String lastfourdigits){
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
         User n = userRepository.findByEmail(email);
@@ -161,6 +155,8 @@ public class editController {
         SD.setStatus(1);
         SD.setDescription("Card successfully deleted");
         returnMap.put("ReturnStatus", SD);
+        Email email2 = new Email();
+        email2.editProfileNotification(n);
         return returnMap;
     }
 
