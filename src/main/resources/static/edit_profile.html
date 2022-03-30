@@ -26,7 +26,6 @@
             else {
                 $('#enrolledForPromotions').attr('checked', true);
             }
-
             let date = new Date();
             let year = date.getFullYear();
             let month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -34,7 +33,9 @@
         }
 
         function update_card_display(user_info) {
+            console.info(user_info);
             let card_display = $('#display_cards');
+            card_display.empty();
             let card_num = user_info.ReturnUser.paymentCardList.length;
             for (let i = 0; i < card_num; i++) {
                 let cardi = $('<div class="row"></div>').attr('id', 'card' + i);
@@ -104,14 +105,14 @@
                         success: (data) => {
                             console.info(data);
                             if (data.ReturnStatus.status === 1) {
-                                // delete data.ReturnStatus;
-                                // delete data.ReturnUser.userType;
-                                data.ReturnUser.birthday=data.ReturnUser.birthday.replace(/\//g, '').replace(/^(\d{2})(\d{2})(\d{4})$/,"$3-$2-$1");
+                                user_info.ReturnUser.paymentCardList = data.paymentCardList;
+                                $.cookie('userInfo', $.param(user_info), {expires: 7, path: '/', secure: true});
+                                $.session.set('userInfo', $.param(user_info));
                                 alert('add card successful');
-                                user_info.ReturnUser=data.ReturnUser;
+                                // update_card_display(user_info);
+                                location.reload();
+
                                 $('#add_card_close').click();
-                                //todo
-                                //update card display again
                             }
                             else {
                                 alert(data.ReturnStatus.description);
@@ -136,9 +137,18 @@
                         success: (data) => {
                             console.info(data);
                             if (data.ReturnStatus.status === 1) {
+                                user_info.ReturnUser.firstname = $('#first_name').val();
+                                user_info.ReturnUser.lastname = $('#last_name').val();
+                                if ($('#enrolledForPromotions').is(':checked')) {
+                                    user_info.ReturnUser.enrolledForPromotions = true;
+                                }
+                                else {
+                                    user_info.ReturnUser.enrolledForPromotions = '';
+                                }
+                                $.cookie('userInfo', $.param(user_info), {expires: 7, path: '/', secure: true});
+                                $.session.set('userInfo', $.param(user_info));
+                                update_account_info(user_info);
                                 alert('account info change successful');
-                                //todo
-                                //update account display again
                             }
                             else {
                                 alert(data.ReturnStatus.description);
@@ -149,19 +159,12 @@
             });
 
             $('.card_delete_btn').click((e) => {
+                console.log('do click');
                 let card_id = [...$(e.target).attr('id')].pop();
                 console.log($('#card_form' + card_id)[0]);
-                // if ($('#address'+card_id).val() === '' || $('#city'+card_id).val() === '' || $('#state'+card_id).val() === ''|| $('#zipcode'+card_id).val() === '') {
-                //     alert('please input the full information');
-                // }
-                // else {
-                //     let data_send=new FormData($('#card_form'+card_id)[0]);
                 let data_send = new FormData();
                 data_send.append('email', user_info.ReturnUser.email);
                 data_send.append('lastfourdigits', user_info.ReturnUser.paymentCardList[card_id].lastfourdigits);
-                // for (let i of data_send) {
-                //     console.log(i);
-                // }
                 $.ajax({
                     type: 'post',
                     url: 'deletecard',
@@ -170,16 +173,19 @@
                     data: data_send,
                     success: (data) => {
                         if (data.ReturnStatus.status === 1) {
+                            user_info.ReturnUser.paymentCardList = data.paymentCardList;
+                            $.cookie('userInfo', $.param(user_info), {expires: 7, path: '/', secure: true});
+                            $.session.set('userInfo', $.param(user_info));
                             alert('delete card successful');
-                            //todo
-                            //update card display again
+                            // update_card_display(user_info);
+                            location.reload();
+
                         }
                         else {
                             alert(data.ReturnStatus.description);
                         }
                     }
                 });
-                // }
             });
 
             $('.card_change_btn').click((e) => {
@@ -192,9 +198,6 @@
                     let data_send = new FormData($('#card_form' + card_id)[0]);
                     data_send.append('email', user_info.ReturnUser.email);
                     data_send.append('lastfourdigits', user_info.ReturnUser.paymentCardList[card_id].lastfourdigits);
-                    for (let i of data_send) {
-                        console.log(i);
-                    }
                     $.ajax({
                         type: 'post',
                         url: 'changebilling',
@@ -203,10 +206,12 @@
                         data: data_send,
                         success: (data) => {
                             if (data.ReturnStatus.status === 1) {
+                                user_info.ReturnUser.paymentCardList = data.paymentCardList;
+                                $.cookie('userInfo', $.param(user_info), {expires: 7, path: '/', secure: true});
+                                $.session.set('userInfo', $.param(user_info));
                                 alert('change card successful');
-                                //todo
-                                //update cookie
-                                //update card display again
+                                // update_card_display(user_info);
+                                location.reload();
                             }
                             else {
                                 alert(data.ReturnStatus.description);
@@ -243,7 +248,7 @@
                 <div class='dropdown-menu' aria-labelledby='userMenuButton'>
                     <a class='dropdown-item' href='#'>Order</a>
                     <a class='dropdown-item' href='#'>Edit Profile</a>
-                    <a class='dropdown-item' id="log_out" href='#'>Log out</a>
+                    <a class='dropdown-item' type="button" id="log_out" href='#'>Log out</a>
                 </div>
             </div>
         </div>
@@ -257,7 +262,8 @@
                 <div class='row'>
                     <div class='form-group col-6'>
                         <label for='first_name'>First Name</label>
-                        <input type='text' class='form-control' id='first_name' name='firstName' placeholder='First name'>
+                        <input type='text' class='form-control' id='first_name' name='firstName'
+                               placeholder='First name'>
                     </div>
                     <div class='form-group col-6'>
                         <label for='last_name'>Last Name</label>

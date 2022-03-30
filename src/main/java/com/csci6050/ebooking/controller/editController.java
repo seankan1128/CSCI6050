@@ -44,8 +44,8 @@ public class editController {
         n.setLastName(user.getLastName());
         n.setEnrolledForPromotions(user.getEnrolledForPromotions());
         userRepository.save(n);
-        Email email = new Email();
-        email.editProfileNotification(n);
+//        Email email = new Email();
+//        email.editProfileNotification(n);
         return returnMap;
     }
 
@@ -114,8 +114,8 @@ public class editController {
         }
 
         returnMap.put("paymentCardList", paymentcardlist2);
-        Email email2 = new Email();
-        email2.editProfileNotification(n);
+//        Email email2 = new Email();
+//        email2.editProfileNotification(n);
         return returnMap;
     }
 
@@ -155,8 +155,8 @@ public class editController {
         SD.setStatus(1);
         SD.setDescription("Card successfully deleted");
         returnMap.put("ReturnStatus", SD);
-        Email email2 = new Email();
-        email2.editProfileNotification(n);
+//        Email email2 = new Email();
+//        email2.editProfileNotification(n);
         return returnMap;
     }
 
