@@ -1,6 +1,7 @@
 package com.csci6050.ebooking.controller;
 
 import com.csci6050.ebooking.encrypt.passwordDecrypt;
+import com.csci6050.ebooking.encrypt.passwordEncrypt;
 import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ public class changepasswordController {
     private UserRepository userRepository;
 
     @ResponseBody
-    @RequestMapping("resetpassword")
+    @RequestMapping("forgetpw/verify2")
     public void changepw(@Param("pwresetcode") String code, @RequestParam("newpassword") String newpw){
         User n = userRepository.findByPwresetcode(code);
-        passwordDecrypt de = new passwordDecrypt();
-        n.setPassword(de.decrypt(newpw));
+        passwordEncrypt en = new passwordEncrypt();
+        n.setPassword(en.encrypt(newpw));
         userRepository.save(n);
     }
 }
