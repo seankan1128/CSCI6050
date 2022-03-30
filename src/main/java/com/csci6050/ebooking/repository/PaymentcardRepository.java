@@ -12,4 +12,5 @@ public interface PaymentcardRepository extends CrudRepository<Paymentcard, Integ
 
     public Iterable<Paymentcard> findAllByUser(User user);
 
+    public Paymentcard findByLastfourdigits(String lastfourdigits);
 }

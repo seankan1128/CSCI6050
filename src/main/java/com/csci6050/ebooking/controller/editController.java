@@ -135,4 +135,34 @@ public class editController {
         return false;
     }
 
+    @ResponseBody
+    @RequestMapping("deletecard")
+    public Map<String, Object> addpaymentcard(@RequestParam("email") String email, @RequestParam("lastfourdigits") String lastfourdigits){
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+        User n = userRepository.findByEmail(email);
+        Iterable<Paymentcard> pList = paymentcardRepository.findAllByUser(n);
+        List<Paymentcard> paymentcardlist = new ArrayList<>();
+        pList.forEach(paymentcardlist::add);
+        if(paymentcardlist.size() < 2 ){
+            SD.setStatus(0);
+            SD.setDescription("User cannot have less than 1 card");
+            returnMap.put("ReturnStatus", SD);
+            return returnMap;
+        }
+        Paymentcard p = paymentcardRepository.findByLastfourdigits(lastfourdigits);
+        paymentcardRepository.delete(p);
+        Iterable<Paymentcard> pList2 = paymentcardRepository.findAllByUser(n);
+        List<Login_Pay> paymentcardlist2 = new ArrayList<>();
+        for(Paymentcard pay : pList2){
+            paymentcardlist2.add(new Login_Pay(pay.getType(),pay.getExpirationdate(),pay.getBillingaddress(),pay.getLastfourdigits(),pay.getBillingcity(),pay.getBillingstate(),pay.getBillingzipcode()));
+        }
+        returnMap.put("paymentCardList", paymentcardlist2);
+        SD.setStatus(1);
+        SD.setDescription("Card successfully deleted");
+        returnMap.put("ReturnStatus", SD);
+        return returnMap;
+    }
+
+
 }
