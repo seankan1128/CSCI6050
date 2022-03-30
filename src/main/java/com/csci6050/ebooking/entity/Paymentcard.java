@@ -110,4 +110,5 @@ public class Paymentcard {
     public void setBillingzipcode(String billingzipcode) {
         this.billingzipcode = billingzipcode;
     }
+
 }
