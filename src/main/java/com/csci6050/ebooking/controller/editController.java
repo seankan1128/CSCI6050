@@ -1,6 +1,8 @@
 package com.csci6050.ebooking.controller;
 
 import com.csci6050.ebooking.DTO.StatusNDescription;
+import com.csci6050.ebooking.encrypt.passwordEncrypt;
+import com.csci6050.ebooking.entity.Paymentcard;
 import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
@@ -38,4 +40,40 @@ public class editController {
         userRepository.save(n);
         return returnMap;
     }
+
+    @ResponseBody
+    @RequestMapping("addcard")
+    public Map<String, Object> addpaymentcard(@RequestParam("email") String email, Paymentcard paymentcard){
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+        SD.setStatus(1);
+        SD.setDescription("Payment card added");
+        User n = userRepository.findByEmail(email);
+        Paymentcard p = new Paymentcard();
+
+        p.setUser(n);
+        p.setBillingzipcode(paymentcard.getSecuritycode());
+        p.setBillingstate(paymentcard.getBillingstate());
+        p.setBillingcity(paymentcard.getBillingcity());
+        p.setBillingaddress(paymentcard.getBillingaddress());
+
+        passwordEncrypt en = new passwordEncrypt();
+        p.setCardno(en.encrypt(paymentcard.getCardno()));
+        p.setLastfourdigits(paymentcard.getCardno().substring(paymentcard.getCardno().length()-4));
+        if (paymentcard.getCardno().charAt(0) == '4'){
+            p.setType("Visa");
+        } else if (paymentcard.getCardno().charAt(0) == '5') {
+            p.setType("Master");
+        } else if (paymentcard.getCardno().charAt(0) == '3') {
+            p.setType("AE");
+        } else if (paymentcard.getCardno().charAt(0) == '6') {
+            p.setType("Discover");
+        } else {
+            p.setType("Other");
+        }
+
+        userRepository.save(n);
+        return returnMap;
+    }
+
 }
