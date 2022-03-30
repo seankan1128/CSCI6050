@@ -160,5 +160,32 @@ public class editController {
         return returnMap;
     }
 
+    @ResponseBody
+    @RequestMapping("changebilling")
+    public Map<String, Object> changebilling(@RequestParam("email") String email, @RequestParam("lastfourdigits") String lastfourdigits, Paymentcard paymentcard){
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+        User n = userRepository.findByEmail(email);
+        Paymentcard p = paymentcardRepository.findByLastfourdigits(lastfourdigits);
 
+        p.setBillingaddress(paymentcard.getBillingaddress());
+        p.setBillingcity(paymentcard.getBillingcity());
+        p.setBillingstate(paymentcard.getBillingstate());
+        p.setBillingzipcode(paymentcard.getBillingzipcode());
+
+        paymentcardRepository.save(p);
+
+        Iterable<Paymentcard> pList2 = paymentcardRepository.findAllByUser(n);
+        List<Login_Pay> paymentcardlist2 = new ArrayList<>();
+        for(Paymentcard pay : pList2){
+            paymentcardlist2.add(new Login_Pay(pay.getType(),pay.getExpirationdate(),pay.getBillingaddress(),pay.getLastfourdigits(),pay.getBillingcity(),pay.getBillingstate(),pay.getBillingzipcode()));
+        }
+        returnMap.put("paymentCardList", paymentcardlist2);
+        SD.setStatus(1);
+        SD.setDescription("Card successfully updated");
+        returnMap.put("ReturnStatus", SD);
+        Email email2 = new Email();
+        email2.editProfileNotification(n);
+        return returnMap;
+    }
 }
