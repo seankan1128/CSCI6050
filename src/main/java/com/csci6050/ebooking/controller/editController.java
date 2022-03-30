@@ -55,14 +55,17 @@ public class editController {
         passwordEncrypt en = new passwordEncrypt();
 
         Iterable<Paymentcard> pList = paymentcardRepository.findAllByUser(n);
-        List<Login_Pay> paymentcardlist = new ArrayList<>();
-//            pList.forEach(paymentcardlist::add);
-        for(Paymentcard pay : pList){
-            paymentcardlist.add(new Login_Pay(pay.getType(),pay.getExpirationdate(),pay.getBillingaddress(),pay.getLastfourdigits(),pay.getBillingcity(),pay.getBillingstate(),pay.getBillingzipcode()));
-        }
-        if(paymentcardlist.size() > 2 || paymentcardlist.contains(en.encrypt(paymentcard.getCardno()))){
+        List<Paymentcard> paymentcardlist = new ArrayList<>();
+            pList.forEach(paymentcardlist::add);
+        if(paymentcardlist.size() > 2 ){
             SD.setStatus(0);
-            SD.setDescription("User cannot set more than 3 cards and cards need to be unique");
+            SD.setDescription("User cannot set more than 3 cards");
+            returnMap.put("ReturnStatus", SD);
+            return returnMap;
+        }
+        if(isduplicate(paymentcardlist,paymentcard)){
+            SD.setStatus(0);
+            SD.setDescription("User cannot have duplicate card");
             returnMap.put("ReturnStatus", SD);
             return returnMap;
         }
@@ -110,11 +113,26 @@ public class editController {
         up.setUserType(n.getUserType());
         up.setEnrolledForPromotions(n.getEnrolledForPromotions());
         up.setBirthday(n.getBirthday());
-
-        up.setPaymentCardList(paymentcardlist);
+        Iterable<Paymentcard> pList2 = paymentcardRepository.findAllByUser(n);
+        List<Login_Pay> paymentcardlist2 = new ArrayList<>();
+//            pList.forEach(paymentcardlist2::add);
+        for(Paymentcard pay : pList){
+            paymentcardlist2.add(new Login_Pay(pay.getType(),pay.getExpirationdate(),pay.getBillingaddress(),pay.getLastfourdigits(),pay.getBillingcity(),pay.getBillingstate(),pay.getBillingzipcode()));
+        }
+        up.setPaymentCardList(paymentcardlist2);
 
         returnMap.put("ReturnUser", up);
         return returnMap;
+    }
+
+    private boolean isduplicate(List<Paymentcard> paymentcardList, Paymentcard paymentcard){
+        passwordEncrypt en = new passwordEncrypt();
+        for (Paymentcard p : paymentcardList){
+            if(p.getCardno().equals(en.encrypt(paymentcard.getCardno()))){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
