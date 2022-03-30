@@ -34,36 +34,27 @@
                         // data: $('#loginform').serializeArray(),
                         data: new FormData($('#loginform')[0]),
                         success: (data, statue, xhr) => {
-                            console.info(data);
-                            console.log(typeof data)
-                            if (data.Status === 1) {
-                                if (data.User.userType == 0) {
-                                    delete data.Status;
-                                    delete data.Description;
-                                    delete data.User.password;
-                                    delete data.User.id;
-                                    delete data.User.status;
-                                    delete data.User.userType;
-                                    delete data.User.verificationCode;
-                                    delete data.PaymentCard.expirationdate;
-                                    delete data.PaymentCard.type;
-                                    delete data.PaymentCard.user;
+                            // console.info(data);
+                            if (data.ReturnStatus.status === 1) {
+                                if (data.ReturnUser.userType == 2) {
+                                    delete data.ReturnStatus;
+                                    delete data.ReturnUser.userType;
                                     if ($("#Remember_me").is(':checked')) {
                                         data.remember = true;
                                     }
                                     console.info(data);
                                     $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
                                     $.session.set('userInfo',$.param(data));
-                                    // console.info($.deparam(decodeURIComponent($.cookie('userInfo'))))
-                                    console.log("cookie has save");
+                                    console.info($.deparam(decodeURIComponent($.cookie('userInfo'))))
                                     location.href="index.html"
                                 }
                                 else {
-                                    console.log('admin');
+                                    alert('admin');
+                                    location.href="admin.html"
                                 }
                             }
                             else {
-                                alert(data.Description);
+                                alert(data.ReturnStatus.description);
                             }
                         },
                         error: (jqXHR, textStatus, errorThrown) => {

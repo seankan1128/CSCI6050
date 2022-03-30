@@ -17,17 +17,17 @@
     <script src='tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js'></script>
     <link href='tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css' rel='stylesheet'>
     <script>
-        $(function () {
+        function update_account_info(user_info) {
             $('#datetimepicker').datetimepicker();
             console.log($('#Birthday'));
-            let user_info = $.deparam(decodeURIComponent($.cookie('userInfo')));
+            // let user_info = $.deparam(decodeURIComponent($.cookie('userInfo')));
             console.info(user_info);
-            $('#userMenuButton').html(user_info.User.firstName+user_info.User.lastName);
-            $('#first_name').val(user_info.User.firstName);
-            $('#last_name').val(user_info.User.lastName);
-            $('#email').val(user_info.User.email);
-            $('#birthday').val('2000-05-06');
-            if (user_info.User.enrolledForPromotions === '') {
+            $('#userMenuButton').html(user_info.ReturnUser.firstName);
+            $('#first_name').val(user_info.ReturnUser.firstName);
+            $('#last_name').val(user_info.ReturnUser.lastName);
+            $('#email').val(user_info.ReturnUser.email);
+            $('#birthday').val(user_info.ReturnUser.birthday);
+            if (user_info.ReturnUser.enrolledForPromotions === '') {
                 $('#enrolledForPromotions').attr('checked', false);
             }
             else {
@@ -38,42 +38,51 @@
             let year = date.getFullYear();
             let month = (date.getMonth() + 1).toString().padStart(2, '0');
             $('#expiration_date').attr('min', year + '-' + month);
+        }
 
+        function update_card_display(user_info) {
             let card_display = $('#display_cards');
-            for (let i = 1; i <= 2; i++) {
+            let card_num = user_info.ReturnUser.paymentCardList.length;
+            for (let i = 0; i < card_num; i++) {
                 let cardi = $('<div class="row"></div>').attr('id', 'card' + i);
                 let cardinfo_i = $('<div class="col-3 mt-5"></div>').append(
                     $('<div class="card"></div>').append(
-                        $('<div class="card-header"></div>').html(`Visa<br>•••• ${user_info.PaymentCard.cardno}`)
+                        $('<div class="card-header"></div>').html(`Visa<br>•••• ${user_info.ReturnUser.paymentCardList[i].lastfourdigits}`)
                     ),
                 );
                 let cardform_i = $('<form class="col-9"></form>').attr('id', 'card_form' + i).append(
                     $('<div class="form-group"></div>').append(
-                        $('<label></label>').attr('for', 'Address' + i).html('Address'),
-                        $('<input class="form-control" name="billingaddress">').attr('id', 'Address' + i),
+                        $('<label></label>').attr('for', 'address' + i).html('Address'),
+                        $('<input class="form-control" name="billingaddress">').attr('id', 'address' + i).val(user_info.ReturnUser.paymentCardList[i].billingaddress),
                     ),
                     $('<div class="row"></div>').append(
                         $('<div class="col-4"></div>').append(
                             $('<label></label>').attr('for', 'city' + i).html('City'),
-                            $('<input class="form-control" name="city">').attr('id', 'city' + i),
+                            $('<input class="form-control" name="billingcity">').attr('id', 'city' + i).val(user_info.ReturnUser.paymentCardList[i].billingcity),
                         ),
                         $('<div class="col-4"></div>').append(
                             $('<label></label>').attr('for', 'state' + i).html('State'),
-                            $('<input class="form-control" name="state">').attr('id', 'state' + i),
+                            $('<input class="form-control" name="billingstate">').attr('id', 'state' + i).val(user_info.ReturnUser.paymentCardList[i].billingstate),
                         ),
                         $('<div class="col-4"></div>').append(
                             $('<label></label>').attr('for', 'zipcode' + i).html('Zip Code'),
-                            $('<input class="form-control" name="zipcode">').attr('id', 'zipcode' + i),
+                            $('<input class="form-control" name="billingzipcode">').attr('id', 'zipcode' + i).val(user_info.ReturnUser.paymentCardList[i].billingzipcode),
                         ),
                     ),
                 );
                 let button_i = $('<div class="container row mt-4"></div>').append(
-                    $('<a class="btn btn-danger offset-2 col-3" href="#" type="button"></a>').attr('id', 'delete_card_btn' + i).html('Delete'),
-                    $('<a class="btn btn-warning offset-2 col-3" href="#" type="button"></a>').attr('id', 'change_card_btn' + i).html('Change Billing Address'),
+                    $('<a class="card_delete_btn btn btn-danger offset-2 col-3" href="#" type="button"></a>').attr('id', 'delete_card_btn' + i).html('Delete'),
+                    $('<a class="card_change_btn btn btn-warning offset-2 col-3" href="#" type="button"></a>').attr('id', 'change_card_btn' + i).html('Change Billing Address'),
                 );
                 cardi.append(cardinfo_i, cardform_i, button_i);
                 card_display.append(cardi, $('<div class="dropdown-divider"></div>'));
             }
+        }
+
+        $(function () {
+            let user_info = $.deparam(decodeURIComponent($.cookie('userInfo')));
+            update_account_info(user_info);
+            update_card_display(user_info);
 
             $('#add_card_close').click(() => {
                 $('#card_number').val('');
@@ -82,33 +91,36 @@
             });
 
             $('#add_card_submit').click(() => {
-                if ($('#card_number').val() === '' || $('#expiration_date').val() === '' || $('#security_number').val() === '') {
+                if ($('#card_number').val() === '' || $('#expiration_date').val() === '' || $('#security_number').val() === ''
+                ||$('#bill_address').val() === '' || $('#city').val() === '' || $('#state').val() === ''|| $('#zipcode').val() === '') {
                     alert('please input the full information');
                 }
                 else {
+                    let data_send=new FormData($('#add_card_form')[0]);
+                    data_send.append('email', user_info.ReturnUser.email);
                     $.ajax({
                         type: 'post',
                         url: '',//need change
                         contentType: false,
                         processData: false,
-                        data: new FormData($('#add_card_form')[0]),
+                        data:data_send ,
                         success: (data) => {
-                            if (data.Status === 1) {
+                            if (data.ReturnStatus.status === 1) {
                                 alert('add card successful');
                                 $('#add_card_close').click();
                                 //todo
                                 //update card display again
                             }
                             else {
-                                alert(data.Description);
+                                alert(data.ReturnStatus.description);
                             }
                         }
                     });
                 }
             });
 
-            $('#account_submit').click(()=>{
-                if($('#first_name').val()==''||$('#last_name').val()==''){
+            $('#account_submit').click(() => {
+                if ($('#first_name').val() == '' || $('#last_name').val() == '') {
                     alert('the name could not be empty');
                 }
                 else {
@@ -120,18 +132,86 @@
                         processData: false,
                         data: new FormData($('#account_form')[0]),
                         success: (data) => {
-                            if (data.Status === 1) {
+                            if (data.ReturnStatus.status === 1) {
                                 alert('account info change successful');
                                 //todo
                                 //update account display again
                             }
                             else {
-                                alert(data.Description);
+                                alert(data.ReturnStatus.description);
                             }
                         }
                     });
                 }
             });
+
+            $('.card_delete_btn').click((e) => {
+                let card_id = [...$(e.target).attr('id')].pop();
+                console.log($('#card_form' + card_id)[0]);
+                // if ($('#address'+card_id).val() === '' || $('#city'+card_id).val() === '' || $('#state'+card_id).val() === ''|| $('#zipcode'+card_id).val() === '') {
+                //     alert('please input the full information');
+                // }
+                // else {
+                //     let data_send=new FormData($('#card_form'+card_id)[0]);
+                let data_send = new FormData();
+                data_send.append('email', user_info.ReturnUser.email);
+                data_send.append('lastfourdigits', user_info.ReturnUser.paymentCardList[card_id].lastfourdigits);
+                // for (let i of data_send) {
+                //     console.log(i);
+                // }
+                $.ajax({
+                    type: 'post',
+                    url: '',//need change
+                    contentType: false,
+                    processData: false,
+                    data: data_send,
+                    success: (data) => {
+                        if (data.ReturnStatus.status === 1) {
+                            alert('delete card successful');
+                            //todo
+                            //update card display again
+                        }
+                        else {
+                            alert(data.ReturnStatus.description);
+                        }
+                    }
+                });
+                // }
+            });
+
+            $('.card_change_btn').click((e) => {
+                let card_id = [...$(e.target).attr('id')].pop();
+                console.log($('#card_form' + card_id)[0]);
+                if ($('#address' + card_id).val() === '' || $('#city' + card_id).val() === '' || $('#state' + card_id).val() === '' || $('#zipcode' + card_id).val() === '') {
+                    alert('please input the full information');
+                }
+                else {
+                    let data_send = new FormData($('#card_form' + card_id)[0]);
+                    data_send.append('email', user_info.ReturnUser.email);
+                    data_send.append('lastfourdigits', user_info.ReturnUser.paymentCardList[card_id].lastfourdigits);
+                    for (let i of data_send) {
+                        console.log(i);
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '',//need change
+                        contentType: false,
+                        processData: false,
+                        data: data_send,
+                        success: (data) => {
+                            if (data.ReturnStatus.status === 1) {
+                                alert('change card successful');
+                                //todo
+                                //update cookie
+                                //update card display again
+                            }
+                            else {
+                                alert(data.ReturnStatus.description);
+                            }
+                        }
+                    });
+                }
+            })
 
             $('#log_out').click(() => {
                 $.session.clear();
@@ -154,7 +234,8 @@
         </div>
         <div class='offset-3 col-2'>
             <div class='dropdown'>
-                <button class='btn btn-secondary dropdown-toggle' type='button' id='userMenuButton' data-toggle='dropdown' aria-expanded='false'>
+                <button class='btn btn-secondary dropdown-toggle' type='button' id='userMenuButton'
+                        data-toggle='dropdown' aria-expanded='false'>
                 </button>
                 <div class='dropdown-menu' aria-labelledby='userMenuButton'>
                     <a class='dropdown-item' href='#'>Order</a>
@@ -183,11 +264,11 @@
                 </div>
                 <div class='form-group'>
                     <label for='email'>Email</label>
-                    <input type='text' class='form-control' id='email' name='email' placeholder='Email' disabled>
+                    <input type='text' class='form-control' id='email' name='email' placeholder='Email' readonly style="cursor: not-allowed;" >
                 </div>
                 <div class='form-group'>
                     <label for='birthday'>Birthday</label>
-                    <input type='date' class='form-control' id='birthday' disabled>
+                    <input type='date' class='form-control' id='birthday' readonly style="cursor: not-allowed;">
                 </div>
                 <div class='form-group'>
                     <label for='enrolledForPromotions'>Opt-in for promotion Email</label>
@@ -197,7 +278,8 @@
                                    id='enrolledForPromotions'>
                         </div>
                         <div class='col-8'>
-                            <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send
+                            <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System
+                                shall send
                                 their latest promotion and released movie promotion to my personal email.</p>
                         </div>
                     </div>
@@ -208,94 +290,27 @@
             <a href='#' type='button' class='offset-3 col-2 btn btn-warning'>Change Password</a>
             <a href='#' id="account_submit" type='button' class='col-2 offset-2 btn btn-success'>Submit</a>
         </div>
-<!--        <div class='mt-4'>-->
-<!--            <div class='text-center h1'>Opt-in for promotion Email</div>-->
-<!--            <div class='row mt-4'>-->
-<!--                <div class='form-check offset-2 col-1'>-->
-<!--                    <input class='form-check-input input-group-lg' type='checkbox' name='enrolledForPromotions'-->
-<!--                           id='enrolledForPromotions'>-->
-<!--                </div>-->
-<!--                <div class='col-8'>-->
-<!--                    <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send-->
-<!--                        their latest promotion and released movie promotion to my personal email.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class='mx-auto px-auto'>-->
-<!--            <a href='index_login.html' type='button' class='col-2 offset-5 btn btn-success '>Submit</a>-->
-<!--        </div>-->
+        <!--        <div class='mt-4'>-->
+        <!--            <div class='text-center h1'>Opt-in for promotion Email</div>-->
+        <!--            <div class='row mt-4'>-->
+        <!--                <div class='form-check offset-2 col-1'>-->
+        <!--                    <input class='form-check-input input-group-lg' type='checkbox' name='enrolledForPromotions'-->
+        <!--                           id='enrolledForPromotions'>-->
+        <!--                </div>-->
+        <!--                <div class='col-8'>-->
+        <!--                    <p>By checking this box, I confirmed and agreed that the CSCI 6050 Cinema E-booking System shall send-->
+        <!--                        their latest promotion and released movie promotion to my personal email.</p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div class='mx-auto px-auto'>-->
+        <!--            <a href='index_login.html' type='button' class='col-2 offset-5 btn btn-success '>Submit</a>-->
+        <!--        </div>-->
     </div>
     <div class='dropdown-divider'></div>
     <div>
         <div class='text-center h1'>Payment Information</div>
         <div id='display_cards'>
-            <!--            <div id='card1' class='row'>-->
-            <!--                <div class='col-3 mt-5'>-->
-            <!--                    <div class='card'>-->
-            <!--                        <div class='card-header'>-->
-            <!--                            Visa<br>•••• 7324-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--                <form id='card_form1' class='col-9'>-->
-            <!--                    <div class='form-group'>-->
-            <!--                        <label for='Address1'>Address</label>-->
-            <!--                        <input type='text' class='form-control' id='Address1' name='billingaddress'>-->
-            <!--                    </div>-->
-            <!--                    <div class='row'>-->
-            <!--                        <div class='col-4'>-->
-            <!--                            <label for='city1'>City</label>-->
-            <!--                            <input type='text' class='form-control' id='city1' name='city'>-->
-            <!--                        </div>-->
-            <!--                        <div class='col-4'>-->
-            <!--                            <label for='state1'>Country</label>-->
-            <!--                            <input type='text' class='form-control' id='state1' name='state'>-->
-            <!--                        </div>-->
-            <!--                        <div class='col-4'>-->
-            <!--                            <label for='zipcode1'>Zip Code</label>-->
-            <!--                            <input type='text' class='form-control' id='zipcode1' name='zipcode'>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </form>-->
-            <!--                <div class='container row mt-4'>-->
-            <!--                    <a href='#' type='button' class='btn btn-danger offset-2 col-3'>Delete</a>-->
-            <!--                    <a href='#' type='button' class='btn btn-warning offset-2 col-3'>Change Billing Address</a>-->
-            <!--                </div>-->
-            <!--            </div>-->
-            <!--            <div class='dropdown-divider'></div>-->
-            <!--            <div id='card2' class='row'>-->
-            <!--                <div class='col-3 mt-4'>-->
-            <!--                    <div class='card'>-->
-            <!--                        <div class='card-header btn text-left'>-->
-            <!--                            xxxxBank <br/> ......5678-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--                <form class='col-9'>-->
-            <!--                    <div class='form-group'>-->
-            <!--                        <label for='Address2'>Address</label>-->
-            <!--                        <input type='text' class='form-control' id='Address2' name='Address'>-->
-            <!--                    </div>-->
-            <!--                    <div class='row'>-->
-            <!--                        <div class='col-5'>-->
-            <!--                            <label for='city'>City</label>-->
-            <!--                            <input type='text' class='form-control' id='city' name='city'>-->
-            <!--                        </div>-->
-            <!--                        <div class='col-3'>-->
-            <!--                            <label for='state'>Country</label>-->
-            <!--                            <input type='text' class='form-control' id='state' name='state'>-->
-            <!--                        </div>-->
-            <!--                        <div class='col-4'>-->
-            <!--                            <label for='Zipcode'>Zip Code</label>-->
-            <!--                            <input type='text' class='form-control' id='Zipcode' name='Zipcode'>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </form>-->
-            <!--                <div class='container row  mt-4'>-->
-            <!--                    <a href='#' type='button' class='btn btn-danger offset-2 col-3'>Delete</a>-->
-            <!--                    <a href='#' type='button' class='btn btn-warning offset-2 col-3'>Change Billing Address</a>-->
-            <!--                </div>-->
-            <!--            </div>-->
         </div>
 
         <div class='col-2 offset-5 my-4'>
@@ -326,8 +341,20 @@
                                 <input type='month' class='form-control' id='expiration_date' name='expirationdate'>
                             </div>
                             <div class='form-group'>
-                                <label for='security_number'>Security Number</label>
-                                <input type='text' class='form-control' id='security_number' name='security_number'>
+                                <label for='bill_address'>Billing Address</label>
+                                <input type='text' class='form-control' id='bill_address' name='billingaddress'>
+                            </div>
+                            <div class='form-group'>
+                                <label for='city'>City</label>
+                                <input type='text' class='form-control' id='city' name='billingcity'>
+                            </div>
+                            <div class='form-group'>
+                                <label for='state'>State</label>
+                                <input type='text' class='form-control' id='state' name='billingstate'>
+                            </div>
+                            <div class='form-group'>
+                                <label for='zipcode'>Zipcode</label>
+                                <input type='text' class='form-control' id='zipcode' name='billingzipcode'>
                             </div>
                         </form>
                     </div>

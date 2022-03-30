@@ -133,6 +133,7 @@ public class registrationController extends HttpServlet {
             return true;
         }
     }
+
     @GetMapping("registerform/verify")
     public String verifyUser(@Param("verificationcode") String code) {
         if (verify(code)) {
