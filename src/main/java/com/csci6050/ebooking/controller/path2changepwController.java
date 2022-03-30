@@ -97,6 +97,7 @@ public class path2changepwController {
             returnMap.put("ReturnStatus",SD);
             String pwresetcode = RandomString.make(64);
             n.setPwresetcode(pwresetcode);
+            userRepository.save(n);
             returnMap.put("code", pwresetcode);
             return returnMap;
         }
