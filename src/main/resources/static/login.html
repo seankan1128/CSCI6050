@@ -15,10 +15,6 @@
     <script>
         $(function () {
             $('#submit_button').click(() => {
-                // console.info($('#loginform').serializeArray());
-                // if ($.cookie('name') != undefined) {
-                //     console.log("already login");
-                // }
                 if ($("#email").val() === '') {
                     alert('please input email');
                 }
@@ -34,7 +30,7 @@
                         // data: $('#loginform').serializeArray(),
                         data: new FormData($('#loginform')[0]),
                         success: (data, statue, xhr) => {
-                            console.info(data);
+                            // console.info(data);
                             if (data.ReturnStatus.status === 1) {
                                 if (data.ReturnUser.userType == 2) {
                                     delete data.ReturnStatus;
@@ -43,15 +39,15 @@
                                         data.remember = true;
                                     }
                                     data.ReturnUser.birthday=data.ReturnUser.birthday.replace(/\//g, '').replace(/^(\d{2})(\d{2})(\d{4})$/,"$3-$2-$1");
-                                    console.info(data);
+                                    // console.info(data);
                                     $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
                                     $.session.set('userInfo',$.param(data));
-                                    console.info($.deparam(decodeURIComponent($.cookie('userInfo'))));
-                                    // location.href="index.html";
+                                    // console.info($.deparam(decodeURIComponent($.cookie('userInfo'))));
+                                    location.href="index.html";
                                 }
                                 else {
                                     alert('admin');
-                                    location.href="admin.html"
+                                    location.href="admin.html";
                                 }
                             }
                             else {
