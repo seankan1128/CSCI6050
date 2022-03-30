@@ -107,5 +107,10 @@ public class path2changepwController {
         return returnMap;
     }
 
+    @GetMapping(value = "send_password")
+    public String sendpwpage(){
+        return "send_password";
+    }
+
 }
 
