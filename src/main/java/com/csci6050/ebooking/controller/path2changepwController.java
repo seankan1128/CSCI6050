@@ -3,7 +3,6 @@ package com.csci6050.ebooking.controller;
 import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.encrypt.passwordEncrypt;
 import com.csci6050.ebooking.entity.User;
-import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
 import com.csci6050.ebooking.tool.Email;
 import net.bytebuddy.utility.RandomString;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller // This means that this class is a Controller
-public class passwordResetController {
+public class path2changepwController {
     @Autowired
     private UserRepository userRepository;
 
@@ -65,6 +64,8 @@ public class passwordResetController {
             returnMap.put("ReturnStatus", SD);
             return returnMap;
         }
+
+
     }
 
     @GetMapping("forgetpw/verify")
@@ -77,7 +78,33 @@ public class passwordResetController {
         }
     }
 
+    @RequestMapping(value = "/old_password", method = RequestMethod.GET)
+    public String registerFinishPage(){
+        return "old_password";
+    }
 
+    @ResponseBody
+    @RequestMapping("changepw")
+    public Map<String, Object> go2changepw(@RequestParam("oldpassword") String oldpassword,@RequestParam("email") String email) {
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+        passwordEncrypt en = new passwordEncrypt();
+        String encryptpw = en.encrypt(oldpassword);
+        User n = userRepository.findByEmail(email);
+        if(n.getPassword().equals(encryptpw)){
+            SD.setStatus(1);
+            SD.setDescription("correct password");
+            returnMap.put("ReturnStatus",SD);
+            String pwresetcode = RandomString.make(64);
+            n.setPwresetcode(pwresetcode);
+            returnMap.put("code", pwresetcode);
+            return returnMap;
+        }
+        SD.setStatus(0);
+        SD.setDescription("wrong password");
+        returnMap.put("ReturnStatus",SD);
+        return returnMap;
+    }
 
 }
 

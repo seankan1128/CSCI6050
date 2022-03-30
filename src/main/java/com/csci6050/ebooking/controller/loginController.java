@@ -92,6 +92,16 @@ public class loginController {
             up.setEnrolledForPromotions(n.getEnrolledForPromotions());
             up.setBirthday(n.getBirthday());
 
+            if(n.getUserType() == 1) {
+                System.out.println("You are an admin");
+                int status = 1;
+                description = "You are an admin";
+                SD.setStatus(status);
+                SD.setDescription(description);
+                returnMap.put("ReturnUser", up);
+                returnMap.put("ReturnStatus", SD);
+                return returnMap;
+            }
             Iterable<Paymentcard> pList = paymentcardRepository.findAllByUser(n);
             List<Login_Pay> paymentcardlist = new ArrayList<>();
 //            pList.forEach(paymentcardlist::add);
@@ -106,14 +116,7 @@ public class loginController {
             int status;
 
             if(n.getStatus() == 1){
-                if(n.getUserType() == 1) {
-                    System.out.println("You are an admin");
-                    status = 1;
-                    description = "You are an admin";
-                    SD.setStatus(status);
-                    SD.setDescription(description);
-                }
-                else if(n.getUserType() == 2) {
+                if(n.getUserType() == 2) {
                     System.out.println("You are a customer");
                     status = 1;
                     description = "You are a customer";
