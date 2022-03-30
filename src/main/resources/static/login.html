@@ -43,7 +43,7 @@
                                     $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
                                     $.session.set('userInfo',$.param(data));
                                     // console.info($.deparam(decodeURIComponent($.cookie('userInfo'))));
-                                    location.href="index.html";
+                                    location.href="/";
                                 }
                                 else {
                                     alert('admin');
@@ -71,7 +71,7 @@
 <body>
 <div class="container-fluid">
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color: #000000;">
-        <a class="navbar-brand col-2" href="index.html">
+        <a class="navbar-brand col-2" href="/">
             <img src="image/UGA.png" width="30" height="30" class="d-inline-block align-top" alt=""> CSCI 6050 Movie
             Booking
         </a>
