@@ -127,7 +127,7 @@
                     console.info($('#account_form').serializeArray());
                     $.ajax({
                         type: 'post',
-                        url: '',//need change
+                        url: 'userinfo',
                         contentType: false,
                         processData: false,
                         data: new FormData($('#account_form')[0]),
