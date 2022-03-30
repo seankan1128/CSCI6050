@@ -38,7 +38,7 @@
                                     if ($("#Remember_me").is(':checked')) {
                                         data.remember = true;
                                     }
-                                    data.ReturnUser.birthday=data.ReturnUser.birthday.replace(/\//g, '').replace(/^(\d{2})(\d{2})(\d{4})$/,"$3-$2-$1");
+                                    data.ReturnUser.birthday=data.ReturnUser.birthday.replace(/\//g, '').replace(/^(\d{2})(\d{2})(\d{4})$/,"$3-$1-$2");
                                     // console.info(data);
                                     $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
                                     $.session.set('userInfo',$.param(data));
