@@ -1,30 +1,23 @@
 <!DOCTYPE html>
-<html lang='en' xmlns='http://www.w3.org/1999/html'>
-
+<html lang='en'>
 <head>
     <meta charset='UTF-8'>
     <title>Edit Profile</title>
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
     <link href='Bootstrap/css/bootstrap.min.css' rel='stylesheet'>
     <link href='bootstrap-icons-1.8.1/bootstrap-icons.css' rel='stylesheet'>
-
     <script src='js/jquery-3.5.1.min.js'></script>
     <script src='js/jquery.cookie.js'></script>
     <script src='js/jquery.session.js'></script>
     <script src='js/jquery-deparam.min.js'></script>
     <script src='Bootstrap/js/bootstrap.min.js'></script>
-    <script src='js/moment.js'></script>
-    <script src='tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js'></script>
-    <link href='tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css' rel='stylesheet'>
     <script>
         function update_account_info(user_info) {
-            $('#datetimepicker').datetimepicker();
-            console.log($('#Birthday'));
             // let user_info = $.deparam(decodeURIComponent($.cookie('userInfo')));
             console.info(user_info);
-            $('#userMenuButton').html(user_info.ReturnUser.firstName);
-            $('#first_name').val(user_info.ReturnUser.firstName);
-            $('#last_name').val(user_info.ReturnUser.lastName);
+            $('#userMenuButton').html(user_info.ReturnUser.firstname);
+            $('#first_name').val(user_info.ReturnUser.firstname);
+            $('#last_name').val(user_info.ReturnUser.lastname);
             $('#email').val(user_info.ReturnUser.email);
             $('#birthday').val(user_info.ReturnUser.birthday);
             if (user_info.ReturnUser.enrolledForPromotions === '') {
@@ -254,8 +247,7 @@
                 <div class='row'>
                     <div class='form-group col-6'>
                         <label for='first_name'>First Name</label>
-                        <input type='text' class='form-control' id='first_name' name='firstName'
-                               placeholder='First name'>
+                        <input type='text' class='form-control' id='first_name' name='firstName'>
                     </div>
                     <div class='form-group col-6'>
                         <label for='last_name'>Last Name</label>
@@ -339,6 +331,10 @@
                             <div class='form-group'>
                                 <label for='expiration_date'>Expiry Date</label>
                                 <input type='month' class='form-control' id='expiration_date' name='expirationdate'>
+                            </div>
+                            <div class='form-group'>
+                                <label for='security_number'>Security Number</label>
+                                <input type='month' class='form-control' id='security_number' name='securitycode'>
                             </div>
                             <div class='form-group'>
                                 <label for='bill_address'>Billing Address</label>
