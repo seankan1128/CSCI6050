@@ -34,7 +34,7 @@
                         // data: $('#loginform').serializeArray(),
                         data: new FormData($('#loginform')[0]),
                         success: (data, statue, xhr) => {
-                            // console.info(data);
+                            console.info(data);
                             if (data.ReturnStatus.status === 1) {
                                 if (data.ReturnUser.userType == 2) {
                                     delete data.ReturnStatus;
@@ -42,11 +42,12 @@
                                     if ($("#Remember_me").is(':checked')) {
                                         data.remember = true;
                                     }
+                                    data.ReturnUser.birthday=data.ReturnUser.birthday.replace(/\//g, '').replace(/^(\d{2})(\d{2})(\d{4})$/,"$3-$2-$1");
                                     console.info(data);
                                     $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
                                     $.session.set('userInfo',$.param(data));
-                                    console.info($.deparam(decodeURIComponent($.cookie('userInfo'))))
-                                    location.href="index.html"
+                                    console.info($.deparam(decodeURIComponent($.cookie('userInfo'))));
+                                    // location.href="index.html";
                                 }
                                 else {
                                     alert('admin');
@@ -103,7 +104,7 @@
                     </div>
                     <span class="text">Remember me</span>
                     <a href="#" id="submit_button" type="button" class="btn btn-success">Login</a>
-                    <a type="submit" class="btn btn-warning" href="register.html">Register</a>
+                    <a type="" class="btn btn-warning" href="registration">Register</a>
                 </div>
                 <div class="form-group" style="margin-top: 100px">
                     <a href="forget_password.html" class="">Forget Password?</a>
