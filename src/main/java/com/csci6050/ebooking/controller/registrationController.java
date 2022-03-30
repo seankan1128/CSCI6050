@@ -126,7 +126,7 @@ public class registrationController extends HttpServlet {
         if (user == null || user.getStatus() == 1) {
             return false;
         } else {
-            user.setVerificationCode(null);
+//            user.setVerificationCode(null);
             user.setStatus(1);
             userRepository.save(user);
 
