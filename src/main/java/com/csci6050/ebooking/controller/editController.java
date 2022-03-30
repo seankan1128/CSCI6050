@@ -37,6 +37,7 @@ public class editController {
         StatusNDescription SD = new StatusNDescription();
         SD.setStatus(1);
         SD.setDescription("Account information changed");
+        returnMap.put("ReturnStatus",SD);
         User n = userRepository.findByEmail(user.getEmail());
         n.setFirstName(user.getFirstName());
         n.setLastName(user.getLastName());
