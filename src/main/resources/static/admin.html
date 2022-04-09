@@ -29,6 +29,23 @@
                 }
             })
             /////////////////////////////////////////////////////////
+        //     < tr
+            //     className = "" >
+            //         < th
+            //     scope = "row" > Spring
+            //     Break < /th>
+            //     <td>20</td>
+            //     <td>Spring888</td>
+            //     <td>03/15/2022</td>
+            // </tr>
+            var tb = document.getElementById("table-body");
+            var tr = document.createElement("tr");
+            var abc=123
+            tr.innerHTML=`<th scope="row">Spring Break111</th>
+                                <td>20111</td>
+                                <td>Spring888111</td>
+                                <td>03/15/2022111</td>`
+            tb.appendChild(tr);
         })
     </script>
 </head>
@@ -472,7 +489,7 @@
                                 <th scope="col">Expiration</th>
                             </tr>
                             </thead>
-                            <tbody class="text-center">
+                            <tbody class="text-center" id="table-body">
                             <tr class="">
                                 <th scope="row">Spring Festival</th>
                                 <td>20</td>
@@ -498,23 +515,23 @@
                 <form id="addpromotion">
                     <div class="form-group">
                         <label for="PromotionName">Name</label>
-                        <input type="text" class="form-control" id="PromotionName" placeholder="">
+                        <input type="text" class="form-control" id="PromotionName" name="promoName" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="PromotionDiscount">Discount</label>
-                        <input type="number" class="form-control" id="PromotionDiscount" placeholder="">
+                        <input type="number" class="form-control" id="PromotionDiscount" name="promoDiscount" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="PromotionCode">Code</label>
-                        <input type="text" class="form-control" id="PromotionCode" placeholder="">
+                        <input type="text" class="form-control" id="PromotionCode" name="promoCode" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="StartDate">Start Date</label>
-                        <input id="StartDate" type="date" class="form-control" value="2022-02-25">
+                        <input id="StartDate" type="date" class="form-control" name="promoStart" value="2022-02-25">
                     </div>
                     <div class="form-group">
                         <label for="EndDate">End Date</label>
-                        <input id="EndDate" type="date" class="form-control" value="2022-03-05">
+                        <input id="EndDate" type="date" class="form-control" name="promoEnd" value="2022-03-05">
                     </div>
                 </form>
                 <button type="submit" id="submit_button" class="btn btn-success">Submit</button>
