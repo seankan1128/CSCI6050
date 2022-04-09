@@ -26,28 +26,57 @@
                     processData: false,
                     data: new FormData($('#addpromotion')[0]),
                     success(date) {
-                        console.log(data)
+                        console.log(data);
+
+                        let a=JSON.parse(data);
+
+
                     }
                 })
-                /////////////////////////////////////////////////////////
-                //     < tr
-                //     className = "" >
-                //         < th
-                //     scope = "row" > Spring
-                //     Break < /th>
-                //     <td>20</td>
-                //     <td>Spring888</td>
-                //     <td>03/15/2022</td>
-                // </tr>
-                var tb = document.getElementById("table-body");
-                var tr = document.createElement("tr");
-                var abc = 123
-                tr.innerHTML = `<th scope="row">Spring Break111</th>
+                //
+                for (let i = 0; i < 2; i++) {
+                    let tb = document.getElementById("table-body");
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = `<th scope="row">Spring Break111</th>
                                 <td>20111</td>
                                 <td>Spring888111</td>
-                                <td>03/15/2022111</td>`
-                tb.appendChild(tr);
-            })
+                                <td>03/15/2022111</td>
+                                <td>
+                                    <button type="submit" id="${i}submit" class="btn btn-success">Submit${i}</button>
+                                </td>`
+                    tb.appendChild(tr);
+                }
+            });
+
+
+            $('#ManagePromotion-tab').click(() => {
+                $.ajax({
+                    type: "post",
+                    url: "promoform", //change
+                    contentType: false,
+                    processData: false,
+                    data: new FormData().append("submittype",0),
+                    success(date) {
+                        let {rs, pl} = data;
+                        alert(rs.description);
+                        if(rs.status==1){
+                            for (let r of pl) {
+                                let tb = document.getElementById("table-body");
+                                let tr = document.createElement("tr");
+                                tr.innerHTML = `<th scope="row">${pl.promoname}</th>
+                                <td>${pl.promodiscount}</td>
+                                <td>${pl.promocode}</td>
+                                <td>${pl.promoend}</td>
+                                <td>
+                                    <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                </td>`
+                                tb.appendChild(tr);
+                            }
+                        }
+                    },
+                })
+            });
+
         })
     </script>
 </head>
@@ -489,6 +518,7 @@
                                 <th scope="col">Discount</th>
                                 <th scope="col">Code</th>
                                 <th scope="col">Expiration</th>
+                                <th scope="col">Send Email</th>
                             </tr>
                             </thead>
                             <tbody class="text-center" id="table-body">
@@ -497,6 +527,9 @@
                                 <td>20</td>
                                 <td>Spring666</td>
                                 <td>02/15/2022</td>
+                                <td>
+                                    <button type="submit" id="email_button" class="btn btn-success">Submit</button>
+                                </td>
                             </tr>
                             <tr class="">
                                 <th scope="row">Spring Break</th>
