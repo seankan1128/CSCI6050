@@ -35,6 +35,7 @@ public class promotionController {
     @ResponseBody
     @RequestMapping("promoform")
     public Map<String, Object> Promotionpage(Promotions promo,  @RequestParam("submittype") int submittype){
+        System.out.println(submittype);
         if(submittype == 1) {
             Map<String, Object> returnMap = new HashMap<>();
             System.out.println(promo.getPromoCode());
@@ -91,6 +92,7 @@ public class promotionController {
             pList.forEach(promotionsList::add);
             returnMap.put("ReturnStatus", SD);
             returnMap.put("PromotionList", promotionsList);
+            System.out.println(SD.getDescription());
             return returnMap;
 
         }

@@ -50,13 +50,17 @@
 
 
             $('#ManagePromotion-tab').click(() => {
+                let q=  new FormData();
+                q.append("submittype",0)
+                console.log(q);
                 $.ajax({
                     type: "post",
                     url: "promoform", //change
                     contentType: false,
                     processData: false,
-                    data: new FormData().append("submittype",0),
+                    data:q,
                     success(date) {
+                        console.log(data)
                         let {rs, pl} = data;
                         alert(rs.description);
                         if(rs.status==1){
