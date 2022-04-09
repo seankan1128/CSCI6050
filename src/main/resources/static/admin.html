@@ -21,10 +21,10 @@
             $('#submit_button').click(() => {
                 $.ajax({
                     type: "post",
-                    url: "login2", //change
+                    url: "promoform", //change
                     contentType: false,
                     processData: false,
-                    data: new FormData($('#loginform')[0]),
+                    data: new FormData($('#addpromotion')[0]),
                     success(date) {
                         console.log(data)
                     }

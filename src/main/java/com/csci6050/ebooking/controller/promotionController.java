@@ -26,7 +26,7 @@ public class promotionController {
     @ResponseBody
     @RequestMapping("promoform")
     public int addNewPromotion(Promotions promo){
-
+        System.out.println(promo.getPromoCode());
         Promotions p = promotionsRepository.findByPromoCode(promo.getPromoCode());
         if(p != null){
             System.out.println("Promo already exists");
@@ -38,11 +38,12 @@ public class promotionController {
         pr.setPromoStart(promo.getPromoStart());
         pr.setPromoEnd(promo.getPromoEnd());
         pr.setPromoDiscount(promo.getPromoDiscount());
+        pr.setPromoName(promo.getPromoName());
 
         promotionsRepository.save(pr);
         System.out.println("Promo has been saved");
 
-        Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("On");
+        Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
 
         Email email = new Email();
         email.sendPromotion(userIterable, pr);

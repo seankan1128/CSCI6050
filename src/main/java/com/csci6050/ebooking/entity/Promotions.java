@@ -12,6 +12,8 @@ public class Promotions{
     private int id;
     @Column(name="promocode")
     private String promoCode;
+    @Column(name="promoname")
+    private String promoName;
     @Column(name="promostart")
     private String promoStart;
     @Column(name="promoend")
@@ -58,4 +60,12 @@ public class Promotions{
     public void setPromoDiscount(float promoDiscount) {
         this.promoDiscount = promoDiscount;
     }
+    public String getPromoName() {
+        return promoName;
+    }
+
+    public void setPromoName(String promoName) {
+        this.promoName = promoName;
+    }
+
 }
