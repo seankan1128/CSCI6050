@@ -17,35 +17,37 @@
     <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script>
-        $('#submit_button').click(() => {
-            $.ajax({
-                type: "post",
-                url: "login2", //change
-                contentType: false,
-                processData: false,
-                data: new FormData($('#loginform')[0]),
-                success(date){
-                    console.log(data)
-                }
-            })
-            /////////////////////////////////////////////////////////
-        //     < tr
-            //     className = "" >
-            //         < th
-            //     scope = "row" > Spring
-            //     Break < /th>
-            //     <td>20</td>
-            //     <td>Spring888</td>
-            //     <td>03/15/2022</td>
-            // </tr>
-            var tb = document.getElementById("table-body");
-            var tr = document.createElement("tr");
-            var abc=123
-            tr.innerHTML=`<th scope="row">Spring Break111</th>
+        $(function () {
+            $('#submit_button').click(() => {
+                $.ajax({
+                    type: "post",
+                    url: "login2", //change
+                    contentType: false,
+                    processData: false,
+                    data: new FormData($('#loginform')[0]),
+                    success(date) {
+                        console.log(data)
+                    }
+                })
+                /////////////////////////////////////////////////////////
+                //     < tr
+                //     className = "" >
+                //         < th
+                //     scope = "row" > Spring
+                //     Break < /th>
+                //     <td>20</td>
+                //     <td>Spring888</td>
+                //     <td>03/15/2022</td>
+                // </tr>
+                var tb = document.getElementById("table-body");
+                var tr = document.createElement("tr");
+                var abc = 123
+                tr.innerHTML = `<th scope="row">Spring Break111</th>
                                 <td>20111</td>
                                 <td>Spring888111</td>
                                 <td>03/15/2022111</td>`
-            tb.appendChild(tr);
+                tb.appendChild(tr);
+            })
         })
     </script>
 </head>
