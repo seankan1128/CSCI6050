@@ -10,7 +10,7 @@ public class Promotions{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="promoid")
     private int id;
-    @Column(name="promoCode")
+    @Column(name="promocode")
     private String promoCode;
     @Column(name="promostart")
     private String promoStart;
