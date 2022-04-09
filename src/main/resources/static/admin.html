@@ -12,6 +12,25 @@
     <script src="js/moment.js"></script>
     <script src="tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
     <link href="tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet">
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/jquery.session.js"></script>
+    <script src="js/jquery-deparam.min.js"></script>
+    <script src="Bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $('#submit_button').click(() => {
+            $.ajax({
+                type: "post",
+                url: "login2", //change
+                contentType: false,
+                processData: false,
+                data: new FormData($('#loginform')[0]),
+                success(date){
+                    console.log(data)
+                }
+            })
+            /////////////////////////////////////////////////////////
+        })
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -440,38 +459,43 @@
         </div>
         <div class="tab-pane fade" id="ManagePromotion" role="tabpanel" aria-labelledby="ManagePromotion-tab">
             <div class="container">
-                <div class="text-center h1">Promotion</div>
-                <div>
-                    <table class="table table-striped">
-                        <thead class="text-center">
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Discount</th>
-                            <th scope="col">Code</th>
-                            <th scope="col">Expiration</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-center">
-                        <tr class="">
-                            <th scope="row">Spring Festival</th>
-                            <td>20</td>
-                            <td>Spring666</td>
-                            <td>02/15/2022</td>
-                        </tr>
-                        <tr class="">
-                            <th scope="row">Spring Break</th>
-                            <td>20</td>
-                            <td>Spring888</td>
-                            <td>03/15/2022</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <form class="form-horizontal" id="register_form">
+
+                    <div class="text-center h1">Promotion</div>
+                    <div>
+                        <table class="table table-striped">
+                            <thead class="text-center">
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Discount</th>
+                                <th scope="col">Code</th>
+                                <th scope="col">Expiration</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-center">
+                            <tr class="">
+                                <th scope="row">Spring Festival</th>
+                                <td>20</td>
+                                <td>Spring666</td>
+                                <td>02/15/2022</td>
+                            </tr>
+                            <tr class="">
+                                <th scope="row">Spring Break</th>
+                                <td>20</td>
+                                <td>Spring888</td>
+                                <td>03/15/2022</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </form>
             </div>
+
             <div class="dropdown-divider "></div>
             <div class="container">
                 <div class="text-center h1">Add Promotion</div>
-                <form>
+                <form id="addpromotion">
                     <div class="form-group">
                         <label for="PromotionName">Name</label>
                         <input type="text" class="form-control" id="PromotionName" placeholder="">
@@ -493,7 +517,7 @@
                         <input id="EndDate" type="date" class="form-control" value="2022-03-05">
                     </div>
                 </form>
-                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="submit" id="submit_button" class="btn btn-success">Submit</button>
             </div>
         </div>
     </div>
