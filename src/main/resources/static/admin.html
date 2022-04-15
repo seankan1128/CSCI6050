@@ -19,11 +19,11 @@
     <script>
         function clickFun(name) {
             let q=  new FormData();
-            q.append("submittype",3);
             q.append("movieName",name);
+            console.log(q.get("movieName"))
             $.ajax({
                 type: "post",
-                url: "promoform", //change
+                url: "promoform2", //change
                 contentType: false,
                 processData: false,
                 data: q,
