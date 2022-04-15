@@ -19,11 +19,11 @@
     <script>
         function clickFun(name) {
             let q=  new FormData();
-            q.append("name",name);
-
+            q.append("submittype",3);
+            q.append("movieName",name);
             $.ajax({
                 type: "post",
-                url: "promoform2", //change
+                url: "promoform", //change
                 contentType: false,
                 processData: false,
                 data: q,
@@ -53,6 +53,7 @@
                         tr.innerHTML = `<th scope="row">${data.promoName}</th>
                             <td>${data.promoDiscount}</td>
                             <td>${data.promoCode}</td>
+                            <td>${data.promoStart}</td>
                             <td>${data.promoEnd}</td>
                             <td>
                                 <a url="#" class="btn btn-success" id="submit-${data.id}" onclick="clickFun(${data.promoName})">Submit</a>
@@ -91,6 +92,7 @@
                                 tr.innerHTML = `<th scope="row">${r.promoName}</th>
                                 <td>${r.promoDiscount}</td>
                                 <td>${r.promoCode}</td>
+                                <td>${r.promoStart}</td>
                                 <td>${r.promoEnd}</td>
                                 <td>
                                     <a url="#" class="btn btn-success" id="submit-${r.id}" onclick="clickFun(${name})">Submit</a>
@@ -543,6 +545,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Discount</th>
                                 <th scope="col">Code</th>
+                                <th scope="col">Start</th>
                                 <th scope="col">Expiration</th>
                                 <th scope="col">Send Email</th>
                             </tr>
