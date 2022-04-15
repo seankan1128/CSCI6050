@@ -18,8 +18,8 @@ public class Movie {
     private String cast;
     @Column(name="genre")
     private String genre;
-    @Column(name="producer")
-    private String producer;
+    @Column(name="director")
+    private String director;
     @Column(name="duration")
     private String duration;
     @Column(name="trailerpicture")
@@ -62,12 +62,12 @@ public class Movie {
         this.genre = genre;
     }
 
-    public String getProducer() {
-        return producer;
+    public String getDirector() {
+        return director;
     }
 
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     public String getDuration() {
