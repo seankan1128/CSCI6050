@@ -19,15 +19,18 @@
     <script>
         $(function () {
             $('#submit_button').click(() => {
+                let q=  new FormData($('#addpromotion')[0]);
+                q.append("submittype",1);
+
+
                 $.ajax({
                     type: "post",
                     url: "promoform", //change
                     contentType: false,
                     processData: false,
-                    data: new FormData($('#addpromotion')[0]),
-                    success(date) {
+                    data: q,
+                    success(data) {
                         console.log(data);
-
                         let a=JSON.parse(data);
 
 
@@ -52,25 +55,26 @@
             $('#ManagePromotion-tab').click(() => {
                 let q=  new FormData();
                 q.append("submittype",0)
-                console.log(q);
+                console.log(q.get("submittype"));
                 $.ajax({
                     type: "post",
                     url: "promoform", //change
                     contentType: false,
                     processData: false,
                     data:q,
-                    success(date) {
+                    success(data) {
                         console.log(data)
-                        let {rs, pl} = data;
-                        alert(rs.description);
-                        if(rs.status==1){
-                            for (let r of pl) {
+                        let {PromotionList, ReturnStatus} = data;
+                        alert(ReturnStatus.description);
+                        if(ReturnStatus.status==1){
+                            for (let r of PromotionList) {
+                                console.log(r)
                                 let tb = document.getElementById("table-body");
                                 let tr = document.createElement("tr");
-                                tr.innerHTML = `<th scope="row">${pl.promoname}</th>
-                                <td>${pl.promodiscount}</td>
-                                <td>${pl.promocode}</td>
-                                <td>${pl.promoend}</td>
+                                tr.innerHTML = `<th scope="row">${r.promoName}</th>
+                                <td>${r.promoDiscount}</td>
+                                <td>${r.promoCode}</td>
+                                <td>${r.promoEnd}</td>
                                 <td>
                                     <button type="submit" id="submit" class="btn btn-success">Submit</button>
                                 </td>`
@@ -526,21 +530,21 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="table-body">
-                            <tr class="">
-                                <th scope="row">Spring Festival</th>
-                                <td>20</td>
-                                <td>Spring666</td>
-                                <td>02/15/2022</td>
-                                <td>
-                                    <button type="submit" id="email_button" class="btn btn-success">Submit</button>
-                                </td>
-                            </tr>
-                            <tr class="">
-                                <th scope="row">Spring Break</th>
-                                <td>20</td>
-                                <td>Spring888</td>
-                                <td>03/15/2022</td>
-                            </tr>
+<!--                            <tr class="">-->
+<!--                                <th scope="row">Spring Festival</th>-->
+<!--                                <td>20</td>-->
+<!--                                <td>Spring666</td>-->
+<!--                                <td>02/15/2022</td>-->
+<!--                                <td>-->
+<!--                                    <button type="submit" id="email_button" class="btn btn-success">Submit</button>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr class="">-->
+<!--                                <th scope="row">Spring Break</th>-->
+<!--                                <td>20</td>-->
+<!--                                <td>Spring888</td>-->
+<!--                                <td>03/15/2022</td>-->
+<!--                            </tr>-->
                             </tbody>
                         </table>
                     </div>
