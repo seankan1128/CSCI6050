@@ -36,6 +36,7 @@ public class addMovieController {
         Movie m = new Movie();
         m.setTitle(movie.getTitle());
         m.setCast(movie.getCast());
+        m.setCategory(movie.getCategory());
         m.setGenre(movie.getGenre());
         m.setProducer(movie.getProducer());
         m.setDuration(movie.getDuration());
