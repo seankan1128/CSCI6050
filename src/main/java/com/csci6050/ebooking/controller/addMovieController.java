@@ -61,4 +61,19 @@ public class addMovieController {
         returnMap.put("MovieList",movieList);
         return returnMap;
     }
+
+    @ResponseBody
+    @RequestMapping("addmovieform")
+    public Map<String, Object> returnMovie(Movie movie){
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+        Iterable<Movie> mlist = movieRepository.findAll();
+        List<Movie> movieList = new ArrayList<>();
+        mlist.forEach(movieList::add);
+        SD.setStatus(1);
+        SD.setDescription("returned all movie");
+        returnMap.put("ReturnStatus",SD);
+        returnMap.put("MovieList",movieList);
+        return returnMap;
+    }
 }
