@@ -63,7 +63,7 @@ public class addMovieController {
     }
 
     @ResponseBody
-    @RequestMapping("addmovieform")
+    @RequestMapping("addmovieform2")
     public Map<String, Object> returnMovie(Movie movie){
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();

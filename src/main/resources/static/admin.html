@@ -35,6 +35,21 @@
 
         $(function () {
 
+            $('#ManageMovies-tab').click(() => {
+
+                let q=  new FormData();
+                $.ajax({
+                    type: "post",
+                    url: "addmovieform2", //change
+                    contentType: false,
+                    processData: false,
+                    data: q,
+                    success(data) {
+                        console.log(data);
+                    }
+                })
+            });
+
             $('#submit_add_movie').click(() => {
 
                 let q=  new FormData($('#addMovieForm')[0]);
