@@ -17,6 +17,21 @@
     <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script>
+        function clickFun(name) {
+            let q=  new FormData();
+            q.append("name",name);
+
+            $.ajax({
+                type: "post",
+                url: "promoform2", //change
+                contentType: false,
+                processData: false,
+                data: q,
+                success(data) {
+                    console.log(data);
+                }
+            })
+        }
         $(function () {
             $('#submit_button').click(() => {
                 let q=  new FormData($('#addpromotion')[0]);
@@ -31,31 +46,32 @@
                     data: q,
                     success(data) {
                         console.log(data);
-                        let a=JSON.parse(data);
-
+                        alert(data.ReturnStatus.description);
+                        data = data.PromotionList[data.PromotionList.length-1]
+                        let tb = document.getElementById("table-body");
+                        let tr = document.createElement("tr");
+                        tr.innerHTML = `<th scope="row">${data.promoName}</th>
+                            <td>${data.promoDiscount}</td>
+                            <td>${data.promoCode}</td>
+                            <td>${data.promoEnd}</td>
+                            <td>
+                                <a url="#" class="btn btn-success" id="submit-${data.id}" onclick="clickFun(${data.promoName})">Submit</a>
+                            </td>`
+                        tb.appendChild(tr);
+                        $("#PromotionName").val("");
+                        $("#PromotionDiscount").val("");
+                        $("#PromotionCode").val("");
 
                     }
                 })
-                //
-                for (let i = 0; i < 2; i++) {
-                    let tb = document.getElementById("table-body");
-                    let tr = document.createElement("tr");
-                    tr.innerHTML = `<th scope="row">Spring Break111</th>
-                                <td>20111</td>
-                                <td>Spring888111</td>
-                                <td>03/15/2022111</td>
-                                <td>
-                                    <button type="submit" id="${i}submit" class="btn btn-success">Submit${i}</button>
-                                </td>`
-                    tb.appendChild(tr);
-                }
+
             });
 
 
             $('#ManagePromotion-tab').click(() => {
                 let q=  new FormData();
                 q.append("submittype",0)
-                console.log(q.get("submittype"));
+                // console.log(q.get("submittype"));
                 $.ajax({
                     type: "post",
                     url: "promoform", //change
@@ -63,20 +79,22 @@
                     processData: false,
                     data:q,
                     success(data) {
-                        console.log(data)
+                        // console.log(data)
                         let {PromotionList, ReturnStatus} = data;
-                        alert(ReturnStatus.description);
+                        // alert(ReturnStatus.description);
                         if(ReturnStatus.status==1){
                             for (let r of PromotionList) {
-                                console.log(r)
+                                // console.log(r)
                                 let tb = document.getElementById("table-body");
                                 let tr = document.createElement("tr");
+                                let name = r.promoName
                                 tr.innerHTML = `<th scope="row">${r.promoName}</th>
                                 <td>${r.promoDiscount}</td>
                                 <td>${r.promoCode}</td>
                                 <td>${r.promoEnd}</td>
                                 <td>
-                                    <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                    <a url="#" class="btn btn-success" id="submit-${r.id}" onclick="clickFun(${name})">Submit</a>
+<!--                                    <button id="submit-${r.id}" class="btn btn-success" onclick="()=>{console.log(123321)}">Submit</button>-->
                                 </td>`
                                 tb.appendChild(tr);
                             }
