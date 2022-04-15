@@ -38,10 +38,10 @@ public class promotionController {
 
         if(submittype == 1) {
             Map<String, Object> returnMap = new HashMap<>();
-            System.out.println(promo.getPromoCode());
+//            System.out.println(promo.getPromoCode());
             Promotions p = promotionsRepository.findByPromoCode(promo.getPromoCode());
             if (p != null) {
-                System.out.println("Promo already exists");
+//                System.out.println("Promo already exists");
                 StatusNDescription SD = new StatusNDescription();
                 SD.setDescription("Promo already exists");
                 SD.setStatus(0);
@@ -66,13 +66,13 @@ public class promotionController {
 
             System.out.println(pr.getPromoCode());
 
-            Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
-
-            Email email = new Email();
-            email.sendPromotion(userIterable, pr);
+//            Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
+//
+//            Email email = new Email();
+//            email.sendPromotion(userIterable, pr);
 
             StatusNDescription SD = new StatusNDescription();
-            SD.setDescription("Promotion has been saved and sent");
+            SD.setDescription("Promotion has been saved");
             SD.setStatus(1);
 
             Iterable<Promotions> pList = promotionsRepository.findAll();
@@ -94,10 +94,28 @@ public class promotionController {
             pList.forEach(promotionsList::add);
             returnMap.put("ReturnStatus", SD);
             returnMap.put("PromotionList", promotionsList);
-            System.out.println(promotionsList.get(0).getPromoCode());
+//            System.out.println(promotionsList.get(0).getPromoCode());
             return returnMap;
 
         }
+
+//        if(submittype == 3){
+//            System.out.println("++++++++++++++++");
+//            System.out.println(promoname);
+//            Map<String, Object> returnMap = new HashMap<>();
+//            Promotions p = promotionsRepository.findByPromoName(promoname);
+//            Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
+//
+//            Email email = new Email();
+//            email.sendPromotion(userIterable, p);
+//
+//            StatusNDescription SD = new StatusNDescription();
+//            SD.setDescription("Promotion has been sent");
+//            SD.setStatus(1);
+//            returnMap.put("ReturnStatus", SD);
+//            System.out.println("Email sent");
+//            return returnMap;
+//        }
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
         SD.setDescription("Promotion list sent");
@@ -111,5 +129,25 @@ public class promotionController {
         return returnMap;
 
     }
+
+//    @ResponseBody
+//    @RequestMapping("promoform2")
+//    public Map<String, Object> sendEmail(@RequestParam("name2") String name){
+//        System.out.println("++++++++++++++++");
+//        System.out.println(name);
+//        Map<String, Object> returnMap = new HashMap<>();
+//        Promotions p = promotionsRepository.findByPromoName(name);
+//        Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
+//
+//        Email email = new Email();
+//        email.sendPromotion(userIterable, p);
+//
+//        StatusNDescription SD = new StatusNDescription();
+//        SD.setDescription("Promotion has been sent");
+//        SD.setStatus(1);
+//        returnMap.put("ReturnStatus", SD);
+//        System.out.println("Email sent");
+//        return returnMap;
+//    }
 
 }

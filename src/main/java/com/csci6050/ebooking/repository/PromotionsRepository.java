@@ -9,4 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface PromotionsRepository extends CrudRepository<Promotions, Integer>{
     Promotions findByPromoCode(String promoCode);
 
+    Promotions findByPromoName(String promoName);
+
 }
