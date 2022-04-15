@@ -35,10 +35,47 @@
 
         $(function () {
 
+            $('#submit_add_movie').click(() => {
+
+                let q=  new FormData($('#addMovieForm')[0]);
+                // q.append("submittype",1);
+
+                $.ajax({
+                    type: "post",
+                    url: "addmovieform", //change
+                    contentType: false,
+                    processData: false,
+                    data: q,
+                    success(data) {
+                        console.log(data);
+                        alert(data.ReturnStatus.description);
+                        // let tb = document.getElementById("manageMovieTable");
+                        // let tr = document.createElement("tr");
+                        // tr.innerHTML = `
+                        //     <th scope="row">${q.get("MovieTitle")}</th>
+                        //     <td>photo</td>
+                        //     <td>link</td>
+                        //     <td>${q.get("MovieRate")}</td>
+                        //     <td>Room</td>
+                        //     <td>time</td>
+                        //     <td><button class="btn btn-danger" id="addMovie-${q.get("MovieTitle")}">Delete</button></td>`;
+                        //
+                        // tb.appendChild(tr);
+                        //
+                        // let button = document.getElementById("addMovie-"+q.get("MovieTitle"));
+                        // button.onclick=function click(){clickFun(data.promoName)};
+
+                        // $("#PromotionName").val("");
+                        // $("#PromotionDiscount").val("");
+                        // $("#PromotionCode").val("");
+
+                    }
+                })
+            });
+
             $('#submit_button').click(() => {
                 let q=  new FormData($('#addpromotion')[0]);
                 q.append("submittype",1);
-
 
                 $.ajax({
                     type: "post",
@@ -71,7 +108,6 @@
 
                     }
                 })
-
             });
 
 
@@ -232,10 +268,10 @@
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
-                        <tbody class="text-center">
+                        <tbody class="text-center" id="manageMovieTable">
                         <tr class="">
                             <th scope="row">Avenger:End Game</th>
-                            <td>image/Avengers_Endgame_poster.jpg</td>
+                            <td><img src="image/Avengers_Endgame_poster.jpg" alt=""></td>
                             <td>hA6hldpSTF8</td>
                             <td>PG-13</td>
                             <td>Room 9</td>
@@ -244,7 +280,7 @@
                         </tr>
                         <tr class="">
                             <th scope="row">Spider-Man:Into The Spider Verse</th>
-                            <td>image/Avengers_Endgame_poster.jpg</td>
+                            <td><img src="image/Avengers_Endgame_poster.jpg" alt=""></td>
                             <td>hA6hldpSTF8</td>
                             <td>PG</td>
                             <td>Room 5</td>
@@ -253,7 +289,7 @@
                         </tr>
                         <tr class="">
                             <th scope="row">Avenger:End Game</th>
-                            <td>image/Avengers_Endgame_poster.jpg</td>
+                            <td><img src="image/Avengers_Endgame_poster.jpg" alt=""></td>
                             <td>hA6hldpSTF8</td>
                             <td>G</td>
                             <td>Room 9</td>
@@ -262,7 +298,7 @@
                         </tr>
                         <tr class="">
                             <th scope="row">Avenger:End Game</th>
-                            <td>image/Avengers_Endgame_poster.jpg</td>
+                            <td><img src="image/Avengers_Endgame_poster.jpg" alt=""></td>
                             <td>hA6hldpSTF8</td>
                             <td>R</td>
                             <td>Room 9</td>
@@ -271,7 +307,7 @@
                         </tr>
                         <tr class="">
                             <th scope="row">Avenger:End Game</th>
-                            <td>image/Avengers_Endgame_poster.jpg</td>
+                            <td><img src="image/Avengers_Endgame_poster.jpg" alt=""></td>
                             <td>hA6hldpSTF8</td>
                             <td>NC-17</td>
                             <td>Room 9</td>
@@ -285,51 +321,48 @@
             <div class="dropdown-divider "></div>
             <div class="container">
                 <div class="text-center h1">Add Movie</div>
-                <form>
+                <form id="addMovieForm">
                     <div class="form-group">
                         <label for="MovieTitle">Movie Title</label>
-                        <input type="text" class="form-control" id="MovieTitle" placeholder="">
+                        <input type="text" class="form-control" id="MovieTitle" name="title" placeholder="">
                     </div>
+
                     <div class="form-group">
                         <label for="Category">Category</label>
-                        <input type="text" class="form-control" id="Category" placeholder="">
+                        <input name="category" type="text" class="form-control" id="Category" name="" placeholder="please use , to separate different categories">
                     </div>
+
                     <div class="form-group">
                         <label for="MovieRate">Movie Rate</label>
-                        <select class="form-control" id="MovieRate">
-                            <option>G</option>
-                            <option>PG</option>
-                            <option>PG-13</option>
-                            <option>R</option>
-                            <option>NC-17</option>
+                        <select class="form-control" id="MovieRate" name="ratingID">
+                            <option value="1">G</option>
+                            <option value="2">PG</option>
+                            <option value="2">PG-13</option>
+                            <option value="2">R</option>
+<!--                            <option>NC-17</option>-->
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="Director">Duration</label>
+                        <input name="duration" type="text" class="form-control" id="Duration" placeholder="">
+                    </div>
+
+                    <div class="form-group">
                         <label for="Director">Director</label>
-                        <input type="text" class="form-control" id="Director" placeholder="">
+                        <input name="director" type="text" class="form-control" id="Director" placeholder="">
                     </div>
+
                     <div class="form-group">
-                        <label for="Producer">Producer</label>
-                        <input type="text" class="form-control" id="Producer" placeholder="">
+                        <label for="Cast1">Cast</label>
+                        <input type="text" class="form-control" id="Cast1" name="cast" placeholder="please use , to separate different casts">
                     </div>
-                    <div class="form-group">
-                        <label for="Cast1">Cast 1</label>
-                        <input type="text" class="form-control" id="Cast1" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label for="Cast2">Cast 2</label>
-                        <input type="text" class="form-control" id="Cast2" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label for="Cast3">Cast 3</label>
-                        <input type="text" class="form-control" id="Cast3" placeholder="">
-                    </div>
+
                     <div class="form-group">
                         <label for="Synopsis">Synopsis</label>
                         <textarea class="form-control" id="Synopsis" rows="3"></textarea>
                     </div>
                 </form>
-                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="submit" id="submit_add_movie" class="btn btn-success">Submit</button>
             </div>
             <div class="dropdown-divider "></div>
             <div class="container">

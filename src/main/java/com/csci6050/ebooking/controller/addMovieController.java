@@ -20,6 +20,7 @@ public class addMovieController {
     @ResponseBody
     @RequestMapping("addmovieform")
     public Map<String, Object> addNewMovie(Movie movie){
+        
         Movie mov = movieRepository.findById(movie.getId());
 
         Map<String, Object> returnMap = new HashMap<>();
@@ -38,7 +39,7 @@ public class addMovieController {
         m.setCast(movie.getCast());
         m.setCategory(movie.getCategory());
         m.setGenre(movie.getGenre());
-        m.setProducer(movie.getProducer());
+        m.setDirector(movie.getDirector());
         m.setDuration(movie.getDuration());
 //        m.setTrailerPicture(movie.getTrailerPicture());
         m.setTrailerVideo(movie.getTrailerVideo());
