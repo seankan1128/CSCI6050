@@ -130,24 +130,24 @@ public class promotionController {
 
     }
 
-//    @ResponseBody
-//    @RequestMapping("promoform2")
-//    public Map<String, Object> sendEmail(@RequestParam("name2") String name){
-//        System.out.println("++++++++++++++++");
-//        System.out.println(name);
-//        Map<String, Object> returnMap = new HashMap<>();
-//        Promotions p = promotionsRepository.findByPromoName(name);
-//        Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
-//
-//        Email email = new Email();
-//        email.sendPromotion(userIterable, p);
-//
-//        StatusNDescription SD = new StatusNDescription();
-//        SD.setDescription("Promotion has been sent");
-//        SD.setStatus(1);
-//        returnMap.put("ReturnStatus", SD);
-//        System.out.println("Email sent");
-//        return returnMap;
-//    }
+    @ResponseBody
+    @RequestMapping("promoform2")
+    public Map<String, Object> sendEmail(@RequestParam("movieName") String name){
+        System.out.println("++++++++++++++++");
+        System.out.println(name);
+        Map<String, Object> returnMap = new HashMap<>();
+        Promotions p = promotionsRepository.findByPromoName(name);
+        Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
+
+        Email email = new Email();
+        email.sendPromotion(userIterable, p);
+
+        StatusNDescription SD = new StatusNDescription();
+        SD.setDescription("Promotion has been sent");
+        SD.setStatus(1);
+        returnMap.put("ReturnStatus", SD);
+        System.out.println("Email sent");
+        return returnMap;
+    }
 
 }
