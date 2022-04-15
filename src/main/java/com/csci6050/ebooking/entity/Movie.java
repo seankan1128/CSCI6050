@@ -12,6 +12,8 @@ public class Movie {
     private int id;
     @Column(name="title")
     private String title;
+    @Column(name="category")
+    private String category;
     @Column(name="cast")
     private String cast;
     @Column(name="genre")
@@ -106,5 +108,13 @@ public class Movie {
 
     public void setRatingID(int ratingID) {
         this.ratingID = ratingID;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
