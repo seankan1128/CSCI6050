@@ -20,7 +20,6 @@
         function clickFun(name) {
             let q=  new FormData();
             q.append("movieName",name);
-            console.log(123321,name);
             console.log(q.get("movieName"))
             $.ajax({
                 type: "post",
@@ -29,11 +28,13 @@
                 processData: false,
                 data: q,
                 success(data) {
-                    console.log(data);
+                    alert(`For movie ${name}, the `+data.ReturnStatus.description);
                 }
             })
         }
+
         $(function () {
+
             $('#submit_button').click(() => {
                 let q=  new FormData($('#addpromotion')[0]);
                 q.append("submittype",1);
@@ -57,9 +58,13 @@
                             <td>${data.promoStart}</td>
                             <td>${data.promoEnd}</td>
                             <td>
-                                <a url="#" class="btn btn-success" id="submit-${data.id}" onclick="clickFun(${data.promoName})">Submit</a>
+                                <a url="#" class="btn btn-success" id="submit-${data.id}">Submit</a>
                             </td>`
                         tb.appendChild(tr);
+
+                        let button = document.getElementById("submit-"+data.id);
+                        button.onclick=function click(){clickFun(data.promoName)};
+
                         $("#PromotionName").val("");
                         $("#PromotionDiscount").val("");
                         $("#PromotionCode").val("");
@@ -89,7 +94,7 @@
                                 // console.log(r)
                                 let tb = document.getElementById("table-body");
                                 let tr = document.createElement("tr");
-                                let name = r.promoName
+                                name = r.promoName
                                 tr.innerHTML = `<th scope="row">${r.promoName}</th>
                                 <td>${r.promoDiscount}</td>
                                 <td>${r.promoCode}</td>
@@ -101,9 +106,10 @@
 <!--                                    <button id="submit-${r.id}" class="btn btn-success">Submit</button>-->
                                 </td>`;
                                 tb.appendChild(tr);
-                                let button = tb.lastChild.lastChild;
-                                console.log(button);
-                                button.onclick(clickFun(name))
+                                let button = document.getElementById("submit-"+r.id);
+                                button.onclick=function click(){clickFun(r.promoName)};
+                                // console.log(button);
+                                // button.onclick(clickFun(name))
                             }
                         }
                     },
