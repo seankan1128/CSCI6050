@@ -20,6 +20,7 @@
         function clickFun(name) {
             let q=  new FormData();
             q.append("movieName",name);
+            console.log(123321,name);
             console.log(q.get("movieName"))
             $.ajax({
                 type: "post",
@@ -95,10 +96,14 @@
                                 <td>${r.promoStart}</td>
                                 <td>${r.promoEnd}</td>
                                 <td>
-                                    <a url="#" class="btn btn-success" id="submit-${r.id}" onclick="clickFun(${name})">Submit</a>
-<!--                                    <button id="submit-${r.id}" class="btn btn-success" onclick="()=>{console.log(123321)}">Submit</button>-->
-                                </td>`
+                                    <a url="#" class="btn btn-success" id="submit-${r.id}">Submit</a>
+<!--                                    <a url="#" class="btn btn-success" id="submit-${r.id}" onclick="clickFun()">Submit</a>-->
+<!--                                    <button id="submit-${r.id}" class="btn btn-success">Submit</button>-->
+                                </td>`;
                                 tb.appendChild(tr);
+                                let button = tb.lastChild.lastChild;
+                                console.log(button);
+                                button.onclick(clickFun(name))
                             }
                         }
                     },
