@@ -1,15 +1,15 @@
 package com.csci6050.ebooking.controller;
 
 import com.csci6050.ebooking.DTO.StatusNDescription;
-import com.csci6050.ebooking.entity.Paymentcard;
-import com.csci6050.ebooking.entity.Promotions;
-import com.csci6050.ebooking.entity.User;
+import com.csci6050.ebooking.entity.*;
+import com.csci6050.ebooking.repository.AuditoriumRepository;
+import com.csci6050.ebooking.repository.ShowScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import com.csci6050.ebooking.entity.Movie;
+
 import com.csci6050.ebooking.repository.MovieRepository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +21,13 @@ import java.util.*;
 
 @Controller
 public class addMovieController {
+
+    @Autowired
+    private ShowScheduleRepository showScheduleRepository;
+
+    @Autowired
+    private AuditoriumRepository auditoriumRepository;
+
     @Autowired
     private MovieRepository movieRepository;
 
@@ -118,4 +125,25 @@ public class addMovieController {
         return returnMap;
     }
 
+    @ResponseBody
+    @RequestMapping("addmovieform4")
+    public Map<String, Object> saveshowschedule(@RequestParam("title") String title, @RequestParam("date") String date, @RequestParam("room") String room){
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+
+        Movie m = movieRepository.findMovieByTitle(title);
+        Auditorium a = auditoriumRepository.findAuditoriumByAudname(room);
+
+        ShowSchedule showSchedule = new ShowSchedule();
+        showSchedule.setMovie(m);
+        showSchedule.setAuditorium(a);
+        showSchedule.setStarttime(date);
+//        showSchedule.setEndtime(date);
+        showScheduleRepository.save(showSchedule);
+
+        SD.setStatus(1);
+        SD.setDescription("Show schedule saved");
+        returnMap.put("ReturnStatus",SD);
+        return returnMap;
+    }
 }
