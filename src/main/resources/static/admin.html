@@ -17,6 +17,18 @@
     <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script>
+        function a() {
+            let i = document.getElementById("MovieDate");
+            console.log(i.value)
+            let time = i.value.split(/[\s//]+/)
+            let mon = String(Number(time[0])-1)
+            let clock = time[3].split(":");
+            let hour = (time[4]!="PM")?clock[0]:Number(clock[1]+12).toString();
+            let date = new Date(time[2],mon,time[1],hour,clock[1],0);
+            console.log(date)
+        }
+    </script>
+    <script>
         function clickFun(name) {
             let q=  new FormData();
             q.append("movieName",name);
@@ -472,15 +484,15 @@
 
                     <div class="form-group">
                         <label for="SelectTheater">Select Show Room</label>
-                        <select class="form-control" id="SelectTheater">
-                            <option>Room 1</option>
-                            <option>Room 2</option>
-                            <option>Room 3</option>
-                            <option>Room 4</option>
-                            <option>Room 5</option>
-                            <option>Room 6</option>
-                            <option>Room 7</option>
-                            <option>Room IMAX</option>
+                        <select class="form-control" id="SelectTheater" name="room">
+                            <option value="1">Room 1</option>
+                            <option value="2">Room 2</option>
+                            <option value="3">Room 3</option>
+                            <option value="4">Room 4</option>
+                            <option value="5">Room 5</option>
+                            <option value="6">Room 6</option>
+                            <option value="7">Room 7</option>
+                            <option value="8">Room IMAX</option>
                         </select>
                     </div>
                 </form>
