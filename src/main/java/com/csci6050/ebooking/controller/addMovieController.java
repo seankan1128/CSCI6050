@@ -130,10 +130,11 @@ public class addMovieController {
     public Map<String, Object> saveshowschedule(@RequestParam("title") String title, @RequestParam("date") String date, @RequestParam("room") String room){
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
-
+        System.out.println(room);
         Movie m = movieRepository.findMovieByTitle(title);
         Auditorium a = auditoriumRepository.findAuditoriumByAudname(room);
 
+        System.out.println(room);
         ShowSchedule showSchedule = new ShowSchedule();
         showSchedule.setMovie(m);
         showSchedule.setAuditorium(a);
