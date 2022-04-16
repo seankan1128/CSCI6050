@@ -26,6 +26,8 @@ public class Movie {
     private String trailerPicture;
     @Column(name="trailervideo")
     private String trailerVideo;
+    @Column(name="description")
+    private String description;
     @Column(name="review")
     private int review;
     @Column(name="ratingid")
@@ -116,5 +118,13 @@ public class Movie {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
