@@ -82,7 +82,7 @@ public class addMovieController {
 
     @ResponseBody
     @RequestMapping("addmovieform3")
-    public Map<String, Object> setMovieImage(@RequestParam("trailerlink") String trailerlink, @RequestParam("title") String title, @RequestParam("image") MultipartFile image) throws IOException {
+    public Map<String, Object> setMovieImage(@RequestParam("trailerlink") String trailerlink, @RequestParam("title") String title, @RequestParam("image") MultipartFile image, @RequestParam("image2") MultipartFile image2) throws IOException {
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
 
@@ -99,6 +99,16 @@ public class addMovieController {
         bufferedOutputStream.close();
 
         m.setTrailerPicture(path);
+
+        int index2 = Objects.requireNonNull(image2.getOriginalFilename()).lastIndexOf("//");
+        String filename2 = image2.getOriginalFilename().substring(index2+1);
+        byte[] bytes2 = image2.getBytes();
+        String path2 = "src//main//java//com//csci6050//ebooking//images//"+filename2;
+        BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(new FileOutputStream(new File(path2)));
+        bufferedOutputStream2.write(bytes2);
+        bufferedOutputStream2.close();
+
+        m.setTrailerbanner(path2);
 
         movieRepository.save(m);
 
