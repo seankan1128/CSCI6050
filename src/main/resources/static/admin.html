@@ -22,9 +22,10 @@
             console.log(i.value)
             let time = i.value.split(/[\s///:]+/)
             let hour = (time[5]=="PM")?Number(time[3])+12:time[3];
-            let date = new Date(time[2],Number(time[0])-1,time[1],hour,time[4])
+            // let date = new Date(time[2],Number(time[0])-1,time[1],hour,time[4])
+            let date=""+time[2]+time[0]+time[1]+hour+time[4];
             console.log(date)
-            return Date.parse(date)
+            return date;
         }
     </script>
     <script>
