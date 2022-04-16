@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import com.csci6050.ebooking.entity.Movie;
 import com.csci6050.ebooking.repository.MovieRepository;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 public class addMovieController {
@@ -25,7 +27,7 @@ public class addMovieController {
     @ResponseBody
     @RequestMapping("addmovieform")
     public Map<String, Object> addNewMovie(Movie movie){
-        
+
         Movie mov = movieRepository.findById(movie.getId());
 
         Map<String, Object> returnMap = new HashMap<>();
@@ -78,5 +80,32 @@ public class addMovieController {
         return returnMap;
     }
 
+    @ResponseBody
+    @RequestMapping("addmovieform3")
+    public Map<String, Object> setMovieImage(@RequestParam("trailerlink") String trailerlink, @RequestParam("title") String title, @RequestParam("image") MultipartFile image) throws IOException {
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+
+        Movie m = movieRepository.findMovieByTitle(title);
+
+        m.setTrailerVideo(trailerlink);
+
+        int index = Objects.requireNonNull(image.getOriginalFilename()).lastIndexOf("//");
+        String filename = image.getOriginalFilename().substring(index+1);
+        byte[] bytes = image.getBytes();
+        String path = "C://Users//Sean//IdeaProjects//ebooking//src//main//java//com//csci6050//ebooking//images//"+filename;
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(new File(path)));
+        bufferedOutputStream.write(bytes);
+        bufferedOutputStream.close();
+
+        m.setTrailerPicture(path);
+
+        movieRepository.save(m);
+
+        SD.setStatus(1);
+        SD.setDescription("successfully set image and trailer");
+        returnMap.put("ReturnStatus",SD);
+        return returnMap;
+    }
 
 }
