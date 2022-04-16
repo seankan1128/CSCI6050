@@ -93,7 +93,7 @@ public class addMovieController {
         int index = Objects.requireNonNull(image.getOriginalFilename()).lastIndexOf("//");
         String filename = image.getOriginalFilename().substring(index+1);
         byte[] bytes = image.getBytes();
-        String path = "C://Users//Sean//IdeaProjects//ebooking//src//main//java//com//csci6050//ebooking//images//"+filename;
+        String path = "src//main//java//com//csci6050//ebooking//images//"+filename;
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(new File(path)));
         bufferedOutputStream.write(bytes);
         bufferedOutputStream.close();

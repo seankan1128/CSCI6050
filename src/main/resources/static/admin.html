@@ -47,9 +47,10 @@
                         // console.log(data,"++++++=");
                         let selectMovie = document.getElementById("SelectMovie");
                         for (let l of data.MovieList){
-                            console.log(l)
+                            // console.log(l)
                             let opt = document.createElement("option")
                             opt.innerHTML=l.title;
+                            opt.name=l.title;
                             selectMovie.appendChild(opt);
                         }
                     }
@@ -68,11 +69,12 @@
                     processData: false,
                     data: q,
                     success(data) {
-                        console.log(data);
+                        // console.log(data);
                         alert(data.ReturnStatus.description);
                         let selectMovie = document.getElementById("SelectMovie");
                         let opt = document.createElement("option")
                         opt.innerHTML=q.get("title");
+                        opt.name = g.get("title");
                         selectMovie.appendChild(opt);
                         // let tb = document.getElementById("manageMovieTable");
                         // let tr = document.createElement("tr");
@@ -101,6 +103,7 @@
 
             $('#submit_img_trailer').click(() => {
                 let q=  new FormData($('#img_trailer_form')[0]);
+                console.log(q.get("title"));
                 $.ajax({
                     type: "post",
                     url: "addmovieform3", //change
@@ -124,7 +127,7 @@
                     processData: false,
                     data: q,
                     success(data) {
-                        console.log(data);
+                        // console.log(data);
                         alert(data.ReturnStatus.description);
                         data = data.PromotionList[data.PromotionList.length-1]
                         let tb = document.getElementById("table-body");
@@ -382,9 +385,17 @@
 <!--                            <option>NC-17</option>-->
                         </select>
                     </div>
+
                     <div class="form-group">
-                        <label for="Director">Duration</label>
-                        <input name="duration" type="text" class="form-control" id="Duration" placeholder="">
+                        <label for="MovieRate">Duration</label>
+                        <select class="form-control" id="duration" name="duration">
+                            <option value="1.0">1 hour</option>
+                            <option value="1.5">1.5 hours</option>
+                            <option value="2.0">2 hours</option>
+                            <option value="2.5">2.5 hours</option>
+                            <option value="3.0">3 hours</option>
+                            <!--                            <option>NC-17</option>-->
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -626,7 +637,7 @@
                                 <th scope="col">Start</th>
                                 <th scope="col">Expiration</th>
                                 <th scope="col">Send Email</th>
-                            </tr>add
+                            </tr>
                             </thead>
                             <tbody class="text-center" id="table-body">
 <!--                            <tr class="">-->
