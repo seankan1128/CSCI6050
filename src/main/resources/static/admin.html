@@ -36,7 +36,6 @@
         $(function () {
 
             $('#ManageMovies-tab').click(() => {
-
                 let q=  new FormData();
                 $.ajax({
                     type: "post",
@@ -45,7 +44,14 @@
                     processData: false,
                     data: q,
                     success(data) {
-                        console.log(data);
+                        // console.log(data,"++++++=");
+                        let selectMovie = document.getElementById("SelectMovie");
+                        for (let l of data.MovieList){
+                            console.log(l)
+                            let opt = document.createElement("option")
+                            opt.innerHTML=l.title;
+                            selectMovie.appendChild(opt);
+                        }
                     }
                 })
             });
@@ -64,6 +70,10 @@
                     success(data) {
                         console.log(data);
                         alert(data.ReturnStatus.description);
+                        let selectMovie = document.getElementById("SelectMovie");
+                        let opt = document.createElement("option")
+                        opt.innerHTML=q.get("title");
+                        selectMovie.appendChild(opt);
                         // let tb = document.getElementById("manageMovieTable");
                         // let tr = document.createElement("tr");
                         // tr.innerHTML = `
@@ -84,6 +94,21 @@
                         // $("#PromotionDiscount").val("");
                         // $("#PromotionCode").val("");
 
+                    }
+                })
+            });
+
+
+            $('#submit_img_trailer').click(() => {
+                let q=  new FormData($('#img_trailer_form')[0]);
+                $.ajax({
+                    type: "post",
+                    url: "addmovieform", //change
+                    contentType: false,
+                    processData: false,
+                    data: q,
+                    success(data) {
+                        console.log(data);
                     }
                 })
             });
@@ -373,8 +398,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="Synopsis">Synopsis</label>
-                        <textarea class="form-control" id="Synopsis" rows="3"></textarea>
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                     </div>
                 </form>
                 <button type="submit" id="submit_add_movie" class="btn btn-success">Submit</button>
@@ -382,16 +407,10 @@
             <div class="dropdown-divider "></div>
             <div class="container">
                 <div class="text-center h1">Movie Image and Trailer</div>
-                <form>
+                <form id="img_trailer_form">
                     <div class="form-group">
                         <label for="SelectMovie">Select Movie</label>
                         <select class="form-control" id="SelectMovie">
-                            <option>Avenger:End Game</option>
-                            <option>Spider-Man:Into The Spider Verse</option>
-                            <option>Stranger Things</option>
-                            <option>Batman Begins</option>
-                            <option>No Time To Die</option>
-                            <option>Dune</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -403,7 +422,7 @@
                         <input type="file" class="form-control-file" id="MovieImage">
                     </div>
                 </form>
-                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="submit" class="btn btn-success" id="submit_img_trailer">Submit</button>
             </div>
             <div class="dropdown-divider "></div>
             <div class="container">
