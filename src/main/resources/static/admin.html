@@ -85,8 +85,10 @@
                 let director=q.get("director");
                 let cast=q.get("cast");
                 let description=q.get("description");
+                let reviews=q.get("reviews");
+                let producer=q.get("producer");
                 if(title==""||category==""||ratingID==""||duration==""||
-                director==""||cast==""||description==""){
+                director==""||cast==""||description==""||reviews==""||producer==""){
                     alert("not complete")
                 }else {
                     $.ajax({
@@ -452,6 +454,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="Producer">Producer</label>
+                        <input name="director" type="text" class="form-control" id="producer" placeholder="">
+                    </div>
+
+                    <div class="form-group">
                         <label for="Cast1">Cast</label>
                         <input type="text" class="form-control" id="Cast1" name="cast" placeholder="please use , to separate different casts">
                     </div>
@@ -459,6 +466,11 @@
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviews">Reviews</label>
+                        <textarea class="form-control" id="reviews" name="reviews" rows="3"></textarea>
                     </div>
                 </form>
                 <button type="submit" id="submit_add_movie" class="btn btn-success">Submit</button>
