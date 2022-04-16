@@ -77,4 +77,6 @@ public class addMovieController {
         returnMap.put("MovieList",movieList);
         return returnMap;
     }
+
+
 }

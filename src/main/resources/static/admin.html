@@ -410,16 +410,16 @@
                 <form id="img_trailer_form">
                     <div class="form-group">
                         <label for="SelectMovie">Select Movie</label>
-                        <select class="form-control" id="SelectMovie">
+                        <select class="form-control" id="SelectMovie" name="title">
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="TrailerLink">TrailerLink</label>
-                        <input class="form-control" id="TrailerLink" placeholder="">
+                        <input class="form-control" id="TrailerLink" name="trailerlink" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="MovieImage">Movie Image</label>
-                        <input type="file" class="form-control-file" id="MovieImage">
+                        <input type="file" class="form-control-file" name="image" id="MovieImage">
                     </div>
                 </form>
                 <button type="submit" class="btn btn-success" id="submit_img_trailer">Submit</button>
@@ -626,7 +626,7 @@
                                 <th scope="col">Start</th>
                                 <th scope="col">Expiration</th>
                                 <th scope="col">Send Email</th>
-                            </tr>
+                            </tr>add
                             </thead>
                             <tbody class="text-center" id="table-body">
 <!--                            <tr class="">-->
