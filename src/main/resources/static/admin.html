@@ -17,15 +17,14 @@
     <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script>
-        function a() {
+        function changeTime() {
             let i = document.getElementById("MovieDate");
             console.log(i.value)
-            let time = i.value.split(/[\s//]+/)
-            let mon = String(Number(time[0])-1)
-            let clock = time[3].split(":");
-            let hour = (time[4]!="PM")?clock[0]:Number(clock[1]+12).toString();
-            let date = new Date(time[2],mon,time[1],hour,clock[1],0);
+            let time = i.value.split(/[\s///:]+/)
+            let hour = (time[5]=="PM")?Number(time[3])+12:time[3];
+            let date = new Date(time[2],Number(time[0])-1,time[1],hour,time[4])
             console.log(date)
+            return Date.parse(date)
         }
     </script>
     <script>
@@ -175,6 +174,20 @@
                 })
             });
 
+            $('#date_submit').click(() => {
+                let q=  new FormData($('#date_form')[0]);
+                q.append("date",changeTime())
+                $.ajax({
+                    type: "post",
+                    url: "addmovieform3", //change
+                    contentType: false,
+                    processData: false,
+                    data: q,
+                    success(data) {
+                        console.log(data);
+                    }
+                })
+            });
 
             $('#ManagePromotion-tab').click(() => {
                 let q=  new FormData();
@@ -464,7 +477,7 @@
             <div class="dropdown-divider "></div>
             <div class="container">
                 <div class="text-center h1">Movie date</div>
-                <form>
+                <form id="date_form">
                     <div class="form-group">
                         <label for="SelectMovie_date">Select Movie</label>
                         <select class="form-control" id="SelectMovie_date" name="title">
@@ -474,7 +487,7 @@
                         <label for="datetimepicker">Date</label>
                         <div class="input-group  date" id="datetimepicker" data-target-input="nearest">
                             <input id="MovieDate" type="text" class="form-control datetimepicker-input"
-                                   data-target="#datetimepicker" name="date" placeholder="">
+                                   data-target="#datetimepicker" name="date2" placeholder="">
                             <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="bi bi-calendar"
                                                                  style="position: relative;top: 0;left: 0;"></i></div>
@@ -496,7 +509,7 @@
                         </select>
                     </div>
                 </form>
-                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="submit" class="btn btn-success" id="date_submit">Submit</button>
             </div>
 
         </div>
