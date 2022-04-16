@@ -46,12 +46,17 @@
                     success(data) {
                         // console.log(data,"++++++=");
                         let selectMovie = document.getElementById("SelectMovie");
+                        let selectMovie2 = document.getElementById("SelectMovie_date");
                         for (let l of data.MovieList){
                             // console.log(l)
                             let opt = document.createElement("option")
                             opt.innerHTML=l.title;
                             opt.name=l.title;
+                            let opt2 = document.createElement("option")
+                            opt2.innerHTML=l.title;
+                            opt2.name=l.title;
                             selectMovie.appendChild(opt);
+                            selectMovie2.appendChild(opt2);
                         }
                     }
                 })
@@ -72,10 +77,15 @@
                         // console.log(data);
                         alert(data.ReturnStatus.description);
                         let selectMovie = document.getElementById("SelectMovie");
+                        let selectMovie2 = document.getElementById("SelectMovie_date");
                         let opt = document.createElement("option")
                         opt.innerHTML=q.get("title");
                         opt.name = g.get("title");
+                        let opt2 = document.createElement("option")
+                        opt2.innerHTML=q.get("title");
+                        opt2.name = g.get("title");
                         selectMovie.appendChild(opt);
+                        selectMovie2.appendChild(opt2);
                         // let tb = document.getElementById("manageMovieTable");
                         // let tr = document.createElement("tr");
                         // tr.innerHTML = `
@@ -432,6 +442,10 @@
                         <label for="MovieImage">Movie Image</label>
                         <input type="file" class="form-control-file" name="image" id="MovieImage">
                     </div>
+                    <div class="form-group">
+                        <label for="MovieImage">Movie Banner</label>
+                        <input type="file" class="form-control-file" name="image2" id="MovieImage2">
+                    </div>
                 </form>
                 <button type="submit" class="btn btn-success" id="submit_img_trailer">Submit</button>
             </div>
@@ -440,21 +454,15 @@
                 <div class="text-center h1">Movie date</div>
                 <form>
                     <div class="form-group">
-                        <label for="SelectMovie2">Select Movie</label>
-                        <select class="form-control" id="SelectMovie2">
-                            <option>Avenger:End Game</option>
-                            <option>Spider-Man:Into The Spider Verse</option>
-                            <option>Stranger Things</option>
-                            <option>Batman Begins</option>
-                            <option>No Time To Die</option>
-                            <option>Dune</option>
+                        <label for="SelectMovie_date">Select Movie</label>
+                        <select class="form-control" id="SelectMovie_date" name="title">
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="datetimepicker">Date</label>
                         <div class="input-group  date" id="datetimepicker" data-target-input="nearest">
                             <input id="MovieDate" type="text" class="form-control datetimepicker-input"
-                                   data-target="#datetimepicker" placeholder="">
+                                   data-target="#datetimepicker" name="date" placeholder="">
                             <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="bi bi-calendar"
                                                                  style="position: relative;top: 0;left: 0;"></i></div>
