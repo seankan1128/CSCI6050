@@ -24,6 +24,8 @@ public class Movie {
     private String duration;
     @Column(name="trailerpicture")
     private String trailerPicture;
+    @Column(name="trailerbanner")
+    private String trailerbanner;
     @Column(name="trailervideo")
     private String trailerVideo;
     @Column(name="description")
@@ -126,5 +128,13 @@ public class Movie {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTrailerbanner() {
+        return trailerbanner;
+    }
+
+    public void setTrailerbanner(String trailerbanner) {
+        this.trailerbanner = trailerbanner;
     }
 }
