@@ -13,7 +13,7 @@ public class ShowSchedule {
     @JoinColumn(name="movieid")
     private Movie movie;
     @ManyToOne
-    @JoinColumn(name="audid")
+    @JoinColumn(name="auditoriumid")
     private Auditorium auditorium;
     @Column(name="starttime")
     private String starttime;
