@@ -121,7 +121,7 @@
         <!--                aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">-->
         <!--            <span class="navbar-toggler-icon"> sd</span>-->
         <!--        </button>-->
-        <div class="col-3" id="">
+        <div class="col-2" id="">
             <ul class="navbar-nav mr-auto col-4">
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Home </a>
@@ -137,9 +137,13 @@
                 </li>
             </ul>
         </div>
-        <form class="form-inline col-4">
-            <input class="form-control col-10" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-primary col-2" type="submit">Search</button>
+        <form class="form-inline col-5">
+            <select class="custom-select col-2" id="search_type" name="searchtype">
+                <option value="1" selected>Title</option>
+                <option value="2">Category</option>
+            </select>
+            <input class="form-control col-8" type="search" placeholder="Search" aria-label="Search" name="searchtext">
+            <a href="#" class="btn btn-outline-primary col-2" type="button">Search</a>
         </form>
         <div id="user" class="col-1 offset-1">
             <a class="btn btn-primary" type="button" href="login">Login</a>
