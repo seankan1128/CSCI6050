@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -48,9 +49,9 @@ public class mainController {
 
             // If this element is not present in newList
             // then add it
-            if (!in_schedule_movielist.contains(movieRepository.findById(s.getId()))) {
+            if (!in_schedule_movielist.contains(s.getMovie())) {
 
-                in_schedule_movielist.add(movieRepository.findById(s.getId()));
+                in_schedule_movielist.add(s.getMovie());
             }
         }
 
@@ -59,6 +60,19 @@ public class mainController {
 
         returnMap.put("ComingSoon", not_in_schedule_movielist);
         returnMap.put("StreamingNow", in_schedule_movielist);
+
+        System.out.println(not_in_schedule_movielist.size());
+        System.out.println(not_in_schedule_movielist.get(0).getId());
+        System.out.println(in_schedule_movielist.size());
+        System.out.println(in_schedule_movielist.get(0).getId());
+
+        return returnMap;
+    }
+
+    @ResponseBody
+    @RequestMapping("search")
+    public Map<String, Object> search(@RequestParam("searchtype") String ){
+        Map<String, Object> returnMap = new HashMap<>();
 
 
         return returnMap;
