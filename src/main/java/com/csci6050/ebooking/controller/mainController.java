@@ -12,7 +12,7 @@ public class mainController {
         return "index";
     }
 
-    @ResponseBody
-    @RequestMapping("")
+    // @ResponseBody
+    // @RequestMapping("")
 
 }

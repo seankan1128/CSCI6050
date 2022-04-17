@@ -154,21 +154,32 @@
 
             $('#submit_button').click(() => {
                 let q=  new FormData($('#addpromotion')[0]);
+                let promoName = q.get("promoName");
+                let promoDiscount = q.get("promoDiscount");
+                let promoCode = q.get("promoCode");
+                let promoStart = q.get("promoStart");
+                let promoEnd = q.get("promoEnd");
                 q.append("submittype",1);
-
-                $.ajax({
+                if(Number(q.get("promoDiscount"))>=100){
+                    alert("discount cannot be greater than 100");
+                }else if(promoName==""||promoDiscount==""||promoCode==""||promoStart==""||promoEnd==""){
+                    alert("cannot be empty");
+                }
+                else{
+                    $.ajax({
                     type: "post",
                     url: "promoform", //change
                     contentType: false,
                     processData: false,
                     data: q,
                     success(data) {
-                        // console.log(data);
+                        console.log(data);
                         alert(data.ReturnStatus.description);
-                        data = data.PromotionList[data.PromotionList.length-1]
-                        let tb = document.getElementById("table-body");
-                        let tr = document.createElement("tr");
-                        tr.innerHTML = `<th scope="row">${data.promoName}</th>
+                        if(data.ReturnStatus.status==1){
+                            data = data.PromotionList[data.PromotionList.length-1]
+                            let tb = document.getElementById("table-body");
+                            let tr = document.createElement("tr");
+                            tr.innerHTML = `<th scope="row">${data.promoName}</th>
                             <td>${data.promoDiscount}</td>
                             <td>${data.promoCode}</td>
                             <td>${data.promoStart}</td>
@@ -176,10 +187,11 @@
                             <td>
                                 <a url="#" class="btn btn-success" id="submit-${data.id}">Submit</a>
                             </td>`
-                        tb.appendChild(tr);
+                            tb.appendChild(tr);
+                            let button = document.getElementById("submit-"+data.id);
+                            button.onclick=function click(){clickFun(data.promoName)};
+                        }
 
-                        let button = document.getElementById("submit-"+data.id);
-                        button.onclick=function click(){clickFun(data.promoName)};
 
                         $("#PromotionName").val("");
                         $("#PromotionDiscount").val("");
@@ -187,6 +199,7 @@
 
                     }
                 })
+                }
             });
 
             $('#date_submit').click(() => {
