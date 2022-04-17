@@ -101,7 +101,8 @@ public class addMovieController {
         int index = Objects.requireNonNull(image.getOriginalFilename()).lastIndexOf("//");
         String filename = image.getOriginalFilename().substring(index+1);
         byte[] bytes = image.getBytes();
-        String path = "src//main//java//com//csci6050//ebooking//images//"+filename;
+//        String path = "src//main//java//com//csci6050//ebooking//images//"+filename;
+        String path = "src//main//resources//static//image//"+filename;
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(new File(path)));
         bufferedOutputStream.write(bytes);
         bufferedOutputStream.close();
@@ -111,7 +112,8 @@ public class addMovieController {
         int index2 = Objects.requireNonNull(image2.getOriginalFilename()).lastIndexOf("//");
         String filename2 = image2.getOriginalFilename().substring(index2+1);
         byte[] bytes2 = image2.getBytes();
-        String path2 = "src//main//java//com//csci6050//ebooking//images//"+filename2;
+//        String path2 = "src//main//java//com//csci6050//ebooking//images//"+filename2;
+        String path2 = "src//main//resources//static//image//"+filename2;
         BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(new FileOutputStream(new File(path2)));
         bufferedOutputStream2.write(bytes2);
         bufferedOutputStream2.close();

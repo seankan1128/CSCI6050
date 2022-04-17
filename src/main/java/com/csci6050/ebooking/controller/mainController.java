@@ -69,13 +69,13 @@ public class mainController {
         return returnMap;
     }
 
-    @ResponseBody
-    @RequestMapping("search")
-    public Map<String, Object> search(@RequestParam("searchtype") String ){
-        Map<String, Object> returnMap = new HashMap<>();
-
-
-        return returnMap;
-    }
+//    @ResponseBody
+//    @RequestMapping("search")
+//    public Map<String, Object> search(@RequestParam("searchtype") String searchtype, @RequestParam("searchtext") String searchtext){
+//        Map<String, Object> returnMap = new HashMap<>();
+//
+//
+//        return returnMap;
+//    }
 
 }

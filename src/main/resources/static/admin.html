@@ -164,6 +164,11 @@
                     data: q,
                     success(data) {
                         console.log(data);
+                        $("#SelectMovie").val("");
+                        $("#TrailerLink").val("");
+                        $("#MovieImage").val("");
+                        $("#MovieImage2").val("");
+                        alert(data.ReturnStatus.description);
                     }
                 })
             });
