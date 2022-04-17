@@ -13,6 +13,40 @@
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script>
         $(function () {
+            $.ajax({
+                type: "post",
+                url: "movielist", //change
+                contentType: false,
+                processData: false,
+                data: {},
+                success(data) {
+                    console.log(data.StreamingNow);
+                    data = data.StreamingNow[data.StreamingNow.length-1]
+                    // data = data.
+                    for (let i=0;i<4;i++){
+                        let movie = document.createElement("div")[i];
+                        movie.innerHTML=`
+                        <div class="col-3">
+                            <div class="thumbnail">
+                                <img src="${data.trailerPicture}" alt="...">
+                                <div class="caption">
+                                    <h3>${data.cast}</h3>
+                                    <p>Rating${data.review}</p>
+                                    <p><a href="#" class="btn btn-primary" role="button">About</a>
+                                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>
+                                </div>
+                            </div>
+                        </div>`;
+                        document.getElementById("athere").appendChild(movie);
+                    }
+
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
             let user_info = undefined;
             let flag = 0;
             let sessionTemp = $.session.get('userInfo');
@@ -141,18 +175,19 @@
             See more<i class=" bi bi-arrow-right-short"></i>
         </a>
     </div>
-    <div class="row">
-        <div class="col-3">
-            <div class="thumbnail">
-                <img src="image/Poster1.png" alt="...">
-                <div class="caption">
-                    <h3>Stranger Things</h3>
-                    <p>Action, Adventure, Horror</p>
-                    <p><a href="#" class="btn btn-primary" role="button">About</a>
-                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>
-                </div>
-            </div>
-        </div>
+    <div class="row" id="athere">
+<!--        <div class="col-3">-->
+<!--            <div class="thumbnail">-->
+<!--                <img src="image/Poster1.png" alt="...">-->
+<!--                <div class="caption">-->
+<!--                    <h3>Stranger Things</h3>-->
+<!--                    <p>Action, Adventure, Horror</p>-->
+<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
+<!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
         <div class="col-3">
             <div class="thumbnail">
                 <img src="image/Poster2.png" alt="...">

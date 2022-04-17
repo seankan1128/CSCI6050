@@ -140,7 +140,7 @@ public class addMovieController {
         showSchedule.setMovie(m);
         showSchedule.setAuditorium(a);
         showSchedule.setStarttime(date);
-//        showSchedule.setEndtime(date);
+//        showSchedule.setEndtime(Float.parseFloat((date) + Float.parseFloat(m.getDuration())*60);
         showScheduleRepository.save(showSchedule);
 
         SD.setStatus(1);
