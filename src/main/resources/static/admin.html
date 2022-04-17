@@ -104,10 +104,10 @@
                             let selectMovie2 = document.getElementById("SelectMovie_date");
                             let opt = document.createElement("option")
                             opt.innerHTML = q.get("title");
-                            opt.name = g.get("title");
+                            opt.name = q.get("title");
                             let opt2 = document.createElement("option")
                             opt2.innerHTML = q.get("title");
-                            opt2.name = g.get("title");
+                            opt2.name = q.get("title");
                             selectMovie.appendChild(opt);
                             selectMovie2.appendChild(opt2);
                             // let tb = document.getElementById("manageMovieTable");
@@ -430,8 +430,8 @@
                         <select class="form-control" id="MovieRate" name="ratingID">
                             <option value="1">G</option>
                             <option value="2">PG</option>
-                            <option value="2">PG-13</option>
-                            <option value="2">R</option>
+                            <option value="3">PG-13</option>
+                            <option value="4">R</option>
 <!--                            <option>NC-17</option>-->
                         </select>
                     </div>
@@ -455,7 +455,7 @@
 
                     <div class="form-group">
                         <label for="Producer">Producer</label>
-                        <input name="director" type="text" class="form-control" id="producer" placeholder="">
+                        <input name="producer" type="text" class="form-control" id="producer" placeholder="">
                     </div>
 
                     <div class="form-group">
@@ -470,7 +470,7 @@
 
                     <div class="form-group">
                         <label for="reviews">Reviews</label>
-                        <textarea class="form-control" id="reviews" name="reviews" rows="3"></textarea>
+                        <textarea class="form-control" id="reviews" name="review" rows="3"></textarea>
                     </div>
                 </form>
                 <button type="submit" id="submit_add_movie" class="btn btn-success">Submit</button>

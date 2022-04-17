@@ -31,9 +31,12 @@ public class Movie {
     @Column(name="description")
     private String description;
     @Column(name="review")
-    private int review;
+    private String review;
     @Column(name="ratingid")
     private int ratingID;
+    @Column(name="producer")
+    private String producer;
+
     public int getId() {
         return id;
     }
@@ -98,11 +101,11 @@ public class Movie {
         this.trailerVideo = trailerVideo;
     }
 
-    public int getReview() {
+    public String getReview() {
         return review;
     }
 
-    public void setReview(int review) {
+    public void setReview(String review) {
         this.review = review;
     }
 
@@ -136,5 +139,13 @@ public class Movie {
 
     public void setTrailerbanner(String trailerbanner) {
         this.trailerbanner = trailerbanner;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 }

@@ -56,10 +56,11 @@ public class addMovieController {
         m.setDirector(movie.getDirector());
         m.setDuration(movie.getDuration());
 //        m.setTrailerPicture(movie.getTrailerPicture());
-        m.setTrailerVideo(movie.getTrailerVideo());
+//        m.setTrailerVideo(movie.getTrailerVideo());
         m.setReview(movie.getReview());
         m.setRatingID(movie.getRatingID());
         m.setDescription(movie.getDescription());
+        m.setProducer(movie.getProducer());
 
         movieRepository.save(m);
         Iterable<Movie> mlist = movieRepository.findAll();
