@@ -21,7 +21,7 @@ public class Movie {
     @Column(name="director")
     private String director;
     @Column(name="duration")
-    private String duration;
+    private int duration;
     @Column(name="trailerpicture")
     private String trailerPicture;
     @Column(name="trailerbanner")
@@ -77,11 +77,11 @@ public class Movie {
         this.director = director;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
