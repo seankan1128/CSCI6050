@@ -191,12 +191,13 @@
 
             $('#submit_img_trailer').click(() => {
                 let q = new FormData($('#img_trailer_form')[0]);
-                console.log(q.get("title"));
+                // console.info($('#img_trailer_form').serializeArray());
+                // console.log(q.get("image"))
                 let title = q.get("title");
                 let trailerlink = q.get("trailerlink");
                 let image = q.get("image");
                 let image2 = q.get("image2");
-                if (title == "" || trailerlink == "" || image == "" || image2 == "") {
+                if (title == "" || trailerlink == "" || image.name == "" || image2.name == "") {
                     alert("cannot be empty");
                     return;
                 }
