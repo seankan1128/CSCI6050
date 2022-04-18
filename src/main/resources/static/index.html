@@ -25,6 +25,7 @@
                     // console.log(data.StreamingNow);
                     var movieArr = data.StreamingNow;
                     var movieArr2 = data.ComingSoon;
+                    var movieArr3 = data.LatestMovie;
                     for (let i = 0; i < movieArr.length; i++) {
                         let data = movieArr[i];
                         let movie = $('<div class="col-3"></div>');
@@ -68,7 +69,7 @@
                         $("#future").append(movie);
                     }
 
-                    console.log(movieArr3,"arr3")
+                    // console.log(movieArr3,"arr3")
                     for (let i = 0; i < 3; i++) {
                         let data = movieArr3[i];
                         let movie = document.getElementById("carousel-inner-" + (i + 1));
