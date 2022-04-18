@@ -102,7 +102,8 @@ public class addMovieController {
         String filename = image.getOriginalFilename().substring(index+1);
         byte[] bytes = image.getBytes();
 //        String path = "src//main//java//com//csci6050//ebooking//images//"+filename;
-        String path = "src//main//resources//static//image//"+filename;
+//        String path = "src//main//resources//static//image//"+filename;
+        String path = "C:/Users/Sean/IdeaProjects/ebooking/src/main/resources/static/image/" + filename;
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(new File(path)));
         bufferedOutputStream.write(bytes);
         bufferedOutputStream.close();
@@ -113,7 +114,8 @@ public class addMovieController {
         String filename2 = image2.getOriginalFilename().substring(index2+1);
         byte[] bytes2 = image2.getBytes();
 //        String path2 = "src//main//java//com//csci6050//ebooking//images//"+filename2;
-        String path2 = "src//main//resources//static//image//"+filename2;
+//        String path2 = "src//main//resources//static//image//"+filename2;
+        String path2 = "C:/Users/Sean/IdeaProjects/ebooking/src/main/resources/static/image/" + filename2;
         BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(new FileOutputStream(new File(path2)));
         bufferedOutputStream2.write(bytes2);
         bufferedOutputStream2.close();
@@ -142,7 +144,7 @@ public class addMovieController {
         showSchedule.setMovie(m);
         showSchedule.setAuditorium(a);
         showSchedule.setStarttime(date);
-//        showSchedule.setEndtime(Float.parseFloat((date) + Float.parseFloat(m.getDuration())*60);
+        showSchedule.setEndtime(date + m.getDuration());
         showScheduleRepository.save(showSchedule);
 
         SD.setStatus(1);
