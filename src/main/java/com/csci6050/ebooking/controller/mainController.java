@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller // This means that this class is a Controller
 public class mainController {
@@ -109,7 +106,7 @@ public class mainController {
 
                 // If this element is not present in newList
                 // then add it
-                if (m.getTitle().contains(searchtext)) {
+                if (m.getTitle().toLowerCase().contains(searchtext.toLowerCase())) {
                     in_schedule_searched_list.add(m);
                 }
             }
@@ -118,7 +115,7 @@ public class mainController {
 
                 // If this element is not present in newList
                 // then add it
-                if (m.getTitle().contains(searchtext)) {
+                if (m.getTitle().toLowerCase().contains(searchtext.toLowerCase())) {
                     not_in_schedule_searched_list.add(m);
                 }
             }
@@ -141,7 +138,7 @@ public class mainController {
 
                 // If this element is not present in newList
                 // then add it
-                if (m.getCategory().contains(searchtext)) {
+                if (m.getCategory().toLowerCase().contains(searchtext.toLowerCase())) {
                     in_schedule_searched_list.add(m);
                 }
             }
@@ -150,7 +147,7 @@ public class mainController {
 
                 // If this element is not present in newList
                 // then add it
-                if (m.getCategory().contains(searchtext)) {
+                if (m.getCategory().toLowerCase().contains(searchtext.toLowerCase())) {
                     not_in_schedule_searched_list.add(m);
                 }
             }
