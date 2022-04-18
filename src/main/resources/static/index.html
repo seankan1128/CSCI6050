@@ -81,9 +81,31 @@
                         movie.childNodes[3].childNodes[1].innerHTML = data.title;
 
                         movie.childNodes[3].childNodes[3].innerHTML = "the rating is "+data.ratingID;
-                }
+                    }
 
+                    console.log(movieArr2)
+                    var videotrailer = document.getElementById("videotrailer");
+                    for(let i =0;i<3 ;i++){
+                        let data = movieArr2[i]
+                        console.log(data);
+                        let movie = document.getElementById("iframe-"+(i+1));
+                        let url = "https://www.youtube.com/watch?v="+data.trailerVideo;
+                        movie.src = url;
 
+                        let header = document.getElementById("trailerh3-"+(i+1))
+                        header.innerHTML = data.title;
+                        // movie.innerHTML=`
+                        //     <div class="col-4">
+                        //         <div class="thumbnail">
+                        //             <div class="embed-responsive embed-responsive-16by9">
+                        //                 <iframe class="embed-responsive-item" src="${url}"
+                        //                         allowfullscreen></iframe>
+                        //             </div>
+                        //             <h3>${data.title}</h3>
+                        //         </div>
+                        //     </div>`;
+                        // videotrailer.appendChild(movie)
+                    }
 
                 }
             })
@@ -211,7 +233,7 @@
             </div>
             <div class="carousel-item"  id="carousel-inner-2">
                 <img src="image/Header2.jpg" class="d-block\ w-100" alt="..." data-interval="5000">
-                <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-captio n d-none d-md-block">
                     <h5>Second slide label</h5>
                     <p>Some representative placeholder content for the second slide.</p>
                 </div>
@@ -356,36 +378,33 @@
         </a>
     </div>
     <div class="row" id="videotrailer">
-        <!--        <div class="col-4">-->
-        <!--            <div class="thumbnail">-->
-        <!--                <div class="embed-responsive embed-responsive-16by9">-->
-        <!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"-->
-        <!--                            allowfullscreen></iframe>-->
-        <!--                </div>-->
-        <!--                <h3>MoonFall</h3>-->
-        <!--                <p>some words here</p>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--        <div class="col-4">-->
-        <!--            <div class="thumbnail">-->
-        <!--                <div class="embed-responsive embed-responsive-16by9">-->
-        <!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"-->
-        <!--                            allowfullscreen></iframe>-->
-        <!--                </div>-->
-        <!--                <h3>Avenger:End Game</h3>-->
-        <!--                <p>some words here</p>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--        <div class="col-4">-->
-        <!--            <div class="thumbnail">-->
-        <!--                <div class="embed-responsive embed-responsive-16by9">-->
-        <!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"-->
-        <!--                            allowfullscreen></iframe>-->
-        <!--                </div>-->
-        <!--                <h3>Uncharted</h3>-->
-        <!--                <p>some words here</p>-->
-        <!--            </div>-->
-        <!--        </div>-->
+                <div class="col-4">
+                    <div class="thumbnail">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe id="iframe-1" class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <h3 id="trailerh3-1">MoonFall</h3>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="thumbnail">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe id="iframe-2" class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <h3 id="trailerh3-2">Avenger:End Game</h3>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="thumbnail">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe id="iframe-3" class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <h3 id="trailerh3-3">Uncharted</h3>
+                    </div>
+                </div>
     </div>
 </div>
 <div id="footer" class="container-fluid " style="background: black; color: white; margin-top: 50px;padding: 40px">
