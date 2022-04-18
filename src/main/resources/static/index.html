@@ -20,20 +20,20 @@
                 processData: false,
                 data: {},
                 success(data) {
-                    $.session.set('movieInfo',$.param(data));
+                    $.session.set('movieInfo', $.param(data));
                     console.log(data);
                     // console.log(data.StreamingNow);
                     var movieArr = data.StreamingNow;
                     var movieArr2 = data.ComingSoon;
-                    for (let i =0;i<movieArr.length;i++){
+                    for (let i = 0; i < movieArr.length; i++) {
                         let data = movieArr[i];
-                        let movie = document.createElement("div");
+                        let movie = $('<div class="col-3"></div>');
                         let url = data.trailerPicture;
                         // console.log(url)
                         // let arr = url.split("//");
-                        url = "/image/"+url;
-                        movie.innerHTML=`
-                            <div class="col-3" style="min-width: 100%;padding: 0;">
+                        url = "/image/" + url;
+                        movie.innerHTML = `
+                            <div >
                                 <div class="thumbnail">
                                     <img src="${url}" alt="..." style="max-height: 371px;max-width: 250px">
                                     <div class="caption">
@@ -44,18 +44,19 @@
                                     </div>
                                 </div>
                             </div>`;
-                        document.getElementById("athere").appendChild(movie);
+                        $("#athere").append(movie);
+
                     }
-                    for (let i =0;i<movieArr2.length;i++){
+                    for (let i = 0; i < movieArr2.length; i++) {
                         let data = movieArr2[i];
-                        let movie = document.createElement("div");
+                        let movie = $('<div class="col-3"></div>');
                         let url = data.trailerPicture;
                         // console.log(url)
                         // url = url.replaceAll("//",'/').substring(25);
-                        url='/image/'+url;
+                        url = '/image/' + url;
                         // console.log(url);
-                        movie.innerHTML=`
-                            <div class="col-3" style="min-width: 100%;padding: 0;">
+                        movie.html(`
+                            <div>
                                 <div class="thumbnail">
                                     <img src="${url}" alt="..." style="max-height: 371px;max-width: 250px">
                                     <div class="caption">
@@ -65,34 +66,34 @@
                                             <a href="select.html" class="btn btn-success" role="button">Booking</a></p>
                                     </div>
                                 </div>
-                            </div>`;
-                        document.getElementById("future").appendChild(movie);
+                            </div>`);
+                        $("#future").append(movie);
                     }
 
                     // console.log(movieArr2)
-                    for (let i =0;i<3 ;i++){
+                    for (let i = 0; i < 3; i++) {
                         let data = movieArr2[i];
-                        let movie = document.getElementById("carousel-inner-"+(i+1));
+                        let movie = document.getElementById("carousel-inner-" + (i + 1));
                         let url = data.trailerbanner;
                         // console.log(url);
                         url = '/image/' + url;
-                        movie.childNodes[1].src=url;
+                        movie.childNodes[1].src = url;
                         // console.log(movie.childNodes[1],url)
                         movie.childNodes[3].childNodes[1].innerHTML = data.title;
 
-                        movie.childNodes[3].childNodes[3].innerHTML = "the rating is "+data.ratingID;
+                        movie.childNodes[3].childNodes[3].innerHTML = "the rating is " + data.ratingID;
                     }
 
                     console.log(movieArr2)
                     var videotrailer = document.getElementById("videotrailer");
-                    for(let i =0;i<3 ;i++){
+                    for (let i = 0; i < 3; i++) {
                         let data = movieArr2[i]
                         console.log(data);
-                        let movie = document.getElementById("iframe-"+(i+1));
-                        let url = "https://www.youtube.com/embed/"+data.trailerVideo;
+                        let movie = document.getElementById("iframe-" + (i + 1));
+                        let url = "https://www.youtube.com/embed/" + data.trailerVideo;
                         movie.src = url;
 
-                        let header = document.getElementById("trailerh3-"+(i+1))
+                        let header = document.getElementById("trailerh3-" + (i + 1))
                         header.innerHTML = data.title;
                         // movie.innerHTML=`
                         //     <div class="col-4">
@@ -111,7 +112,7 @@
             })
             $('.booking_btn').click((e) => {
                     let movie_title = [...$(e.target).attr('id')];
-                    $.session.set('get_movie',$.param(movie_title));
+                    $.session.set('get_movie', $.param(movie_title));
                 }
             )
         });
@@ -120,16 +121,19 @@
     <script>
         //search btn
         $(function () {
-            $('#search_btn').click(()=>{
+            $('#search_btn').click(() => {
                 console.log($('#search_form').serializeArray());
                 $.ajax({
                     type: "post",
                     url: "search",
                     contentType: false,
                     processData: false,
-                    data:new FormData($('#search_form')[0]),
-                    success:(data)=>{
-                        console.log(data);
+                    data: new FormData($('#search_form')[0]),
+                    success: (data) => {
+                        console.log(data)
+                        $.session.set('search', $.param(data));
+                        $.session.set('search_for', $('#search_text').val());
+                        location.href = "search.html"
                     },
                 });
             })
@@ -231,7 +235,7 @@
                     <p>Some representative placeholder content for the first slide.</p>
                 </div>
             </div>
-            <div class="carousel-item"  id="carousel-inner-2">
+            <div class="carousel-item" id="carousel-inner-2">
                 <img src="image/Header2.jpg" class="d-block\ w-100" alt="..." data-interval="5000">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Second slide label</h5>
@@ -378,33 +382,33 @@
         </a>
     </div>
     <div class="row" id="videotrailer">
-                <div class="col-4">
-                    <div class="thumbnail">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe id="iframe-1" class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"
-                                    allowfullscreen></iframe>
-                        </div>
-                        <h3 id="trailerh3-1">MoonFall</h3>
-                    </div>
+        <div class="col-4">
+            <div class="thumbnail">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="iframe-1" class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"
+                            allowfullscreen></iframe>
                 </div>
-                <div class="col-4">
-                    <div class="thumbnail">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe id="iframe-2" class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"
-                                    allowfullscreen></iframe>
-                        </div>
-                        <h3 id="trailerh3-2">Avenger:End Game</h3>
-                    </div>
+                <h3 id="trailerh3-1">MoonFall</h3>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="thumbnail">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="iframe-2" class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"
+                            allowfullscreen></iframe>
                 </div>
-                <div class="col-4">
-                    <div class="thumbnail">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe id="iframe-3" class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"
-                                    allowfullscreen></iframe>
-                        </div>
-                        <h3 id="trailerh3-3">Uncharted</h3>
-                    </div>
+                <h3 id="trailerh3-2">Avenger:End Game</h3>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="thumbnail">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="iframe-3" class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"
+                            allowfullscreen></iframe>
                 </div>
+                <h3 id="trailerh3-3">Uncharted</h3>
+            </div>
+        </div>
     </div>
 </div>
 <div id="footer" class="container-fluid " style="background: black; color: white; margin-top: 50px;padding: 40px">
