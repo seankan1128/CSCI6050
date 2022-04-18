@@ -28,8 +28,8 @@
                         let movie = document.createElement("div");
                         let url = data.trailerPicture;
                         console.log(url)
-                        url = url.replaceAll("//",'/').substring(25);
-                        console.log(url);
+                        let arr = url.split("//");
+                        url = "/image/"+arr[arr.length-1];
                         movie.innerHTML=`
                             <div class="col-3" style="min-width: 100%;padding: 0;">
                                 <div class="thumbnail">
