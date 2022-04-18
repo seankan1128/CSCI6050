@@ -17,6 +17,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.*;
 
 @Controller
@@ -108,7 +109,7 @@ public class addMovieController {
         bufferedOutputStream.write(bytes);
         bufferedOutputStream.close();
 
-        m.setTrailerPicture(path);
+        m.setTrailerPicture(filename);
 
         int index2 = Objects.requireNonNull(image2.getOriginalFilename()).lastIndexOf("//");
         String filename2 = image2.getOriginalFilename().substring(index2+1);
@@ -120,7 +121,7 @@ public class addMovieController {
         bufferedOutputStream2.write(bytes2);
         bufferedOutputStream2.close();
 
-        m.setTrailerbanner(path2);
+        m.setTrailerbanner(filename2);
 
         movieRepository.save(m);
 
@@ -144,7 +145,13 @@ public class addMovieController {
         showSchedule.setMovie(m);
         showSchedule.setAuditorium(a);
         showSchedule.setStarttime(date);
-        showSchedule.setEndtime(date + m.getDuration());
+        BigInteger endDate = new BigInteger(date);
+        endDate =  endDate.add(BigInteger.valueOf(m.getDuration()*60000));
+        showSchedule.setEndtime(endDate.toString());
+        System.out.println(date);
+        System.out.println(BigInteger.valueOf(m.getDuration()*60000));
+        System.out.println(endDate);
+//        System.out.println(date.getClass());
         showScheduleRepository.save(showSchedule);
 
         SD.setStatus(1);
