@@ -1,5 +1,6 @@
 package com.csci6050.ebooking.controller;
 
+import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.entity.Movie;
 import com.csci6050.ebooking.entity.ShowSchedule;
 import com.csci6050.ebooking.repository.MovieRepository;
@@ -69,13 +70,35 @@ public class mainController {
         return returnMap;
     }
 
-//    @ResponseBody
-//    @RequestMapping("search")
-//    public Map<String, Object> search(@RequestParam("searchtype") String searchtype, @RequestParam("searchtext") String searchtext){
-//        Map<String, Object> returnMap = new HashMap<>();
-//
-//
-//        return returnMap;
-//    }
+    @ResponseBody
+    @RequestMapping("search")
+    public Map<String, Object> search(@RequestParam("searchtype") String searchtype, @RequestParam("searchtext") String searchtext){
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+
+        Iterable<Movie> mList = movieRepository.findAll();
+        List<Movie> movieList = new ArrayList<>();
+        mList.forEach(movieList::add);
+
+        // 1 is searching title
+        if(searchtype.equals("1")){
+            List<Movie> searched_list = new ArrayList<>();
+            for (Movie m : movieList) {
+
+                // If this element is not present in newList
+                // then add it
+                if (m.getTitle().contains(searchtext)) {
+
+                    searched_list.add(m);
+                }
+            }
+
+            if (movieList.isEmpty()){
+
+            }
+        }
+
+        return returnMap;
+    }
 
 }
