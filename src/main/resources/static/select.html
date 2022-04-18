@@ -124,8 +124,11 @@
                     $('#movie_duration').html(movie.duration + ' minutes');
                     $('#movie_category').html(movie.category);
                     $('#movie_Rate').html(movie_rate[movie.ratingID - 1]);
+                    $('#rate_warning').html("This movie is "+movie_rate[movie.ratingID - 1])
                     $('#movie_review').html(movie.review);
                     $('#movie_cast').html(movie.cast);
+                    $('#movie_director').html(movie.director);
+                    $('#movie_producer').html(movie.producer);
                 }
             })
         });
@@ -137,15 +140,6 @@
                 $('.btn-info').removeClass('btn-info');
                 $($(e.currentTarget)).addClass('btn-info');
             });
-            // $('#datetimepicker').datetimepicker({
-            //     format: 'L',
-            //     // enabledDates: day_list,
-            // });
-            // $('#datetimepicker').on("change.datetimepicker", () => {
-            //     console.log(new Date($('#movie_day').val().replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$1-$2")).getDate())
-            //
-            // })
-
         });
 
     </script>
@@ -168,7 +162,7 @@
     </nav>
 </div>
 <div class="alert alert-danger" style="margin-top: 4rem">
-    <h4 class="text-center">This movie is PG-13</h4>
+    <h4 id="rate_warning" class="text-center"></h4>
 </div>
 
 <div class="container">
@@ -198,27 +192,32 @@
                         <table class="table-striped text-center" style="width: 100%;">
                             <tbody style="font-size: larger;">
                             <tr class="text-center">
-                                <td style="width: 50%; padding-left: 5%;">
-                                    Duration:
-                                </td>
-                                <td id="movie_duration" style="width: 50%;  padding-right: 5%;">
-                                </td>
+                                <td style="width: 20%; padding-left: 5%;">Duration:</td>
+                                <td id="movie_duration" style="width: 80%;  padding-right: 5%;"></td>
                             </tr>
                             <tr class="text-center">
-                                <td style="width: 50%; padding-left: 5%;">Category:</td>
-                                <td id="movie_category" style="width: 50%;  padding-right: 5%;"></td>
+                                <td style="width: 20%; padding-left: 5%;">Category:</td>
+                                <td id="movie_category" style="width: 80%;  padding-right: 5%;"></td>
                             </tr>
                             <tr class="text-center">
-                                <td style="width: 50%; padding-left: 5%;">Rate:</td>
-                                <td id="movie_Rate" style="width: 50%;  padding-right: 5%;"></td>
+                                <td style="width: 20%; padding-left: 5%;">Rate:</td>
+                                <td id="movie_Rate" style="width: 80%;  padding-right: 5%;"></td>
                             </tr>
                             <tr class="text-center">
-                                <td style="width: 50%; padding-left: 5%;">Cast:</td>
-                                <td id="movie_cast" style="width: 50%;  padding-right: 5%;"></td>
+                                <td style="width: 20%; padding-left: 5%;">Cast:</td>
+                                <td id="movie_cast" style="width: 80%;  padding-right: 5%;"></td>
                             </tr>
                             <tr class="text-center">
-                                <td style="width: 50%; padding-left: 5%;">Review:</td>
-                                <td id="movie_review" style="width: 50%;  padding-right: 5%;"></td>
+                                <td style="width: 20%; padding-left: 5%;">Review:</td>
+                                <td id="movie_review" style="width: 80%;  padding-right: 5%;"></td>
+                            </tr>
+                            <tr class="text-center">
+                                <td style="width: 20%; padding-left: 5%;">Director:</td>
+                                <td id="movie_director" style="width: 80%;  padding-right: 5%;"></td>
+                            </tr>
+                            <tr class="text-center">
+                                <td style="width: 20%; padding-left: 5%;">Producer:</td>
+                                <td id="movie_producer" style="width: 80%;  padding-right: 5%;"></td>
                             </tr>
                             </tbody>
                         </table>
