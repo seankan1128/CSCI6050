@@ -25,6 +25,7 @@
                     // console.log(data.StreamingNow);
                     var movieArr = data.StreamingNow;
                     var movieArr2 = data.ComingSoon;
+                    var movieArr3 = data.LatestMovie;
                     for (let i = 0; i < movieArr.length; i++) {
                         let data = movieArr[i];
                         let movie = $('<div class="col-3"></div>');
@@ -70,9 +71,9 @@
                         $("#future").append(movie);
                     }
 
-                    // console.log(movieArr2)
+                    console.log(movieArr3,"arr3")
                     for (let i = 0; i < 3; i++) {
-                        let data = movieArr2[i];
+                        let data = movieArr3[i];
                         let movie = document.getElementById("carousel-inner-" + (i + 1));
                         let url = data.trailerbanner;
                         // console.log(url);
@@ -84,10 +85,9 @@
                         movie.childNodes[3].childNodes[3].innerHTML = "the rating is " + data.ratingID;
                     }
 
-                    console.log(movieArr2)
                     var videotrailer = document.getElementById("videotrailer");
                     for (let i = 0; i < 3; i++) {
-                        let data = movieArr2[i]
+                        let data = movieArr3[i]
                         console.log(data);
                         let movie = document.getElementById("iframe-" + (i + 1));
                         let url = "https://www.youtube.com/embed/" + data.trailerVideo;
