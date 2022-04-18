@@ -77,6 +77,8 @@
                             console.log(data, "++++++=");
                             let selectMovie = document.getElementById("SelectMovie");
                             let selectMovie2 = document.getElementById("SelectMovie_date");
+                            selectMovie.innerText="";
+                            selectMovie2.innerText="";
                             for (let l of data.MovieList) {
                                 // console.log(l)
                                 let opt = document.createElement("option")
@@ -170,7 +172,16 @@
                             $("#reviews").val("");
                         },
                         error(data) {
-                            alert("server error ")
+                            alert("server error ");
+                            $("#MovieTitle").val("");
+                            $("#Category").val("");
+                            $("#MovieRate").val("");
+                            $("#duration").val("");
+                            $("#Director").val("");
+                            $("#producer").val("");
+                            $("#Cast1").val("");
+                            $("#description").val("");
+                            $("#reviews").val("");
                         }
 
                     })
