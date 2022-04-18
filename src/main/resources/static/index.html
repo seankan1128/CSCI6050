@@ -104,26 +104,76 @@
                     }
 
 
-                    // data = data.StreamingNow[data.StreamingNow.length-1]
-                    // console.log(data);
-                    // // data = data.
-                    // for (let i=0;i<4;i++){
-                    //     let movie = document.createElement("div");
-                    //     movie.innerHTML=`
-                    //     <div class="col-3">
-                    //         <div class="thumbnail">
-                    //             <img src="${data.trailerPicture}" alt="...">
-                    //             <div class="caption">
-                    //                 <h3>${data.cast}</h3>
-                    //                 <p>Rating${data.review}</p>
-                    //                 <p><a href="#" class="btn btn-primary" role="button">About</a>
-                    //                     <a href="select.html" class="btn btn-success" role="button">Booking</a></p>
-                    //             </div>
-                    //         </div>
-                    //     </div>`;
-                    //     document.getElementById("athere").appendChild(movie);
-                    // }
+                }
+            })
+        })
 
+    </script>
+    <script>
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: "movielist", //change
+                contentType: false,
+                processData: false,
+                data: {},
+                success(data) {
+                    console.log(data.StreamingNow);//
+                    movieArr = data.StreamingNow;//
+                    for (let i =0;i<3 ;i++){
+                        let data = movieArr[i];
+                        let movie = document.createElement("div");
+                        let url = data.trailerbanner;
+                        console.log(url)
+                        url = url.replaceAll("//",'/').substring(25);
+                        console.log(url);
+                        movie.innerHTML=`
+                            <div class="carousel-item active">
+                                <img src="${url}" class="d-block\\ w-100" alt="..." style="max-height: 371px;max-width: 250px" data-interval="5000">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>${i} slide label</h5>
+                                    <p>Some representative placeholder content for the ${i} slide.</p>
+                                </div>
+                            </div>`;
+                        document.getElementById("slides").appendChild(movie);
+                    }
+
+
+                }
+            })
+        })
+    </script>
+    <script>
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: "movielist", //change
+                contentType: false,
+                processData: false,
+                data: {},
+                success(data) {
+                    console.log(data.StreamingNow);//
+                    movieArr = data.StreamingNow;//
+                    for (let i =0;i<3 ;i++){
+                        let data = movieArr[i];
+                        let movie = document.createElement("div");
+                        let url = data.trailerVideo;
+                        //console.log(url)
+                        url = url.replaceAll("//",'/').substring(25);
+                        //console.log(url);
+                        movie.innerHTML=`
+                            <div class="col-4">
+                                <div class="thumbnail">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src="${url}"
+                                            allowfullscreen></iframe>
+                                    </div>
+                                    <h3>${data.title}</h3>
+                                    <p>${data.description}</p>
+                                </div>
+                            </div>`;
+                        document.getElementById("videotrailer").appendChild(movie);
+                    }
                 }
             })
         })
@@ -218,7 +268,7 @@
             <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
             <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
         </ol>
-        <div class="carousel-inner">
+        <div class="carousel-inner" id="slides">
             <div class="carousel-item active">
                 <img src="image/Header1.png" class="d-block\ w-100" alt="..." data-interval="5000">
                 <div class="carousel-caption d-none d-md-block">
@@ -318,49 +368,49 @@
         </a>
     </div>
     <div class="row" id="future">
-        <div class="col-3">
-            <div class="thumbnail">
-                <img src="image/Poster4.png" alt="...">
-                <div class="caption">
-                    <h3>Dune</h3>
-                    <p>Action, Adventure, Drama</p>
-                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="thumbnail">
-                <img src="image/Poster3.png" alt="...">
-                <div class="caption">
-                    <h3>No Time To Die</h3>
-                    <p>Action, Adventure, Thriller</p>
-                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>
+<!--        <div class="col-3">-->
+<!--            <div class="thumbnail">-->
+<!--                <img src="image/Poster4.png" alt="...">-->
+<!--                <div class="caption">-->
+<!--                    <h3>Dune</h3>-->
+<!--                    <p>Action, Adventure, Drama</p>-->
+<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-3">-->
+<!--            <div class="thumbnail">-->
+<!--                <img src="image/Poster3.png" alt="...">-->
+<!--                <div class="caption">-->
+<!--                    <h3>No Time To Die</h3>-->
+<!--                    <p>Action, Adventure, Thriller</p>-->
+<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
 
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="thumbnail">
-                <img src="image/Poster4.png" alt="...">
-                <div class="caption">
-                    <h3>Shang-Chi and the Legend of the Ten Rings</h3>
-                    <p>Action, Adventure, Fantasy</p>
-                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-3">-->
+<!--            <div class="thumbnail">-->
+<!--                <img src="image/Poster4.png" alt="...">-->
+<!--                <div class="caption">-->
+<!--                    <h3>Shang-Chi and the Legend of the Ten Rings</h3>-->
+<!--                    <p>Action, Adventure, Fantasy</p>-->
+<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
 
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="thumbnail">
-                <img src="image/Poster3.png" alt="...">
-                <div class="caption">
-                    <h3>Don't Breathe 2</h3>
-                    <p>Action, Drama, Horror </p>
-                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-3">-->
+<!--            <div class="thumbnail">-->
+<!--                <img src="image/Poster3.png" alt="...">-->
+<!--                <div class="caption">-->
+<!--                    <h3>Don't Breathe 2</h3>-->
+<!--                    <p>Action, Drama, Horror </p>-->
+<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
 
-                </div>
-            </div>
-        </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </div>
 <div class="container" style="margin-top: 50px">
@@ -372,37 +422,37 @@
             See more<i class=" bi bi-arrow-right-short"></i>
         </a>
     </div>
-    <div class="row">
-        <div class="col-4">
-            <div class="thumbnail">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"
-                            allowfullscreen></iframe>
-                </div>
-                <h3>MoonFall</h3>
-                <p>some words here</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="thumbnail">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"
-                            allowfullscreen></iframe>
-                </div>
-                <h3>Avenger:End Game</h3>
-                <p>some words here</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="thumbnail">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"
-                            allowfullscreen></iframe>
-                </div>
-                <h3>Uncharted</h3>
-                <p>some words here</p>
-            </div>
-        </div>
+    <div class="row" id="videotrailer">
+<!--        <div class="col-4">-->
+<!--            <div class="thumbnail">-->
+<!--                <div class="embed-responsive embed-responsive-16by9">-->
+<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ivIwdQBlS10"-->
+<!--                            allowfullscreen></iframe>-->
+<!--                </div>-->
+<!--                <h3>MoonFall</h3>-->
+<!--                <p>some words here</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-4">-->
+<!--            <div class="thumbnail">-->
+<!--                <div class="embed-responsive embed-responsive-16by9">-->
+<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hA6hldpSTF8"-->
+<!--                            allowfullscreen></iframe>-->
+<!--                </div>-->
+<!--                <h3>Avenger:End Game</h3>-->
+<!--                <p>some words here</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-4">-->
+<!--            <div class="thumbnail">-->
+<!--                <div class="embed-responsive embed-responsive-16by9">-->
+<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/eHp3MbsCbMg"-->
+<!--                            allowfullscreen></iframe>-->
+<!--                </div>-->
+<!--                <h3>Uncharted</h3>-->
+<!--                <p>some words here</p>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </div>
 <div id="footer" class="container-fluid " style="background: black; color: white; margin-top: 50px;padding: 40px">
