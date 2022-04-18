@@ -16,19 +16,20 @@
     <script src="js/jquery.session.js"></script>
     <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="./css/jquery.datetimepicker.min.css">
-    <script src="./js/jquery.datetimepicker.full.min.js"></script>
+<!--    <link rel="stylesheet" href="./css/jquery.datetimepicker.min.css">-->
+<!--    <script src="./js/jquery.datetimepicker.full.min.js"></script>-->
 
     <script>
         function changeTime() {
             let i = document.getElementById("MovieDate");
-            console.log(i.value)
+            // console.log(i.value)
             let time = i.value.split(/[\s///:]+/)
             let hour = (time[5]=="PM")?Number(time[3])+12:time[3];
-            // let date = new Date(time[2],Number(time[0])-1,time[1],hour,time[4])
-            let date=""+time[2]+time[0]+time[1]+hour+time[4];
-            console.log(date)
-            return date;
+            let date = new Date(time[2],Number(time[0])-1,time[1],hour,time[4])
+            // let date=""+time[2]+time[0]+time[1]+hour+time[4];
+            // console.log(date)
+            // return date;
+            return Date.parse(date);
         }
     </script>
     <script>
@@ -50,18 +51,18 @@
 
         $(function () {
 
-            $('#datetimepickerStart').datetimepicker({
-                format:'Y-m-d',
-                timepicker:false,
-                minDate:new Date(),
-                onSelectDate:()=>{
-                    $('#datetimepickerEnd').datetimepicker({
-                        format:'Y-m-d',
-                        timepicker:false,
-                        minDate:$('#datetimepickerStart').datetimepicker('getValue'),
-                    });
-                }
-            });
+            // $('#datetimepickerStart').datetimepicker({
+            //     format:'Y-m-d',
+            //     timepicker:false,
+            //     minDate:new Date(),
+            //     onSelectDate:()=>{
+            //         $('#datetimepickerEnd').datetimepicker({
+            //             format:'Y-m-d',
+            //             timepicker:false,
+            //             minDate:$('#datetimepickerStart').datetimepicker('getValue'),
+            //         });
+            //     }
+            // });
 
             $('#ManageMovies-tab').click(() => {
                 let q=  new FormData();
@@ -156,6 +157,15 @@
             $('#submit_img_trailer').click(() => {
                 let q=  new FormData($('#img_trailer_form')[0]);
                 console.log(q.get("title"));
+                let title = q.get("title");
+                let trailerlink = q.get("trailerlink");
+                let image = q.get("image");
+                let image2 = q.get("image2");
+                if(title==""||trailerlink==""||image==""||image2==""){
+                    alert("cannot be empty");
+                    return;
+                }
+
                 $.ajax({
                     type: "post",
                     url: "addmovieform3", //change
@@ -749,11 +759,11 @@
                     </div>
                     <div class="form-group">
                         <label for="datetimepickerStart">Start Date</label>
-                        <input id="datetimepickerStart" type="text" class="form-control" name="promoStart">
+                        <input id="datetimepickerStart" type="date" min="2022-04-17" class="form-control" name="promoStart">
                     </div>
                     <div class="form-group">
                         <label for="datetimepickerEnd">End Date</label>
-                        <input id="datetimepickerEnd" type="text" class="form-control" name="promoEnd">
+                        <input id="datetimepickerEnd" type="date" class="form-control" name="promoEnd">
                     </div>
                 </form>
                 <button type="submit" id="submit_button" class="btn btn-success">Submit</button>
@@ -761,6 +771,19 @@
         </div>
     </div>
 </div>
+<script>
+    var myDate = new Date;
+    var year = myDate.getFullYear(); //获取当前年
+    var mon = myDate.getMonth()+1 < 10 ? "0"+(myDate.getMonth()+1) : (myDate.getMonth()+1);//
+    var dat = myDate.getDate() < 10 ? "0"+myDate.getDate() : myDate.getDate();
+    $("#datetimepickerStart").attr("min",year+"-"+mon+"-"+dat);
+    $("#datetimepickerStart").change(()=>{
+        console.log($("#datetimepickerStart").val());
+        $("#datetimepickerEnd").attr("min",$("#datetimepickerStart").val());
+    })
+    console.log()
+    $('input[type="date"]').val('yyyy-MM-dd');
+</script>
 <script type="text/javascript">
     $(function () {
         $('#datetimepicker').datetimepicker();
