@@ -34,19 +34,21 @@
     </script>
     <script>
         function clickFun(name) {
-            let q = new FormData();
-            q.append("movieName", name);
-            console.log(q.get("movieName"))
-            $.ajax({
-                type: "post",
-                url: "promoform2", //change
-                contentType: false,
-                processData: false,
-                data: q,
-                success(data) {
-                    alert(`For movie ${name}, the ` + data.ReturnStatus.description);
-                }
-            })
+            if (confirm("you will send the promotion:" + name)) {
+                let q = new FormData();
+                q.append("movieName", name);
+                console.log(q.get("movieName"))
+                $.ajax({
+                    type: "post",
+                    url: "promoform2", //change
+                    contentType: false,
+                    processData: false,
+                    data: q,
+                    success(data) {
+                        alert(`For movie ${name}, the ` + data.ReturnStatus.description);
+                    }
+                })
+            }
         }
 
         $(function () {
@@ -77,8 +79,8 @@
                             console.log(data, "++++++=");
                             let selectMovie = document.getElementById("SelectMovie");
                             let selectMovie2 = document.getElementById("SelectMovie_date");
-                            selectMovie.innerText="";
-                            selectMovie2.innerText="";
+                            selectMovie.innerText = "";
+                            selectMovie2.innerText = "";
                             for (let l of data.MovieList) {
                                 // console.log(l)
                                 let opt = document.createElement("option")
@@ -259,7 +261,7 @@
                                 tb.appendChild(tr);
                                 let button = document.getElementById("submit-" + data.id);
                                 button.onclick = function click() {
-                                    clickFun(data.promoName)
+                                    clickFun(data.promoCode)
                                 };
                             }
 
@@ -277,9 +279,10 @@
             $('#date_submit').click(() => {
                 let q = new FormData($('#date_form')[0]);
                 q.append("date", changeTime())
-                if(q.get("title")==""||q.get("date2")==""||q.get("room")==""){
+                if (q.get("title") == "" || q.get("date2") == "" || q.get("room") == "") {
                     alert('should not be empty')
-                }else{
+                }
+                else {
                     $.ajax({
                         type: "post",
                         url: "addmovieform4", //change
@@ -332,7 +335,7 @@
                                 tb.appendChild(tr);
                                 let button = document.getElementById("submit-" + r.id);
                                 button.onclick = function click() {
-                                    clickFun(r.promoName)
+                                    clickFun(r.promoCode)
                                 };
                                 // console.log(button);
                                 // button.onclick(clickFun(name))
