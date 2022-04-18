@@ -277,21 +277,25 @@
             $('#date_submit').click(() => {
                 let q = new FormData($('#date_form')[0]);
                 q.append("date", changeTime())
-                if(q.get("title")==""||q.get("date2")==""||q.get("room")=="")
-                $.ajax({
-                    type: "post",
-                    url: "addmovieform4", //change
-                    contentType: false,
-                    processData: false,
-                    data: q,
-                    success(data) {
-                        alert(data.ReturnStatus.description);
-                        console.log(data);
-                        $("#SelectMovie_date").val("");
-                        $("#MovieDate").val("");
-                        $("#SelectTheater").val("");
-                    }
-                })
+                if(q.get("title")==""||q.get("date2")==""||q.get("room")==""){
+                    alert('should not be empty')
+                }else{
+                    $.ajax({
+                        type: "post",
+                        url: "addmovieform4", //change
+                        contentType: false,
+                        processData: false,
+                        data: q,
+                        success(data) {
+                            alert(data.ReturnStatus.description);
+                            console.log(data);
+                            $("#SelectMovie_date").val("");
+                            $("#MovieDate").val("");
+                            $("#SelectTheater").val("");
+                        }
+                    });
+                }
+
             });
 
             $('#ManagePromotion-tab').click(() => {

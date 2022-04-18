@@ -170,10 +170,10 @@ public class mainController {
 
     @ResponseBody
     @RequestMapping("movieinfo")
-    public Map<String, Object> schedulelist(@RequestParam("movieid") int movieid){
+    public Map<String, Object> schedulelist(@RequestParam("movietitle") String movietitle){
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
-        Movie m = movieRepository.findById(movieid);
+        Movie m = movieRepository.findMovieByTitle(movietitle);
 
         Iterable<ShowSchedule> sList = showScheduleRepository.findAllByMovie(m);
         List<ShowSchedule> showscheduleList = new ArrayList<>();
