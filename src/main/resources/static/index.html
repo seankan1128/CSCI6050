@@ -70,115 +70,115 @@
             })
         })
     </script>
-    <script>
-        $(function () {
-            $.ajax({
-                type: "post",
-                url: "movielist", //change
-                contentType: false,
-                processData: false,
-                data: {},
-                success(data) {
-                    console.log(data.ComingSoon);
-                    movieArr = data.ComingSoon;
-                    for (let i =0;i<movieArr.length;i++){
-                        let data = movieArr[i];
-                        let movie = document.createElement("div");
-                        let url = data.trailerPicture;
-                        console.log(url)
-                        url = url.replaceAll("//",'/').substring(25);
-                        console.log(url);
-                        movie.innerHTML=`
-                            <div class="col-3" style="min-width: 100%;padding: 0;">
-                                <div class="thumbnail">
-                                    <img src="${url}" alt="..." style="max-height: 371px;max-width: 250px">
-                                    <div class="caption">
-                                        <h3 style="min-width: 100%">${data.cast}</h3>
-                                        <p>${data.review}</p>
-                                        <p><a href="#" class="btn btn-primary" role="button">About</a>
-                                            <a href="select.html" class="btn btn-success" role="button">Booking</a></p>
-                                    </div>
-                                </div>
-                            </div>`;
-                        document.getElementById("future").appendChild(movie);
-                    }
+<!--    <script>-->
+<!--        $(function () {-->
+<!--            $.ajax({-->
+<!--                type: "post",-->
+<!--                url: "movielist", //change-->
+<!--                contentType: false,-->
+<!--                processData: false,-->
+<!--                data: {},-->
+<!--                success(data) {-->
+<!--                    console.log(data.ComingSoon);-->
+<!--                    movieArr = data.ComingSoon;-->
+<!--                    for (let i =0;i<movieArr.length;i++){-->
+<!--                        let data = movieArr[i];-->
+<!--                        let movie = document.createElement("div");-->
+<!--                        let url = data.trailerPicture;-->
+<!--                        console.log(url)-->
+<!--                        url = url.replaceAll("//",'/').substring(25);-->
+<!--                        console.log(url);-->
+<!--                        movie.innerHTML=`-->
+<!--                            <div class="col-3" style="min-width: 100%;padding: 0;">-->
+<!--                                <div class="thumbnail">-->
+<!--                                    <img src="${url}" alt="..." style="max-height: 371px;max-width: 250px">-->
+<!--                                    <div class="caption">-->
+<!--                                        <h3 style="min-width: 100%">${data.cast}</h3>-->
+<!--                                        <p>${data.review}</p>-->
+<!--                                        <p><a href="#" class="btn btn-primary" role="button">About</a>-->
+<!--                                            <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>`;-->
+<!--                        document.getElementById("future").appendChild(movie);-->
+<!--                    }-->
 
 
-                }
-            })
-        })
+<!--                }-->
+<!--            })-->
+<!--        })-->
 
-    </script>
-    <script>
-        $(function () {
-            $.ajax({
-                type: "post",
-                url: "movielist", //change
-                contentType: false,
-                processData: false,
-                data: {},
-                success(data) {
-                    console.log(data.StreamingNow);//
-                    movieArr = data.StreamingNow;//
-                    for (let i =0;i<3 ;i++){
-                        let data = movieArr[i];
-                        let movie = document.createElement("div");
-                        let url = data.trailerbanner;
-                        console.log(url)
-                        url = url.replaceAll("//",'/').substring(25);
-                        console.log(url);
-                        movie.innerHTML=`
-                            <div class="carousel-item active">
-                                <img src="${url}" class="d-block\\ w-100" alt="..." style="max-height: 371px;max-width: 250px" data-interval="5000">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>${i} slide label</h5>
-                                    <p>Some representative placeholder content for the ${i} slide.</p>
-                                </div>
-                            </div>`;
-                        document.getElementById("slides").appendChild(movie);
-                    }
+<!--    </script>-->
+<!--    <script>-->
+<!--        $(function () {-->
+<!--            $.ajax({-->
+<!--                type: "post",-->
+<!--                url: "movielist", //change-->
+<!--                contentType: false,-->
+<!--                processData: false,-->
+<!--                data: {},-->
+<!--                success(data) {-->
+<!--                    console.log(data.StreamingNow);//-->
+<!--                    movieArr = data.StreamingNow;//-->
+<!--                    for (let i =0;i<3 ;i++){-->
+<!--                        let data = movieArr[i];-->
+<!--                        let movie = document.createElement("div");-->
+<!--                        let url = data.trailerbanner;-->
+<!--                        console.log(url)-->
+<!--                        url = url.replaceAll("//",'/').substring(25);-->
+<!--                        console.log(url);-->
+<!--                        movie.innerHTML=`-->
+<!--                            <div class="carousel-item active">-->
+<!--                                <img src="${url}" class="d-block\\ w-100" alt="..." style="max-height: 371px;max-width: 250px" data-interval="5000">-->
+<!--                                <div class="carousel-caption d-none d-md-block">-->
+<!--                                    <h5>${i} slide label</h5>-->
+<!--                                    <p>Some representative placeholder content for the ${i} slide.</p>-->
+<!--                                </div>-->
+<!--                            </div>`;-->
+<!--                        document.getElementById("slides").appendChild(movie);-->
+<!--                    }-->
 
 
-                }
-            })
-        })
-    </script>
-    <script>
-        $(function () {
-            $.ajax({
-                type: "post",
-                url: "movielist", //change
-                contentType: false,
-                processData: false,
-                data: {},
-                success(data) {
-                    console.log(data.StreamingNow);//
-                    movieArr = data.StreamingNow;//
-                    for (let i =0;i<3 ;i++){
-                        let data = movieArr[i];
-                        let movie = document.createElement("div");
-                        let url = data.trailerVideo;
-                        //console.log(url)
-                        url = url.replaceAll("//",'/').substring(25);
-                        //console.log(url);
-                        movie.innerHTML=`
-                            <div class="col-4">
-                                <div class="thumbnail">
-                                    <div class="embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item" src="${url}"
-                                            allowfullscreen></iframe>
-                                    </div>
-                                    <h3>${data.title}</h3>
-                                    <p>${data.description}</p>
-                                </div>
-                            </div>`;
-                        document.getElementById("videotrailer").appendChild(movie);
-                    }
-                }
-            })
-        })
+<!--                }-->
+<!--            })-->
+<!--        })-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        $(function () {-->
+<!--            $.ajax({-->
+<!--                type: "post",-->
+<!--                url: "movielist", //change-->
+<!--                contentType: false,-->
+<!--                processData: false,-->
+<!--                data: {},-->
+<!--                success(data) {-->
+<!--                    console.log(data.StreamingNow);//-->
+<!--                    movieArr = data.StreamingNow;//-->
+<!--                    for (let i =0;i<3 ;i++){-->
+<!--                        let data = movieArr[i];-->
+<!--                        let movie = document.createElement("div");-->
+<!--                        let url = data.trailerVideo;-->
+<!--                        //console.log(url)-->
+<!--                        url = url.replaceAll("//",'/').substring(25);-->
+<!--                        //console.log(url);-->
+<!--                        movie.innerHTML=`-->
+<!--                            <div class="col-4">-->
+<!--                                <div class="thumbnail">-->
+<!--                                    <div class="embed-responsive embed-responsive-16by9">-->
+<!--                                        <iframe class="embed-responsive-item" src="${url}"-->
+<!--                                            allowfullscreen></iframe>-->
+<!--                                    </div>-->
+<!--                                    <h3>${data.title}</h3>-->
+<!--                                    <p>${data.description}</p>-->
+<!--                                </div>-->
+<!--                            </div>`;-->
+<!--                        document.getElementById("videotrailer").appendChild(movie);-->
+<!--                    }-->
+<!--                }-->
+<!--            })-->
+<!--        })-->
 
-    </script>
+<!--    </script>-->
 
     <script>
         $(function () {
