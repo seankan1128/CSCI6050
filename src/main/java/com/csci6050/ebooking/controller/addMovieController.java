@@ -136,27 +136,47 @@ public class addMovieController {
     public Map<String, Object> saveshowschedule(@RequestParam("title") String title, @RequestParam("date") String date, @RequestParam("room") String room){
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
-        System.out.println(room);
+//        System.out.println(room);
         Movie m = movieRepository.findMovieByTitle(title);
         Auditorium a = auditoriumRepository.findAuditoriumByAudname(room);
 
-        System.out.println(room);
-        ShowSchedule showSchedule = new ShowSchedule();
-        showSchedule.setMovie(m);
-        showSchedule.setAuditorium(a);
-        showSchedule.setStarttime(date);
-        BigInteger endDate = new BigInteger(date);
-        endDate =  endDate.add(BigInteger.valueOf(m.getDuration()*60000));
-        showSchedule.setEndtime(endDate.toString());
-        System.out.println(date);
-        System.out.println(BigInteger.valueOf(m.getDuration()*60000));
-        System.out.println(endDate);
-//        System.out.println(date.getClass());
-        showScheduleRepository.save(showSchedule);
+        //Add logic no crash in time at same showroom
+        Iterable<ShowSchedule> slist = showScheduleRepository.findAllByAuditorium(a);
+        List<ShowSchedule> showScheduleList = new ArrayList<>();
+        slist.forEach(showScheduleList::add);
 
-        SD.setStatus(1);
-        SD.setDescription("Show schedule saved");
-        returnMap.put("ReturnStatus",SD);
+        Long startDate = Long.parseLong(date);
+        Long endDate = Long.parseLong(date);
+        endDate = endDate + m.getDuration()*60000;
+
+
+        if (checkschedule(startDate, endDate, showScheduleList)) {
+            ShowSchedule showSchedule = new ShowSchedule();
+            showSchedule.setMovie(m);
+            showSchedule.setAuditorium(a);
+            showSchedule.setStarttime(startDate.toString());
+            showSchedule.setEndtime(endDate.toString());
+            showScheduleRepository.save(showSchedule);
+
+            SD.setStatus(1);
+            SD.setDescription("Show schedule saved");
+        } else {
+            SD.setStatus(0);
+            SD.setDescription("Show schedule crashed");
+        }
+        returnMap.put("ReturnStatus", SD);
         return returnMap;
+    }
+
+    public boolean checkschedule(long starttime, long endtime, List<ShowSchedule> showScheduleList){
+        for (ShowSchedule showSchedule : showScheduleList){
+            if((starttime > Long.parseLong(showSchedule.getStarttime()))&&(starttime < Long.parseLong(showSchedule.getEndtime()))){
+                return false;
+            }
+            if((starttime < Long.parseLong(showSchedule.getStarttime()))&&(endtime > Long.parseLong(showSchedule.getStarttime()))){
+                return false;
+            }
+        }
+        return true;
     }
 }
