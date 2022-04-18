@@ -75,7 +75,7 @@ public class addMovieController {
 
     @ResponseBody
     @RequestMapping("addmovieform2")
-    public Map<String, Object> returnMovie(Movie movie){
+    public Map<String, Object> returnMovie(){
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
         Iterable<Movie> mlist = movieRepository.findAll();
