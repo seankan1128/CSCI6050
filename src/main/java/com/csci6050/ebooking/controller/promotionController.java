@@ -132,11 +132,11 @@ public class promotionController {
 
     @ResponseBody
     @RequestMapping("promoform2")
-    public Map<String, Object> sendEmail(@RequestParam("movieName") String name){
+    public Map<String, Object> sendEmail(@RequestParam("movieName") String code){
         System.out.println("++++++++++++++++");
-        System.out.println(name);
+        System.out.println(code);
         Map<String, Object> returnMap = new HashMap<>();
-        Promotions p = promotionsRepository.findByPromoName(name);
+        Promotions p = promotionsRepository.findByPromoCode(code);
         Iterable<User> userIterable = userRepository.findAllByEnrolledForPromotions("on");
 
         Email email = new Email();
