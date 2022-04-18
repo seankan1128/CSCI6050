@@ -73,19 +73,23 @@
                     processData: false,
                     data: q,
                     success(data) {
-                        console.log(data,"++++++=");
-                        let selectMovie = document.getElementById("SelectMovie");
-                        let selectMovie2 = document.getElementById("SelectMovie_date");
-                        for (let l of data.MovieList){
-                            // console.log(l)
-                            let opt = document.createElement("option")
-                            opt.innerHTML=l.title;
-                            opt.name=l.title;
-                            let opt2 = document.createElement("option")
-                            opt2.innerHTML=l.title;
-                            opt2.name=l.title;
-                            selectMovie.appendChild(opt);
-                            selectMovie2.appendChild(opt2);
+                        if(data.ReturnStatus.status==1) {
+                            console.log(data, "++++++=");
+                            let selectMovie = document.getElementById("SelectMovie");
+                            let selectMovie2 = document.getElementById("SelectMovie_date");
+                            for (let l of data.MovieList) {
+                                // console.log(l)
+                                let opt = document.createElement("option")
+                                opt.innerHTML = l.title;
+                                opt.name = l.title;
+                                let opt2 = document.createElement("option")
+                                opt2.innerHTML = l.title;
+                                opt2.name = l.title;
+                                selectMovie.appendChild(opt);
+                                selectMovie2.appendChild(opt2);
+                            }
+                        }else{
+                            alert(data.ReturnStatus.description);
                         }
                     }
                 })
@@ -116,37 +120,48 @@
                         data: q,
                         success(data) {
                             // console.log(data);
-                            alert(data.ReturnStatus.description);
-                            let selectMovie = document.getElementById("SelectMovie");
-                            let selectMovie2 = document.getElementById("SelectMovie_date");
-                            let opt = document.createElement("option")
-                            opt.innerHTML = q.get("title");
-                            opt.name = q.get("title");
-                            let opt2 = document.createElement("option")
-                            opt2.innerHTML = q.get("title");
-                            opt2.name = q.get("title");
-                            selectMovie.appendChild(opt);
-                            selectMovie2.appendChild(opt2);
-                            // let tb = document.getElementById("manageMovieTable");
-                            // let tr = document.createElement("tr");
-                            // tr.innerHTML = `
-                            //     <th scope="row">${q.get("MovieTitle")}</th>
-                            //     <td>photo</td>
-                            //     <td>link</td>
-                            //     <td>${q.get("MovieRate")}</td>
-                            //     <td>Room</td>
-                            //     <td>time</td>
-                            //     <td><button class="btn btn-danger" id="addMovie-${q.get("MovieTitle")}">Delete</button></td>`;
-                            //
-                            // tb.appendChild(tr);
-                            //
-                            // let button = document.getElementById("addMovie-"+q.get("MovieTitle"));
-                            // button.onclick=function click(){clickFun(data.promoName)};
+                            if(data.ReturnStatus.status==1) {
+                                alert(data.ReturnStatus.description);
+                                let selectMovie = document.getElementById("SelectMovie");
+                                let selectMovie2 = document.getElementById("SelectMovie_date");
+                                let opt = document.createElement("option")
+                                opt.innerHTML = q.get("title");
+                                opt.name = q.get("title");
+                                let opt2 = document.createElement("option")
+                                opt2.innerHTML = q.get("title");
+                                opt2.name = q.get("title");
+                                selectMovie.appendChild(opt);
+                                selectMovie2.appendChild(opt2);
+                                // let tb = document.getElementById("manageMovieTable");
+                                // let tr = document.createElement("tr");
+                                // tr.innerHTML = `
+                                //     <th scope="row">${q.get("MovieTitle")}</th>
+                                //     <td>photo</td>
+                                //     <td>link</td>
+                                //     <td>${q.get("MovieRate")}</td>
+                                //     <td>Room</td>
+                                //     <td>time</td>
+                                //     <td><button class="btn btn-danger" id="addMovie-${q.get("MovieTitle")}">Delete</button></td>`;
+                                //
+                                // tb.appendChild(tr);
+                                //
+                                // let button = document.getElementById("addMovie-"+q.get("MovieTitle"));
+                                // button.onclick=function click(){clickFun(data.promoName)};
 
-                            // $("#PromotionName").val("");
-                            // $("#PromotionDiscount").val("");
-                            // $("#PromotionCode").val("");
-
+                                // $("#PromotionName").val("");
+                                // $("#PromotionDiscount").val("");
+                                // $("#PromotionCode").val("");
+                            }
+                            alert(data.ReturnStatus.description)
+                            $("#MovieTitle").val("");
+                            $("#Category").val("");
+                            $("#MovieRate").val("");
+                            $("#duration").val("");
+                            $("#Director").val("");
+                            $("#producer").val("");
+                            $("#Cast1").val("");
+                            $("#description").val("");
+                            $("#reviews").val("");
                         }
 
                     })
@@ -173,6 +188,7 @@
                     processData: false,
                     data: q,
                     success(data) {
+
                         console.log(data);
                         $("#SelectMovie").val("");
                         $("#TrailerLink").val("");
@@ -223,10 +239,11 @@
                             button.onclick=function click(){clickFun(data.promoName)};
                         }
 
-
                         $("#PromotionName").val("");
                         $("#PromotionDiscount").val("");
                         $("#PromotionCode").val("");
+                        $("#datetimepickerStart").val("");
+                        $("#datetimepickerEnd").val("");
 
                     }
                 })
@@ -243,7 +260,11 @@
                     processData: false,
                     data: q,
                     success(data) {
+                        alert(data.ReturnStatus.description);
                         console.log(data);
+                        $("#SelectMovie_date").val("");
+                        $("#MovieDate").val("");
+                        $("#SelectTheater").val("");
                     }
                 })
             });
@@ -285,6 +306,8 @@
                                 // console.log(button);
                                 // button.onclick(clickFun(name))
                             }
+                        }else{
+                            alert(ReturnStatus.description);
                         }
                     },
                 })
