@@ -168,4 +168,10 @@ public class mainController {
         return returnMap;
     }
 
+    @ResponseBody
+    @RequestMapping("movieinfo")
+    public Map<String, Object> schedulelist(@RequestParam("movieid") int movieid){
+        Map<String, Object> returnMap = new HashMap<>();
+        return returnMap;
+    }
 }
