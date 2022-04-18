@@ -172,6 +172,26 @@ public class mainController {
     @RequestMapping("movieinfo")
     public Map<String, Object> schedulelist(@RequestParam("movieid") int movieid){
         Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+        Movie m = movieRepository.findById(movieid);
+
+        Iterable<ShowSchedule> sList = showScheduleRepository.findAllByMovie(m);
+        List<ShowSchedule> showscheduleList = new ArrayList<>();
+        sList.forEach(showscheduleList::add);
+
+        if(showscheduleList.isEmpty()){
+            SD.setStatus(0);
+            SD.setDescription("The movie is not streaming now");
+            returnMap.put("ReturnStatus", SD);
+            return returnMap;
+        }
+
+        SD.setStatus(1);
+        SD.setDescription("The show schedules are as follow");
+
+        returnMap.put("ReturnStatus", SD);
+        returnMap.put("ScheduleList", showscheduleList);
+
         return returnMap;
     }
 }
