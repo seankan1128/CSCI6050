@@ -778,7 +778,8 @@
     var dat = myDate.getDate() < 10 ? "0"+myDate.getDate() : myDate.getDate();
     $("#datetimepickerStart").attr("min",year+"-"+mon+"-"+dat);
     $("#datetimepickerStart").change(()=>{
-        console.log($("#datetimepickerStart").val());
+        // console.log($("#datetimepickerStart").val());
+        $("#datetimepickerEnd").val("")
         $("#datetimepickerEnd").attr("min",$("#datetimepickerStart").val());
     })
     console.log()
