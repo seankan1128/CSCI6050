@@ -38,7 +38,9 @@ public class mainController {
 
         Iterable<ShowSchedule> sList = showScheduleRepository.findAll();
         List<ShowSchedule> showscheduleList = new ArrayList<>();
-        sList.forEach(showscheduleList::add);
+        if(sList != null){
+            sList.forEach(showscheduleList::add);
+        }
 
         Iterable<Movie> mList = movieRepository.findAll();
         List<Movie> movieList = new ArrayList<>();
@@ -62,10 +64,10 @@ public class mainController {
         returnMap.put("ComingSoon", not_in_schedule_movielist);
         returnMap.put("StreamingNow", in_schedule_movielist);
 
-        System.out.println(not_in_schedule_movielist.size());
-        System.out.println(not_in_schedule_movielist.get(0).getId());
-        System.out.println(in_schedule_movielist.size());
-        System.out.println(in_schedule_movielist.get(0).getId());
+//        System.out.println(not_in_schedule_movielist.size());
+//        System.out.println(not_in_schedule_movielist.get(0).getId());
+//        System.out.println(in_schedule_movielist.size());
+//        System.out.println(in_schedule_movielist.get(0).getId());
 
         return returnMap;
     }
