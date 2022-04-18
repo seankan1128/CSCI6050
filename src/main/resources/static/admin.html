@@ -169,6 +169,9 @@
                             $("#description").val("");
                             $("#reviews").val("");
                         },
+                        error(data) {
+                            alert("server error ")
+                        }
 
                     })
                 }
