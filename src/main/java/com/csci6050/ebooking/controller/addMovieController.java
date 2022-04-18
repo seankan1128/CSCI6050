@@ -36,7 +36,7 @@ public class addMovieController {
     @RequestMapping("addmovieform")
     public Map<String, Object> addNewMovie(Movie movie){
 
-        Movie mov = movieRepository.findById(movie.getId());
+        Movie mov = movieRepository.findMovieByTitle(movie.getTitle());
 
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
@@ -136,7 +136,6 @@ public class addMovieController {
     public Map<String, Object> saveshowschedule(@RequestParam("title") String title, @RequestParam("date") String date, @RequestParam("room") String room){
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
-//        System.out.println(room);
         Movie m = movieRepository.findMovieByTitle(title);
         Auditorium a = auditoriumRepository.findAuditoriumByAudname(room);
 
