@@ -72,7 +72,7 @@
                     processData: false,
                     data: q,
                     success(data) {
-                        // console.log(data,"++++++=");
+                        console.log(data,"++++++=");
                         let selectMovie = document.getElementById("SelectMovie");
                         let selectMovie2 = document.getElementById("SelectMovie_date");
                         for (let l of data.MovieList){
@@ -455,14 +455,8 @@
 
                     <div class="form-group">
                         <label for="MovieRate">Duration</label>
-                        <select class="form-control" id="duration" name="duration">
-                            <option value="1.0">1 hour</option>
-                            <option value="1.5">1.5 hours</option>
-                            <option value="2.0">2 hours</option>
-                            <option value="2.5">2.5 hours</option>
-                            <option value="3.0">3 hours</option>
-                            <!--                            <option>NC-17</option>-->
-                        </select>
+                        <input name="duration" type="number" class="form-control" id="duration" placeholder="please enter how many minutes">
+
                     </div>
 
                     <div class="form-group">
