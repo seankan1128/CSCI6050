@@ -76,28 +76,96 @@ public class mainController {
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
 
+        Iterable<ShowSchedule> sList = showScheduleRepository.findAll();
+        List<ShowSchedule> showscheduleList = new ArrayList<>();
+        sList.forEach(showscheduleList::add);
+
         Iterable<Movie> mList = movieRepository.findAll();
         List<Movie> movieList = new ArrayList<>();
         mList.forEach(movieList::add);
 
+        List<Movie> in_schedule_movielist = new ArrayList<>();
+        // Traverse through the first list
+        for (ShowSchedule s : showscheduleList) {
+
+            // If this element is not present in newList
+            // then add it
+            if (!in_schedule_movielist.contains(s.getMovie())) {
+
+                in_schedule_movielist.add(s.getMovie());
+            }
+        }
+
+        List<Movie> not_in_schedule_movielist = new ArrayList<>(movieList);
+        not_in_schedule_movielist.removeAll(in_schedule_movielist);
+
+
         // 1 is searching title
         if(searchtype.equals("1")){
-            List<Movie> searched_list = new ArrayList<>();
-            for (Movie m : movieList) {
+            List<Movie> in_schedule_searched_list = new ArrayList<>();
+            List<Movie> not_in_schedule_searched_list = new ArrayList<>();
+
+            for (Movie m : in_schedule_movielist) {
 
                 // If this element is not present in newList
                 // then add it
                 if (m.getTitle().contains(searchtext)) {
-
-                    searched_list.add(m);
+                    in_schedule_searched_list.add(m);
                 }
             }
 
-            if (movieList.isEmpty()){
+            for (Movie m : not_in_schedule_movielist) {
 
+                // If this element is not present in newList
+                // then add it
+                if (m.getTitle().contains(searchtext)) {
+                    not_in_schedule_searched_list.add(m);
+                }
             }
-        }
 
+            SD.setDescription("The movies are as follow");
+            SD.setStatus(1);
+
+            if (in_schedule_searched_list.isEmpty() && not_in_schedule_searched_list.isEmpty()){
+                SD.setDescription("No movie matched");
+                SD.setStatus(0);
+            }
+            returnMap.put("In_schedule_searched_list", in_schedule_searched_list);
+            returnMap.put("Not_in_schedule_searched_list", not_in_schedule_searched_list);
+            returnMap.put("ReturnStatus", SD);
+        } else {
+            List<Movie> in_schedule_searched_list = new ArrayList<>();
+            List<Movie> not_in_schedule_searched_list = new ArrayList<>();
+
+            for (Movie m : in_schedule_movielist) {
+
+                // If this element is not present in newList
+                // then add it
+                if (m.getCategory().contains(searchtext)) {
+                    in_schedule_searched_list.add(m);
+                }
+            }
+
+            for (Movie m : not_in_schedule_movielist) {
+
+                // If this element is not present in newList
+                // then add it
+                if (m.getCategory().contains(searchtext)) {
+                    not_in_schedule_searched_list.add(m);
+                }
+            }
+
+            SD.setDescription("The movies are as follow");
+            SD.setStatus(1);
+
+            if (in_schedule_searched_list.isEmpty() && not_in_schedule_searched_list.isEmpty()){
+                SD.setDescription("No movie matched");
+                SD.setStatus(0);
+            }
+            returnMap.put("In_schedule_searched_list", in_schedule_searched_list);
+            returnMap.put("Not_in_schedule_searched_list", not_in_schedule_searched_list);
+            returnMap.put("ReturnStatus", SD);
+        }
         return returnMap;
     }
 
