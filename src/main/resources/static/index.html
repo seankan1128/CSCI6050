@@ -68,9 +68,9 @@
                         $("#future").append(movie);
                     }
 
-                    // console.log(movieArr2)
+                    console.log(movieArr3,"arr3")
                     for (let i = 0; i < 3; i++) {
-                        let data = movieArr2[i];
+                        let data = movieArr3[i];
                         let movie = document.getElementById("carousel-inner-" + (i + 1));
                         let url = data.trailerbanner;
                         // console.log(url);
@@ -82,11 +82,10 @@
                         movie.childNodes[3].childNodes[3].innerHTML = "the rating is " + data.ratingID;
                     }
 
-                    // console.log(movieArr2)
                     var videotrailer = document.getElementById("videotrailer");
                     for (let i = 0; i < 3; i++) {
-                        let data = movieArr2[i]
-                        // console.log(data);
+                        let data = movieArr3[i]
+                        console.log(data);
                         let movie = document.getElementById("iframe-" + (i + 1));
                         let url = "https://www.youtube.com/embed/" + data.trailerVideo;
                         movie.src = url;
@@ -209,7 +208,7 @@
                 <option value="1" selected>Title</option>
                 <option value="2">Category</option>
             </select>
-            <input id="search_text" class="form-control col-8" type="search" placeholder="Search" aria-label="Search" name="searchtext">
+            <input class="form-control col-8" type="search" placeholder="Search" aria-label="Search" name="searchtext">
             <a id="search_btn" href="#" class="btn btn-outline-primary col-2" type="button">Search</a>
         </form>
         <div id="user" class="col-1 offset-1">

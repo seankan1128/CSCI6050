@@ -57,14 +57,11 @@ public class mainController {
 
         List<Movie> not_in_schedule_movielist = new ArrayList<>(movieList);
         not_in_schedule_movielist.removeAll(in_schedule_movielist);
+        List<Movie> tail = movieList.subList(Math.max(movieList.size() - 3, 0), movieList.size());
 
         returnMap.put("ComingSoon", not_in_schedule_movielist);
         returnMap.put("StreamingNow", in_schedule_movielist);
-
-//        System.out.println(not_in_schedule_movielist.size());
-//        System.out.println(not_in_schedule_movielist.get(0).getId());
-//        System.out.println(in_schedule_movielist.size());
-//        System.out.println(in_schedule_movielist.get(0).getId());
+        returnMap.put("LatestMovie", tail);
 
         return returnMap;
     }
