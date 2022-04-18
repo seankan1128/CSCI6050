@@ -21,21 +21,23 @@
                 data: {},
                 success(data) {
                     $.session.set('movieInfo',$.param(data));
-                    console.log(data.StreamingNow);
-                    movieArr = data.StreamingNow;
+                    console.log(data);
+                    // console.log(data.StreamingNow);
+                    var movieArr = data.StreamingNow;
+                    var movieArr2 = data.ComingSoon;
                     for (let i =0;i<movieArr.length;i++){
                         let data = movieArr[i];
                         let movie = document.createElement("div");
                         let url = data.trailerPicture;
-                        console.log(url)
-                        let arr = url.split("//");
-                        url = "/image/"+arr[arr.length-1];
+                        // console.log(url)
+                        // let arr = url.split("//");
+                        url = "/image/"+url;
                         movie.innerHTML=`
                             <div class="col-3" style="min-width: 100%;padding: 0;">
                                 <div class="thumbnail">
                                     <img src="${url}" alt="..." style="max-height: 371px;max-width: 250px">
                                     <div class="caption">
-                                        <h3 style="min-width: 100%">${data.cast}</h3>
+                                        <h3 style="min-width: 100%">${data.title}</h3>
                                         <p>${data.review}</p>
                                         <p><a href="#" class="btn btn-primary" role="button">About</a>
                                             <a href="#" class="booking_btn btn btn-success" role="button" id="movie${i}">Booking</a></p>
@@ -45,51 +47,51 @@
 
                         document.getElementById("athere").appendChild(movie);
                     }
+                    for (let i =0;i<movieArr2.length;i++){
+                        let data = movieArr2[i];
+                        let movie = document.createElement("div");
+                        let url = data.trailerPicture;
+                        // console.log(url)
+                        // url = url.replaceAll("//",'/').substring(25);
+                        url='/image/'+url;
+                        // console.log(url);
+                        movie.innerHTML=`
+                            <div class="col-3" style="min-width: 100%;padding: 0;">
+                                <div class="thumbnail">
+                                    <img src="${url}" alt="..." style="max-height: 371px;max-width: 250px">
+                                    <div class="caption">
+                                        <h3 style="min-width: 100%">${data.title}</h3>
+                                        <p>${data.review}</p>
+                                        <p><a href="#" class="btn btn-primary" role="button">About</a>
+                                            <a href="select.html" class="btn btn-success" role="button">Booking</a></p>
+                                    </div>
+                                </div>
+                            </div>`;
+                        document.getElementById("future").appendChild(movie);
+                    }
+
+                    // console.log(movieArr2)
+                    for (let i =0;i<3 ;i++){
+                        let data = movieArr2[i];
+                        let movie = document.getElementById("carousel-inner-"+(i+1));
+                        let url = data.trailerbanner;
+                        // console.log(url);
+                        url = '/image/' + url;
+                        movie.childNodes[1].src=url;
+                        // console.log(movie.childNodes[1],url)
+                        movie.childNodes[3].childNodes[1].innerHTML = data.title;
 
 
 
                 }
             })
             $('.booking_btn').click((e) => {
-                let movie_title = [...$(e.target).attr('id')];
-                $.session.set('get_movie',$.param(movie_title));
+                    let movie_title = [...$(e.target).attr('id')];
+                    $.session.set('get_movie',$.param(movie_title));
                 }
             )
         });
     </script>
-<!--    <script>-->
-<!--        $(function () {-->
-<!--            $.ajax({-->
-<!--                type: "post",-->
-<!--                url: "movielist", //change-->
-<!--                contentType: false,-->
-<!--                processData: false,-->
-<!--                data: {},-->
-<!--                success(data) {-->
-<!--                    console.log(data.ComingSoon);-->
-<!--                    movieArr = data.ComingSoon;-->
-<!--                    for (let i =0;i<movieArr.length;i++){-->
-<!--                        let data = movieArr[i];-->
-<!--                        let movie = document.createElement("div");-->
-<!--                        let url = data.trailerPicture;-->
-<!--                        console.log(url)-->
-<!--                        url = url.replaceAll("//",'/').substring(25);-->
-<!--                        console.log(url);-->
-<!--                        movie.innerHTML=`-->
-<!--                            <div class="col-3" style="min-width: 100%;padding: 0;">-->
-<!--                                <div class="thumbnail">-->
-<!--                                    <img src="${url}" alt="..." style="max-height: 371px;max-width: 250px">-->
-<!--                                    <div class="caption">-->
-<!--                                        <h3 style="min-width: 100%">${data.cast}</h3>-->
-<!--                                        <p>${data.review}</p>-->
-<!--                                        <p><a href="#" class="btn btn-primary" role="button">About</a>-->
-<!--                                            <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>`;-->
-<!--                        document.getElementById("future").appendChild(movie);-->
-<!--                    }-->
-
 
 <!--                }-->
 <!--            })-->
@@ -187,9 +189,8 @@
             })
         })
     </script>
-<!--    login check-->
     <script>
-
+        //login check
         $(function () {
             let user_info = undefined;
             let flag = 0;
@@ -278,21 +279,21 @@
             <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner" id="slides">
-            <div class="carousel-item active">
+            <div class="carousel-item active" id="carousel-inner-1">
                 <img src="image/Header1.png" class="d-block\ w-100" alt="..." data-interval="5000">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>First slide label</h5>
                     <p>Some representative placeholder content for the first slide.</p>
                 </div>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item"  id="carousel-inner-2">
                 <img src="image/Header2.jpg" class="d-block\ w-100" alt="..." data-interval="5000">
-                <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-captio n d-none d-md-block">
                     <h5>Second slide label</h5>
                     <p>Some representative placeholder content for the second slide.</p>
                 </div>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item" id="carousel-inner-3">
                 <img src="image/Header1.png" class="d-block\ w-100" alt="..." data-interval="5000">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Third slide label</h5>
@@ -320,51 +321,51 @@
         </a>
     </div>
     <div class="row" id="athere">
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster1.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>Stranger Things</h3>-->
-<!--                    <p>Action, Adventure, Horror</p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
-<!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster1.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>Stranger Things</h3>-->
+        <!--                    <p>Action, Adventure, Horror</p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
+        <!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster2.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>Batman Begins</h3>-->
-<!--                    <p>Action, Adventure</p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
-<!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster3.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>Spider-Man : Into The Spider Verse</h3>-->
-<!--                    <p>Animation, Action, Adventure</p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
-<!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster4.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>Dunkirk</h3>-->
-<!--                    <p>Action, Drama, History</p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
-<!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster2.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>Batman Begins</h3>-->
+        <!--                    <p>Action, Adventure</p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
+        <!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster3.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>Spider-Man : Into The Spider Verse</h3>-->
+        <!--                    <p>Animation, Action, Adventure</p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
+        <!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster4.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>Dunkirk</h3>-->
+        <!--                    <p>Action, Drama, History</p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a>-->
+        <!--                        <a href="select.html" class="btn btn-success" role="button">Booking</a></p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 <div class="container" style="margin-top: 50px">
@@ -377,49 +378,49 @@
         </a>
     </div>
     <div class="row" id="future">
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster4.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>Dune</h3>-->
-<!--                    <p>Action, Adventure, Drama</p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster3.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>No Time To Die</h3>-->
-<!--                    <p>Action, Adventure, Thriller</p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster4.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>Dune</h3>-->
+        <!--                    <p>Action, Adventure, Drama</p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster3.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>No Time To Die</h3>-->
+        <!--                    <p>Action, Adventure, Thriller</p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
 
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster4.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>Shang-Chi and the Legend of the Ten Rings</h3>-->
-<!--                    <p>Action, Adventure, Fantasy</p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster4.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>Shang-Chi and the Legend of the Ten Rings</h3>-->
+        <!--                    <p>Action, Adventure, Fantasy</p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
 
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-3">-->
-<!--            <div class="thumbnail">-->
-<!--                <img src="image/Poster3.png" alt="...">-->
-<!--                <div class="caption">-->
-<!--                    <h3>Don't Breathe 2</h3>-->
-<!--                    <p>Action, Drama, Horror </p>-->
-<!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div class="col-3">-->
+        <!--            <div class="thumbnail">-->
+        <!--                <img src="image/Poster3.png" alt="...">-->
+        <!--                <div class="caption">-->
+        <!--                    <h3>Don't Breathe 2</h3>-->
+        <!--                    <p>Action, Drama, Horror </p>-->
+        <!--                    <p><a href="#" class="btn btn-primary" role="button">About</a></p>-->
 
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 <div class="container" style="margin-top: 50px">

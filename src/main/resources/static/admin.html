@@ -277,6 +277,7 @@
             $('#date_submit').click(() => {
                 let q = new FormData($('#date_form')[0]);
                 q.append("date", changeTime())
+                if(q.get("title")==""||q.get("date2")==""||q.get("room")=="")
                 $.ajax({
                     type: "post",
                     url: "addmovieform4", //change
