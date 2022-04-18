@@ -16,16 +16,16 @@
     <script src="js/jquery.session.js"></script>
     <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
-<!--    <link rel="stylesheet" href="./css/jquery.datetimepicker.min.css">-->
-<!--    <script src="./js/jquery.datetimepicker.full.min.js"></script>-->
+    <!--    <link rel="stylesheet" href="./css/jquery.datetimepicker.min.css">-->
+    <!--    <script src="./js/jquery.datetimepicker.full.min.js"></script>-->
 
     <script>
         function changeTime() {
             let i = document.getElementById("MovieDate");
             // console.log(i.value)
             let time = i.value.split(/[\s///:]+/)
-            let hour = (time[5]=="PM")?Number(time[3])+12:time[3];
-            let date = new Date(time[2],Number(time[0])-1,time[1],hour,time[4])
+            let hour = (time[5] == "PM") ? Number(time[3]) + 12 : time[3];
+            let date = new Date(time[2], Number(time[0]) - 1, time[1], hour, time[4])
             // let date=""+time[2]+time[0]+time[1]+hour+time[4];
             // console.log(date)
             // return date;
@@ -34,8 +34,8 @@
     </script>
     <script>
         function clickFun(name) {
-            let q=  new FormData();
-            q.append("movieName",name);
+            let q = new FormData();
+            q.append("movieName", name);
             console.log(q.get("movieName"))
             $.ajax({
                 type: "post",
@@ -44,7 +44,7 @@
                 processData: false,
                 data: q,
                 success(data) {
-                    alert(`For movie ${name}, the `+data.ReturnStatus.description);
+                    alert(`For movie ${name}, the ` + data.ReturnStatus.description);
                 }
             })
         }
@@ -65,7 +65,7 @@
             // });
 
             $('#ManageMovies-tab').click(() => {
-                let q=  new FormData();
+                let q = new FormData();
                 $.ajax({
                     type: "post",
                     url: "addmovieform2", //change
@@ -73,7 +73,7 @@
                     processData: false,
                     data: q,
                     success(data) {
-                        if(data.ReturnStatus.status==1) {
+                        if (data.ReturnStatus.status == 1) {
                             console.log(data, "++++++=");
                             let selectMovie = document.getElementById("SelectMovie");
                             let selectMovie2 = document.getElementById("SelectMovie_date");
@@ -88,7 +88,8 @@
                                 selectMovie.appendChild(opt);
                                 selectMovie2.appendChild(opt2);
                             }
-                        }else{
+                        }
+                        else {
                             alert(data.ReturnStatus.description);
                         }
                     }
@@ -97,21 +98,22 @@
 
             $('#submit_add_movie').click(() => {
 
-                let q=  new FormData($('#addMovieForm')[0]);
+                let q = new FormData($('#addMovieForm')[0]);
                 // q.append("submittype",1);
-                let title=q.get("title");
-                let category=q.get("category");
-                let ratingID=q.get("ratingID");
-                let duration=q.get("duration");
-                let director=q.get("director");
-                let cast=q.get("cast");
-                let description=q.get("description");
-                let reviews=q.get("reviews");
-                let producer=q.get("producer");
-                if(title==""||category==""||ratingID==""||duration==""||
-                director==""||cast==""||description==""||reviews==""||producer==""){
+                let title = q.get("title");
+                let category = q.get("category");
+                let ratingID = q.get("ratingID");
+                let duration = q.get("duration");
+                let director = q.get("director");
+                let cast = q.get("cast");
+                let description = q.get("description");
+                let reviews = q.get("reviews");
+                let producer = q.get("producer");
+                if (title == "" || category == "" || ratingID == "" || duration == "" ||
+                    director == "" || cast == "" || description == "" || reviews == "" || producer == "") {
                     alert("not complete")
-                }else {
+                }
+                else {
                     $.ajax({
                         type: "post",
                         url: "addmovieform", //change
@@ -120,10 +122,12 @@
                         data: q,
                         success(data) {
                             // console.log(data);
-                            if(data.ReturnStatus.status==1) {
+                            if (data.ReturnStatus.status == 1) {
                                 alert(data.ReturnStatus.description);
                                 let selectMovie = document.getElementById("SelectMovie");
                                 let selectMovie2 = document.getElementById("SelectMovie_date");
+                                selectMovie.innerHTML = "";
+                                selectMovie2.innerHTML = "";
                                 let opt = document.createElement("option")
                                 opt.innerHTML = q.get("title");
                                 opt.name = q.get("title");
@@ -152,7 +156,9 @@
                                 // $("#PromotionDiscount").val("");
                                 // $("#PromotionCode").val("");
                             }
-                            alert(data.ReturnStatus.description)
+                            else {
+                                alert(data.ReturnStatus.description);
+                            }
                             $("#MovieTitle").val("");
                             $("#Category").val("");
                             $("#MovieRate").val("");
@@ -162,7 +168,7 @@
                             $("#Cast1").val("");
                             $("#description").val("");
                             $("#reviews").val("");
-                        }
+                        },
 
                     })
                 }
@@ -170,13 +176,13 @@
 
 
             $('#submit_img_trailer').click(() => {
-                let q=  new FormData($('#img_trailer_form')[0]);
+                let q = new FormData($('#img_trailer_form')[0]);
                 console.log(q.get("title"));
                 let title = q.get("title");
                 let trailerlink = q.get("trailerlink");
                 let image = q.get("image");
                 let image2 = q.get("image2");
-                if(title==""||trailerlink==""||image==""||image2==""){
+                if (title == "" || trailerlink == "" || image == "" || image2 == "") {
                     alert("cannot be empty");
                     return;
                 }
@@ -200,33 +206,34 @@
             });
 
             $('#submit_button').click(() => {
-                let q=  new FormData($('#addpromotion')[0]);
+                let q = new FormData($('#addpromotion')[0]);
                 let promoName = q.get("promoName");
                 let promoDiscount = q.get("promoDiscount");
                 let promoCode = q.get("promoCode");
                 let promoStart = q.get("promoStart");
                 let promoEnd = q.get("promoEnd");
-                q.append("submittype",1);
-                if(Number(q.get("promoDiscount"))>=100){
+                q.append("submittype", 1);
+                if (Number(q.get("promoDiscount")) >= 100) {
                     alert("discount cannot be greater than 100");
-                }else if(promoName==""||promoDiscount==""||promoCode==""||promoStart==""||promoEnd==""){
+                }
+                else if (promoName == "" || promoDiscount == "" || promoCode == "" || promoStart == "" || promoEnd == "") {
                     alert("cannot be empty");
                 }
-                else{
+                else {
                     $.ajax({
-                    type: "post",
-                    url: "promoform", //change
-                    contentType: false,
-                    processData: false,
-                    data: q,
-                    success(data) {
-                        console.log(data);
-                        alert(data.ReturnStatus.description);
-                        if(data.ReturnStatus.status==1){
-                            data = data.PromotionList[data.PromotionList.length-1]
-                            let tb = document.getElementById("table-body");
-                            let tr = document.createElement("tr");
-                            tr.innerHTML = `<th scope="row">${data.promoName}</th>
+                        type: "post",
+                        url: "promoform", //change
+                        contentType: false,
+                        processData: false,
+                        data: q,
+                        success(data) {
+                            console.log(data);
+                            alert(data.ReturnStatus.description);
+                            if (data.ReturnStatus.status == 1) {
+                                data = data.PromotionList[data.PromotionList.length - 1]
+                                let tb = document.getElementById("table-body");
+                                let tr = document.createElement("tr");
+                                tr.innerHTML = `<th scope="row">${data.promoName}</th>
                             <td>${data.promoDiscount}</td>
                             <td>${data.promoCode}</td>
                             <td>${data.promoStart}</td>
@@ -234,25 +241,27 @@
                             <td>
                                 <a url="#" class="btn btn-success" id="submit-${data.id}">Submit</a>
                             </td>`
-                            tb.appendChild(tr);
-                            let button = document.getElementById("submit-"+data.id);
-                            button.onclick=function click(){clickFun(data.promoName)};
+                                tb.appendChild(tr);
+                                let button = document.getElementById("submit-" + data.id);
+                                button.onclick = function click() {
+                                    clickFun(data.promoName)
+                                };
+                            }
+
+                            $("#PromotionName").val("");
+                            $("#PromotionDiscount").val("");
+                            $("#PromotionCode").val("");
+                            $("#datetimepickerStart").val("");
+                            $("#datetimepickerEnd").val("");
+
                         }
-
-                        $("#PromotionName").val("");
-                        $("#PromotionDiscount").val("");
-                        $("#PromotionCode").val("");
-                        $("#datetimepickerStart").val("");
-                        $("#datetimepickerEnd").val("");
-
-                    }
-                })
+                    })
                 }
             });
 
             $('#date_submit').click(() => {
-                let q=  new FormData($('#date_form')[0]);
-                q.append("date",changeTime())
+                let q = new FormData($('#date_form')[0]);
+                q.append("date", changeTime())
                 $.ajax({
                     type: "post",
                     url: "addmovieform4", //change
@@ -270,22 +279,22 @@
             });
 
             $('#ManagePromotion-tab').click(() => {
-                let q=  new FormData();
-                q.append("submittype",0)
+                let q = new FormData();
+                q.append("submittype", 0)
                 // console.log(q.get("submittype"));
                 $.ajax({
                     type: "post",
                     url: "promoform", //change
                     contentType: false,
                     processData: false,
-                    data:q,
+                    data: q,
                     success(data) {
                         // console.log(data)
                         let {PromotionList, ReturnStatus} = data;
                         // alert(ReturnStatus.description);
-                        if(ReturnStatus.status==1){
+                        if (ReturnStatus.status == 1) {
                             let tb = document.getElementById("table-body");
-                            tb.innerHTML="";
+                            tb.innerHTML = "";
                             for (let r of PromotionList) {
                                 // console.log(r)
                                 let tr = document.createElement("tr");
@@ -301,12 +310,15 @@
 <!--                                    <button id="submit-${r.id}" class="btn btn-success">Submit</button>-->
                                 </td>`;
                                 tb.appendChild(tr);
-                                let button = document.getElementById("submit-"+r.id);
-                                button.onclick=function click(){clickFun(r.promoName)};
+                                let button = document.getElementById("submit-" + r.id);
+                                button.onclick = function click() {
+                                    clickFun(r.promoName)
+                                };
                                 // console.log(button);
                                 // button.onclick(clickFun(name))
                             }
-                        }else{
+                        }
+                        else {
                             alert(ReturnStatus.description);
                         }
                     },
@@ -437,7 +449,9 @@
                             <td>PG-13</td>
                             <td>Room 9</td>
                             <td>02/27/2022 13:40</td>
-                            <td><button class="btn btn-danger">Delete</button></td>
+                            <td>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
                         </tr>
                         <tr class="">
                             <th scope="row">Spider-Man:Into The Spider Verse</th>
@@ -446,7 +460,9 @@
                             <td>PG</td>
                             <td>Room 5</td>
                             <td>02/27/2022 15:40</td>
-                            <td><button class="btn btn-danger">Delete</button></td>
+                            <td>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
                         </tr>
                         <tr class="">
                             <th scope="row">Avenger:End Game</th>
@@ -455,7 +471,9 @@
                             <td>G</td>
                             <td>Room 9</td>
                             <td>02/27/2022 15:40</td>
-                            <td><button class="btn btn-danger">Delete</button></td>
+                            <td>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -472,7 +490,8 @@
 
                     <div class="form-group">
                         <label for="Category">Category</label>
-                        <input name="category" type="text" class="form-control" id="Category" name="" placeholder="please use , to separate different categories">
+                        <input name="category" type="text" class="form-control" id="Category" name=""
+                               placeholder="please use , to separate different categories">
                     </div>
 
                     <div class="form-group">
@@ -482,13 +501,14 @@
                             <option value="2">PG</option>
                             <option value="3">PG-13</option>
                             <option value="4">R</option>
-<!--                            <option>NC-17</option>-->
+                            <!--                            <option>NC-17</option>-->
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="MovieRate">Duration</label>
-                        <input name="duration" type="number" class="form-control" id="duration" placeholder="please enter how many minutes">
+                        <input name="duration" type="number" class="form-control" id="duration"
+                               placeholder="please enter how many minutes">
 
                     </div>
 
@@ -504,7 +524,8 @@
 
                     <div class="form-group">
                         <label for="Cast1">Cast</label>
-                        <input type="text" class="form-control" id="Cast1" name="cast" placeholder="please use , to separate different casts">
+                        <input type="text" class="form-control" id="Cast1" name="cast"
+                               placeholder="please use , to separate different casts">
                     </div>
 
                     <div class="form-group">
@@ -742,21 +763,21 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="table-body">
-<!--                            <tr class="">-->
-<!--                                <th scope="row">Spring Festival</th>-->
-<!--                                <td>20</td>-->
-<!--                                <td>Spring666</td>-->
-<!--                                <td>02/15/2022</td>-->
-<!--                                <td>-->
-<!--                                    <button type="submit" id="email_button" class="btn btn-success">Submit</button>-->
-<!--                                </td>-->
-<!--                            </tr>-->
-<!--                            <tr class="">-->
-<!--                                <th scope="row">Spring Break</th>-->
-<!--                                <td>20</td>-->
-<!--                                <td>Spring888</td>-->
-<!--                                <td>03/15/2022</td>-->
-<!--                            </tr>-->
+                            <!--                            <tr class="">-->
+                            <!--                                <th scope="row">Spring Festival</th>-->
+                            <!--                                <td>20</td>-->
+                            <!--                                <td>Spring666</td>-->
+                            <!--                                <td>02/15/2022</td>-->
+                            <!--                                <td>-->
+                            <!--                                    <button type="submit" id="email_button" class="btn btn-success">Submit</button>-->
+                            <!--                                </td>-->
+                            <!--                            </tr>-->
+                            <!--                            <tr class="">-->
+                            <!--                                <th scope="row">Spring Break</th>-->
+                            <!--                                <td>20</td>-->
+                            <!--                                <td>Spring888</td>-->
+                            <!--                                <td>03/15/2022</td>-->
+                            <!--                            </tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -774,7 +795,8 @@
                     </div>
                     <div class="form-group">
                         <label for="PromotionDiscount">Discount</label>
-                        <input type="number" class="form-control" id="PromotionDiscount" name="promoDiscount" min="0" max="100">
+                        <input type="number" class="form-control" id="PromotionDiscount" name="promoDiscount" min="0"
+                               max="100">
                     </div>
                     <div class="form-group">
                         <label for="PromotionCode">Code</label>
@@ -782,7 +804,8 @@
                     </div>
                     <div class="form-group">
                         <label for="datetimepickerStart">Start Date</label>
-                        <input id="datetimepickerStart" type="date" min="2022-04-17" class="form-control" name="promoStart">
+                        <input id="datetimepickerStart" type="date" min="2022-04-17" class="form-control"
+                               name="promoStart">
                     </div>
                     <div class="form-group">
                         <label for="datetimepickerEnd">End Date</label>
@@ -797,13 +820,13 @@
 <script>
     var myDate = new Date;
     var year = myDate.getFullYear(); //获取当前年
-    var mon = myDate.getMonth()+1 < 10 ? "0"+(myDate.getMonth()+1) : (myDate.getMonth()+1);//
-    var dat = myDate.getDate() < 10 ? "0"+myDate.getDate() : myDate.getDate();
-    $("#datetimepickerStart").attr("min",year+"-"+mon+"-"+dat);
-    $("#datetimepickerStart").change(()=>{
+    var mon = myDate.getMonth() + 1 < 10 ? "0" + (myDate.getMonth() + 1) : (myDate.getMonth() + 1);//
+    var dat = myDate.getDate() < 10 ? "0" + myDate.getDate() : myDate.getDate();
+    $("#datetimepickerStart").attr("min", year + "-" + mon + "-" + dat);
+    $("#datetimepickerStart").change(() => {
         // console.log($("#datetimepickerStart").val());
         $("#datetimepickerEnd").val("")
-        $("#datetimepickerEnd").attr("min",$("#datetimepickerStart").val());
+        $("#datetimepickerEnd").attr("min", $("#datetimepickerStart").val());
     })
     console.log()
     $('input[type="date"]').val('yyyy-MM-dd');
