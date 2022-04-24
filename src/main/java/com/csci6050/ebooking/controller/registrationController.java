@@ -7,7 +7,6 @@ import com.csci6050.ebooking.entity.User;
 import com.csci6050.ebooking.repository.PaymentcardRepository;
 import com.csci6050.ebooking.repository.UserRepository;
 import com.csci6050.ebooking.tool.Email;
-import jdk.jshell.Snippet;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
