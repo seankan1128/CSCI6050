@@ -5,19 +5,14 @@ import com.csci6050.ebooking.entity.*;
 import com.csci6050.ebooking.repository.AuditoriumRepository;
 import com.csci6050.ebooking.repository.ShowScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
-
 import com.csci6050.ebooking.repository.MovieRepository;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.*;
 
 @Controller
@@ -32,6 +27,7 @@ public class addMovieController {
     @Autowired
     private MovieRepository movieRepository;
 
+    // Form adding a movie to the repository (check if the title exist first)
     @ResponseBody
     @RequestMapping("addmovieform")
     public Map<String, Object> addNewMovie(Movie movie){
@@ -56,8 +52,6 @@ public class addMovieController {
         m.setGenre(movie.getGenre());
         m.setDirector(movie.getDirector());
         m.setDuration(movie.getDuration());
-//        m.setTrailerPicture(movie.getTrailerPicture());
-//        m.setTrailerVideo(movie.getTrailerVideo());
         m.setReview(movie.getReview());
         m.setRatingID(movie.getRatingID());
         m.setDescription(movie.getDescription());
@@ -74,6 +68,7 @@ public class addMovieController {
         return returnMap;
     }
 
+    // returning all movie to the front
     @ResponseBody
     @RequestMapping("addmovieform2")
     public Map<String, Object> returnMovie(){
@@ -89,6 +84,7 @@ public class addMovieController {
         return returnMap;
     }
 
+    // Form that upload movie image to existing movie
     @ResponseBody
     @RequestMapping("addmovieform3")
     public Map<String, Object> setMovieImage(@RequestParam("trailerlink") String trailerlink, @RequestParam("title") String title, @RequestParam("image") MultipartFile image, @RequestParam("image2") MultipartFile image2) throws IOException {
@@ -131,6 +127,7 @@ public class addMovieController {
         return returnMap;
     }
 
+    // Form that add show schedule to existing movie
     @ResponseBody
     @RequestMapping("addmovieform4")
     public Map<String, Object> saveshowschedule(@RequestParam("title") String title, @RequestParam("date") String date, @RequestParam("room") String room){
