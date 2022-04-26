@@ -11,8 +11,6 @@ import com.csci6050.ebooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +18,7 @@ import java.util.Map;
 
 @Controller
 public class loginController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -34,30 +33,26 @@ public class loginController {
 
     @ResponseBody
     @RequestMapping("/login2")
-    public Map<String, Object> returnJson(User data) throws IOException {
+    public Map<String, Object> returnJson(User data) {
         Map<String, Object> returnMap = new HashMap<>();
         User n = userRepository.findByEmail(data.getEmail());
         StatusNDescription SD = new StatusNDescription();
-        String description = "";
+        String description;
 
         if(n == null){
             System.out.println("Email not found");
             description = "You do not have an account.";
-//            returnMap.put("Status", 0);
-//            returnMap.put("Description", description);
             SD.setStatus(0);
             SD.setDescription(description);
             returnMap.put("ReturnStatus", SD);
             return returnMap;
         } else {
-            passwordEncrypt en = new passwordEncrypt();
-            String encrypt = en.encrypt(data.getPassword());
+//            passwordEncrypt en = new passwordEncrypt();
+            String encrypt = passwordEncrypt.encrypt(data.getPassword());
 
             if(!(encrypt.equals(n.getPassword()))){
                 System.out.println("Password is wrong");
                 description = "Your password is incorrect.";
-//                returnMap.put("Status", 0);
-//                returnMap.put("Description", description);
                 SD.setStatus(0);
                 SD.setDescription(description);
                 returnMap.put("ReturnStatus", SD);
