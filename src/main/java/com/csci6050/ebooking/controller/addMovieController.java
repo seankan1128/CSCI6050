@@ -166,7 +166,7 @@ public class addMovieController {
 
     public boolean checkschedule(long starttime, long endtime, List<ShowSchedule> showScheduleList){
         for (ShowSchedule showSchedule : showScheduleList){
-            if((starttime > Long.parseLong(showSchedule.getStarttime()))&&(starttime < Long.parseLong(showSchedule.getEndtime()))){
+            if((starttime >= Long.parseLong(showSchedule.getStarttime()))&&(starttime < Long.parseLong(showSchedule.getEndtime()))){
                 return false;
             }
             if((starttime < Long.parseLong(showSchedule.getStarttime()))&&(endtime > Long.parseLong(showSchedule.getStarttime()))){
