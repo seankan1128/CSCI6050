@@ -22,7 +22,7 @@
             let flag = 0;
             let sessionTemp = $.session.get('userInfo');
             let cookieTemp = $.cookie('userInfo');
-            console.info(cookieTemp)
+
             if (sessionTemp != undefined) {
                 user_info = $.deparam(decodeURIComponent(sessionTemp));
                 flag = 1;
@@ -33,7 +33,7 @@
                     flag = 1;
                 }
             }
-            console.log(user_info);
+
             if (flag) {
                 let user_btn = $('#user');
                 user_btn.empty();
@@ -59,7 +59,7 @@
             let movie_title = $.session.get('get_movie');
             data1.append('movietitle', movie_title);
             let movie_info = $.deparam(decodeURIComponent($.session.get('movieInfo')));
-            console.log(movie_info);
+
             let movie_rate = ['G', 'PG', 'PG-13', 'R'];
             $.ajax({
                 type: "post",
@@ -68,15 +68,15 @@
                 processData: false,
                 data: data1,
                 success: (data) => {
-                    console.log(data);
                     let movie;
                     let day_list = [];
-
-                    // console.log(day_list);
+                    let time_now = new Date().getTime();
 
                     if (data.ReturnStatus.status == 1) {
                         for (i of data.ScheduleList) {
-                            day_list.push(i.starttime);
+                            if (i.starttime > time_now) {
+                                day_list.push(i.starttime);
+                            }
                         }
                         day_list = [...new Set(day_list)].map((x) => new Date(parseInt(x)));
                         for (let i of movie_info.StreamingNow) {
@@ -110,15 +110,15 @@
                             let s = new Date(parseInt(i.starttime));
                             console.log(s.toDateString())
                             console.log(select_time.toDateString())
-                            if(s.toDateString()==select_time.toDateString()){
+                            if (s.toDateString() == select_time.toDateString()) {
                                 temp.append(`<tr>
-                                <th scope="row">${s.getHours()}:${('0'+s.getMinutes()).slice(-2)}</th>
+                                <th scope="row">${s.getHours()}:${('0' + s.getMinutes()).slice(-2)}</th>
                                 <td>$2.1</td>
                             </tr>`)
                             }
                         }
                     })
-                    console.log(movie);
+
                     $('#movie_trail').attr('src', 'https://www.youtube.com/embed/' + movie.trailerVideo);
                     $('#movie_pic').attr('src', '/image/' + movie.trailerPicture);
                     $('#movie_des').html(movie.description);
@@ -126,7 +126,7 @@
                     $('#movie_duration').html(movie.duration + ' minutes');
                     $('#movie_category').html(movie.category);
                     $('#movie_Rate').html(movie_rate[movie.ratingID - 1]);
-                    $('#rate_warning').html("This movie is "+movie_rate[movie.ratingID - 1])
+                    $('#rate_warning').html("This movie is " + movie_rate[movie.ratingID - 1])
                     $('#movie_review').html(movie.review);
                     $('#movie_cast').html(movie.cast);
                     $('#movie_director').html(movie.director);
@@ -239,7 +239,8 @@
                     <hr>
                 </div>
                 <div class="card" style="width: 100%;">
-                    <div id="time_table" class="card-body text-center" style="height: 360px;overflow-y:auto" id="companyTable">
+                    <div id="time_table" class="card-body text-center" style="height: 360px;overflow-y:auto"
+                         id="companyTable">
                         <table class="table">
                             <thead class="thead-light">
                             <tr>
@@ -248,37 +249,38 @@
                             </tr>
                             </thead>
                             <tbody id="movie_time">
-<!--                            <tr>-->
-<!--                                <th scope="row">12:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">13:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">14:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">15:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">16:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">17:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
+                            <!--                            <tr>-->
+                            <!--                                <th scope="row">12:15</th>-->
+                            <!--                                <td>$2.1</td>-->
+                            <!--                            </tr>-->
+                            <!--                            <tr>-->
+                            <!--                                <th scope="row">13:15</th>-->
+                            <!--                                <td>$2.1</td>-->
+                            <!--                            </tr>-->
+                            <!--                            <tr>-->
+                            <!--                                <th scope="row">14:15</th>-->
+                            <!--                                <td>$2.1</td>-->
+                            <!--                            </tr>-->
+                            <!--                            <tr>-->
+                            <!--                                <th scope="row">15:15</th>-->
+                            <!--                                <td>$2.1</td>-->
+                            <!--                            </tr>-->
+                            <!--                            <tr>-->
+                            <!--                                <th scope="row">16:15</th>-->
+                            <!--                                <td>$2.1</td>-->
+                            <!--                            </tr>-->
+                            <!--                            <tr>-->
+                            <!--                                <th scope="row">17:15</th>-->
+                            <!--                                <td>$2.1</td>-->
+                            <!--                            </tr>-->
 
                             </tbody>
                         </table>
                     </div>
                     <div class="row mt-4 mb-4">
                         <a href="/" type="button" class="btn offset-3 col-2 btn-danger">Cancel</a>
-                        <a id="seat_select" href="seat.html" type="button" class="btn btn-success col-2 offset-2 ">Select Seat</a>
+                        <a id="seat_select" href="seat.html" type="button" class="btn btn-success col-2 offset-2 ">Select
+                            Seat</a>
                     </div>
 
                 </div>
