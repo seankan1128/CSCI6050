@@ -15,51 +15,14 @@
     <script src="js/moment.js"></script>
     <script src="tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
     <link href="tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet">
+    <script src="js/bar_login.js"></script>
     <script>
-        //login check
-        $(function () {
-            let user_info = undefined;
-            let flag = 0;
-            let sessionTemp = $.session.get('userInfo');
-            let cookieTemp = $.cookie('userInfo');
-            console.info(cookieTemp)
-            if (sessionTemp != undefined) {
-                user_info = $.deparam(decodeURIComponent(sessionTemp));
-                flag = 1;
-            }
-            else if (cookieTemp != undefined) {
-                user_info = $.deparam(decodeURIComponent(cookieTemp));
-                if (user_info.remember !== undefined) {
-                    flag = 1;
-                }
-            }
-            console.log(user_info);
-            if (flag) {
-                let user_btn = $('#user');
-                user_btn.empty();
-                user_btn.append(
-                    $('<div class="dropdown">').append(
-                        $('<button class="btn btn-secondary dropdown-toggle" type="button" id=userMenuButton" data-toggle="dropdown" aria-expanded="false"></button>').html(user_info.ReturnUser.firstname),
-                        $('<div class="dropdown-menu" aria-labelledby="userMenuButton"></div>').append(
-                            $('<a class="dropdown-item" href="#"></a>').html('Order'),
-                            $('<a class="dropdown-item" href="edit_profile.html"></a>').html('Edit Profile'),
-                            $('<a class="dropdown-item" type="button" id="log_out" href="#"></a>').html('Log out'),
-                        ),
-                    ),
-                );
-            }
-            $('#log_out').click(() => {
-                $.session.clear();
-                $.removeCookie('userInfo', {path: '/'});
-                location.href = "/";
-            })
-        });
         $(function () {
             let data1 = new FormData();
             let movie_title = $.session.get('get_movie');
             data1.append('movietitle', movie_title);
             let movie_info = $.deparam(decodeURIComponent($.session.get('movieInfo')));
-            console.log(movie_info);
+
             let movie_rate = ['G', 'PG', 'PG-13', 'R'];
             $.ajax({
                 type: "post",
@@ -68,15 +31,15 @@
                 processData: false,
                 data: data1,
                 success: (data) => {
-                    console.log(data);
                     let movie;
                     let day_list = [];
-
-                    // console.log(day_list);
+                    let time_now = new Date().getTime();
 
                     if (data.ReturnStatus.status == 1) {
                         for (i of data.ScheduleList) {
-                            day_list.push(i.starttime);
+                            if (i.starttime > time_now) {
+                                day_list.push(i.starttime);
+                            }
                         }
                         day_list = [...new Set(day_list)].map((x) => new Date(parseInt(x)));
                         for (let i of movie_info.StreamingNow) {
@@ -110,15 +73,20 @@
                             let s = new Date(parseInt(i.starttime));
                             console.log(s.toDateString())
                             console.log(select_time.toDateString())
-                            if(s.toDateString()==select_time.toDateString()){
+                            if (s.toDateString() == select_time.toDateString()) {
                                 temp.append(`<tr>
-                                <th scope="row">${s.getHours()}:${('0'+s.getMinutes()).slice(-2)}</th>
+                                <th scope="row">${s.getHours()}:${('0' + s.getMinutes()).slice(-2)}</th>
                                 <td>$2.1</td>
                             </tr>`)
                             }
                         }
+                        $('#time_table').on('click', "tr", (e) => {
+                            // console.log(e.currentTarget);
+                            $('.btn-info').removeClass('btn-info');
+                            $($(e.currentTarget)).addClass('btn-info');
+                        });
                     })
-                    console.log(movie);
+
                     $('#movie_trail').attr('src', 'https://www.youtube.com/embed/' + movie.trailerVideo);
                     $('#movie_pic').attr('src', '/image/' + movie.trailerPicture);
                     $('#movie_des').html(movie.description);
@@ -126,7 +94,7 @@
                     $('#movie_duration').html(movie.duration + ' minutes');
                     $('#movie_category').html(movie.category);
                     $('#movie_Rate').html(movie_rate[movie.ratingID - 1]);
-                    $('#rate_warning').html("This movie is "+movie_rate[movie.ratingID - 1])
+                    $('#rate_warning').html("This movie is " + movie_rate[movie.ratingID - 1])
                     $('#movie_review').html(movie.review);
                     $('#movie_cast').html(movie.cast);
                     $('#movie_director').html(movie.director);
@@ -134,16 +102,6 @@
                 }
             })
         });
-    </script>
-    <script type="text/javascript">
-        $(function () {
-            $('#companyTable').on('click', "tr", (e) => {
-                // console.log(e.currentTarget);
-                $('.btn-info').removeClass('btn-info');
-                $($(e.currentTarget)).addClass('btn-info');
-            });
-        });
-
     </script>
 </head>
 
@@ -239,7 +197,7 @@
                     <hr>
                 </div>
                 <div class="card" style="width: 100%;">
-                    <div id="time_table" class="card-body text-center" style="height: 360px;overflow-y:auto" id="companyTable">
+                    <div id="time_table" class="card-body text-center" style="height: 360px;overflow-y:auto">
                         <table class="table">
                             <thead class="thead-light">
                             <tr>
@@ -248,37 +206,13 @@
                             </tr>
                             </thead>
                             <tbody id="movie_time">
-<!--                            <tr>-->
-<!--                                <th scope="row">12:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">13:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">14:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">15:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">16:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">17:15</th>-->
-<!--                                <td>$2.1</td>-->
-<!--                            </tr>-->
-
                             </tbody>
                         </table>
                     </div>
                     <div class="row mt-4 mb-4">
                         <a href="/" type="button" class="btn offset-3 col-2 btn-danger">Cancel</a>
-                        <a id="seat_select" href="seat.html" type="button" class="btn btn-success col-2 offset-2 ">Select Seat</a>
+                        <a id="seat_select" href="seat.html" type="button" class="btn btn-success col-2 offset-2 ">Select
+                            Seat</a>
                     </div>
 
                 </div>
