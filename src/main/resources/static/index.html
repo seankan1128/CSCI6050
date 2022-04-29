@@ -116,68 +116,8 @@
         });
     </script>
 
-    <script>
-        //search btn
-        $(function () {
-            $('#search_btn').click(() => {
-                // console.log($('#search_form').serializeArray());
-                if($('#search_text').val()!=''){
-                    $.ajax({
-                        type: "post",
-                        url: "search",
-                        contentType: false,
-                        processData: false,
-                        data: new FormData($('#search_form')[0]),
-                        success: (data) => {
-                            console.log(data)
-                            $.session.set('search', $.param(data));
-                            $.session.set('search_for', $('#search_text').val());
-                            location.href = "search.html"
-                        },
-                    });
-                }
-            })
-        })
-    </script>
-    <script>
-        $(function () {
-            let user_info = undefined;
-            let flag = 0;
-            let sessionTemp = $.session.get('userInfo');
-            let cookieTemp = $.cookie('userInfo');
-            // console.info(cookieTemp)
-            if (sessionTemp != undefined) {
-                user_info = $.deparam(decodeURIComponent(sessionTemp));
-                flag = 1;
-            }
-            else if (cookieTemp != undefined) {
-                user_info = $.deparam(decodeURIComponent(cookieTemp));
-                if (user_info.remember !== undefined) {
-                    flag = 1;
-                }
-            }
-            // console.log(user_info);
-            if (flag) {
-                let user_btn = $('#user');
-                user_btn.empty();
-                user_btn.append(
-                    $('<div class="dropdown">').append(
-                        $('<button class="btn btn-secondary dropdown-toggle" type="button" id=userMenuButton" data-toggle="dropdown" aria-expanded="false"></button>').html(user_info.ReturnUser.firstname),
-                        $('<div class="dropdown-menu" aria-labelledby="userMenuButton"></div>').append(
-                            $('<a class="dropdown-item" href="#"></a>').html('Order'),
-                            $('<a class="dropdown-item" href="edit_profile.html"></a>').html('Edit Profile'),
-                            $('<a class="dropdown-item" type="button" id="log_out" href="#"></a>').html('Log out'),
-                        ),
-                    ),
-                );
-            }
-            $('#log_out').click(() => {
-                $.session.clear();
-                $.removeCookie('userInfo', {path: '/'});
-                location.href = "/";
-            })
-        })
-    </script>
+    <script src="js/bar_search.js"></script>
+    <script src="js/bar_login.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -186,24 +126,11 @@
             <img src="image/UGA.png" style="width: 4vh;height: 4vh;" class="d-inline-block align-top" alt="">
             CSCI 6050 Movie Booking
         </a>
-        <!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"-->
-        <!--                aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">-->
-        <!--            <span class="navbar-toggler-icon"> sd</span>-->
-        <!--        </button>-->
         <div class="col-2" id="">
             <ul class="navbar-nav mr-auto col-4">
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home </a>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Features</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Pricing</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">About</a>-->
-<!--                </li>-->
             </ul>
         </div>
         <form id="search_form" class="form-inline col-5">
@@ -211,13 +138,13 @@
                 <option value="1" selected>Title</option>
                 <option value="2">Category</option>
             </select>
-            <input id="search_text" class="form-control col-8" type="search" placeholder="Search" aria-label="Search" name="searchtext">
+            <input id="search_text" class="form-control col-8" type="search" placeholder="Search" aria-label="Search"
+                   name="searchtext">
             <a id="search_btn" href="#" class="btn btn-outline-primary col-2" type="button">Search</a>
         </form>
         <div id="user" class="col-1 offset-1">
             <a class="btn btn-primary" type="button" href="login">Login</a>
         </div>
-
     </nav>
 </div>
 <div class="container-fluid" style="padding: 0; ">
