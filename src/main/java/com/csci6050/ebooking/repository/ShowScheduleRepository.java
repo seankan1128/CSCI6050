@@ -14,4 +14,6 @@ public interface ShowScheduleRepository extends CrudRepository<ShowSchedule, Int
     Iterable<ShowSchedule> findAllByAuditorium(Auditorium auditorium);
 
     Iterable<ShowSchedule> findAllByMovie(Movie movie);
+
+    ShowSchedule findById(int showtimeid);
 }
