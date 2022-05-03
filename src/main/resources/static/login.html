@@ -43,7 +43,8 @@
                                     $.cookie('userInfo', $.param(data), {expires: 7, path: '/', secure: true});
                                     $.session.set('userInfo',$.param(data));
                                     // console.info($.deparam(decodeURIComponent($.cookie('userInfo'))));
-                                    location.href="/";
+
+                                    location.href=$.session.get('page');
                                 }
                                 else {
                                     alert('admin');

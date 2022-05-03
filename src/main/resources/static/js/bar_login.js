@@ -28,6 +28,12 @@ $(function () {
                 ),
             ),
         );
+    } else {
+        $('#user').click(() => {
+            $.session.set('page',window.location.pathname);
+            console.log(window.location.pathname);
+            }
+        )
     }
     $('#log_out').click(() => {
         $.session.clear();
