@@ -31,16 +31,16 @@
                 processData: false,
                 data: data1,
                 success: (data) => {
+                    console.log(data)
                     let movie;
                     let day_list = [];
                     let time_now = new Date().getTime();
                     if (data.ReturnStatus.status == 1) {
                         for (i of data.ScheduleList) {
                             if (i.starttime > time_now) {
-                                day_list.push(i.starttime);
+                                day_list.push(i);
                             }
                         }
-                        day_list = [...new Set(day_list)].map((x) => new Date(parseInt(x)));
                         for (let i of movie_info.StreamingNow) {
                             if (i.title == movie_title) {
                                 movie = i;
@@ -60,29 +60,30 @@
                             }
                         }
                     }
-                    day_list.push(new Date(0));
-                    console.log(day_list);
+                    if (day_list.length == 0) {
+                        day_list.push({
+                            starttime: new Date(0),
+                        });
+                    }
+
                     $('#datetimepicker').datetimepicker({
                         format: 'L',
-                        enabledDates: day_list,
+                        enabledDates: day_list.map((x) => new Date(parseInt(x.starttime))),
                     });
                     $('#datetimepicker').on("change.datetimepicker", () => {
                         let temp = $('#movie_time');
                         temp.empty();
                         let select_time = new Date($('#movie_day').val().replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$1-$2") + ' 00:00:00');
-                        for (let i of data.ScheduleList) {
+                        for (let i of day_list) {
                             let s = new Date(parseInt(i.starttime));
-                            // console.log(s.toDateString())
-                            // console.log(select_time.toDateString())
                             if (s.toDateString() == select_time.toDateString()) {
-                                temp.append(`<tr>
+                                temp.append(`<tr data-showid="${i.id}">
                                 <th scope="row">${s.getHours()}:${('0' + s.getMinutes()).slice(-2)}</th>
                                 <td>$2.1</td>
                             </tr>`)
                             }
                         }
                         $('#time_table').on('click', "tr", (e) => {
-                            // console.log(e.currentTarget);
                             $('.btn-info').removeClass('btn-info');
                             $($(e.currentTarget)).addClass('btn-info');
                         });
@@ -100,6 +101,10 @@
                     $('#movie_cast').html(movie.cast);
                     $('#movie_director').html(movie.director);
                     $('#movie_producer').html(movie.producer);
+
+                    $('#seat_select').onclick(()=>{
+                        console.log($('#time_table .btn-info'))
+                    })
                 }
             })
         });
@@ -212,7 +217,7 @@
                     </div>
                     <div class="row mt-4 mb-4">
                         <a href="/" type="button" class="btn offset-3 col-2 btn-danger">Cancel</a>
-                        <a id="seat_select" href="seat.html" type="button" class="btn btn-success col-2 offset-2 ">Select
+                        <a id="seat_select" href="#" type="button" class="btn btn-success col-2 offset-2 ">Select
                             Seat</a>
                     </div>
 

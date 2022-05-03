@@ -4,6 +4,7 @@ import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.entity.Movie;
 import com.csci6050.ebooking.entity.ShowSchedule;
 import com.csci6050.ebooking.repository.MovieRepository;
+import com.csci6050.ebooking.repository.ShowScheduleRepository;
 import com.csci6050.ebooking.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ public class mainController {
     private MovieRepository movieRepository;
 
     @Autowired
-    private TicketRepository showScheduleRepository;
+    private ShowScheduleRepository showScheduleRepository;
 
     @GetMapping("/")
     public String mainpage(){
