@@ -34,7 +34,6 @@
                     let movie;
                     let day_list = [];
                     let time_now = new Date().getTime();
-
                     if (data.ReturnStatus.status == 1) {
                         for (i of data.ScheduleList) {
                             if (i.starttime > time_now) {
@@ -61,6 +60,8 @@
                             }
                         }
                     }
+                    day_list.push(new Date(0));
+                    console.log(day_list);
                     $('#datetimepicker').datetimepicker({
                         format: 'L',
                         enabledDates: day_list,
@@ -71,8 +72,8 @@
                         let select_time = new Date($('#movie_day').val().replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$1-$2") + ' 00:00:00');
                         for (let i of data.ScheduleList) {
                             let s = new Date(parseInt(i.starttime));
-                            console.log(s.toDateString())
-                            console.log(select_time.toDateString())
+                            // console.log(s.toDateString())
+                            // console.log(select_time.toDateString())
                             if (s.toDateString() == select_time.toDateString()) {
                                 temp.append(`<tr>
                                 <th scope="row">${s.getHours()}:${('0' + s.getMinutes()).slice(-2)}</th>
