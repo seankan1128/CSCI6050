@@ -16,4 +16,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     User findByPwresetcode(String pwresetcode);
 
     Iterable<User> findAllByEnrolledForPromotions(String enroll);
+
+    User findById(int id);
 }

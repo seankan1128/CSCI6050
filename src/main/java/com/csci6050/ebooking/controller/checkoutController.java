@@ -1,13 +1,9 @@
 package com.csci6050.ebooking.controller;
 
+import com.csci6050.ebooking.DTO.Login_Pay;
 import com.csci6050.ebooking.DTO.StatusNDescription;
-import com.csci6050.ebooking.entity.Booking;
-import com.csci6050.ebooking.entity.Movie;
-import com.csci6050.ebooking.entity.ShowSchedule;
-import com.csci6050.ebooking.entity.Ticket;
-import com.csci6050.ebooking.repository.BookingRepository;
-import com.csci6050.ebooking.repository.ShowScheduleRepository;
-import com.csci6050.ebooking.repository.TicketRepository;
+import com.csci6050.ebooking.entity.*;
+import com.csci6050.ebooking.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +27,12 @@ public class checkoutController {
     @Autowired
     private TicketRepository ticketRepository;
 
-    // Form adding a movie to the repository (check if the title exist first)
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PaymentcardRepository paymentcardRepository;
+
     @ResponseBody
     @RequestMapping("getreserved")
     public Map<String, Object> getreservedseat(@RequestParam("showtimeid") int showtimeid){
@@ -65,4 +66,30 @@ public class checkoutController {
 
         return returnMap;
     }
+
+    @ResponseBody
+    @RequestMapping("getpaymethod")
+    public Map<String, Object> getpaymentcardmethod(@RequestParam("userid") int userid){
+
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+
+        User user = userRepository.findById(userid);
+
+        Iterable<Paymentcard> plist = paymentcardRepository.findAllByUser(user);
+        List<Login_Pay> paymentcardList = new ArrayList<>();
+        for(Paymentcard pay : plist){
+            paymentcardList.add(new Login_Pay(pay.getType(),pay.getExpirationdate(),pay.getBillingaddress(),pay.getLastfourdigits(),pay.getBillingcity(),pay.getBillingstate(),pay.getBillingzipcode()));
+        }
+
+        SD.setStatus(1);
+        SD.setDescription("return payment card info");
+
+        returnMap.put("ReturnStatus",SD);
+        returnMap.put("PaymentInfo",paymentcardList);
+
+        return returnMap;
+    }
+
+
 }
