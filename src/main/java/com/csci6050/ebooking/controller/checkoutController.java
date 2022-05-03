@@ -59,7 +59,7 @@ public class checkoutController {
 
         }
 
-        reservedlist.add("1_6")
+        reservedlist.add("1_6");
         SD.setStatus(1);
         SD.setDescription("List of seat returned");
         returnMap.put("ReturnStatus", SD);
