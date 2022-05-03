@@ -35,14 +35,14 @@ public class checkoutController {
 
     @ResponseBody
     @RequestMapping("getreserved")
-    public Map<String, Object> getreservedseat(@RequestParam("showtimeid") int showtimeid){
+    public Map<String, Object> getreservedseat(@RequestParam("showtimeid") String showtimeid){
 
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
 
         List<String> reservedlist = new ArrayList<>();
 
-        ShowSchedule showSchedule = showScheduleRepository.findById(showtimeid);
+        ShowSchedule showSchedule = showScheduleRepository.findById(Integer.parseInt(showtimeid));
 
         Iterable<Booking> blist = bookingRepository.findAllByShowSchedule(showSchedule);
         List<Booking> bookingList = new ArrayList<>();
