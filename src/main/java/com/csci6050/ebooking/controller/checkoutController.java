@@ -163,7 +163,7 @@ public class checkoutController {
         returnMap.put("ReturnStatus",SD);
 
         Email e = new Email();
-        e.checkoutEmail(user, showSchedule.getMovie().getTitle(), totalprice);
+        e.checkoutEmail(user, showSchedule.getMovie().getTitle(), totalprice, seatidlist, Long.parseLong(showSchedule.getStarttime()));
 
         return returnMap;
     }
