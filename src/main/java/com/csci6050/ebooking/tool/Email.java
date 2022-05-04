@@ -4,6 +4,7 @@ import com.csci6050.ebooking.entity.Promotions;
 import com.csci6050.ebooking.entity.User;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
@@ -304,17 +305,19 @@ public class Email {
                     InternetAddress.parse(to));
 
             // Set Subject: header field
-            message.setSubject("Reset your password");
+            message.setSubject("Ticket Confirmation Email");
 
             String content = "Dear [[name]],\n"
                     + "You have just bought tickets to watch [[MOVIE]]\n"
-                    + "The total price of your order was [[PRICE]]\n"
+                    + "The total price of your order was $[[PRICE]]\n"
                     + "Thank you for your order and we hope you enjoy your movie,\n"
                     + "Cinema E-booking System TeamB6";
 
+            DecimalFormat df = new DecimalFormat("#.00");
+            String dfPrice = df.format(price);
             content = content.replace("[[name]]", user.getFirstName());
             content = content.replace("[[MOVIE]]", movie);
-            content = content.replace("[[PRICE]]", String.valueOf(price));
+            content = content.replace("[[PRICE]]", dfPrice);
 
             message.setText(content);
             Transport.send(message);
