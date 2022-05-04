@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class checkoutController {
@@ -95,6 +94,38 @@ public class checkoutController {
         returnMap.put("ReturnStatus",SD);
         returnMap.put("PaymentInfo",paymentcardList);
 
+        return returnMap;
+    }
+
+    @ResponseBody
+    @RequestMapping("promotioncheck")
+    public Map<String, Object> promotioncheck(@RequestParam("promocode") String promocode) throws ParseException {
+        Map<String, Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+
+        Promotions promotions = promotionsRepository.findByPromoCode(promocode);
+        if(promotions == null){
+            SD.setStatus(0);
+            SD.setDescription("No such promotion!");
+            returnMap.put("ReturnStatus",SD);
+            return returnMap;
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse(promotions.getPromoStart());
+        long starttimestamp = date.getTime();
+        Date date2 = format.parse(promotions.getPromoEnd());
+        long endtimestamp = date2.getTime();
+        long unixTime = Instant.now().getEpochSecond(); //timestamp
+        if((unixTime<starttimestamp)||(unixTime>endtimestamp)){
+            SD.setStatus(0);
+            SD.setDescription("Promotion expired/not valid");
+            returnMap.put("ReturnStatus",SD);
+            return returnMap;
+        }
+        SD.setStatus(1);
+        SD.setDescription("Promotion returned");
+        returnMap.put("ReturnStatus",SD);
+        returnMap.put("Promotion", promotions);
         return returnMap;
     }
 
