@@ -158,10 +158,9 @@ public class checkoutController {
         }// create tickets for booking
 
         SD.setStatus(1);
-        SD.setDescription("return payment card info");
+        SD.setDescription("Success");
 
         returnMap.put("ReturnStatus",SD);
-//        returnMap.put("PaymentInfo",paymentcardList);
 
 
 
