@@ -75,12 +75,12 @@ public class checkoutController {
 
     @ResponseBody
     @RequestMapping("getpaymethod")
-    public Map<String, Object> getpaymentcardmethod(@RequestParam("userid") int userid){
+    public Map<String, Object> getpaymentcardmethod(@RequestParam("username") String username){
 
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
 
-        User user = userRepository.findById(userid);
+        User user = userRepository.findByEmail(username);
 
         Iterable<Paymentcard> plist = paymentcardRepository.findAllByUser(user);
         List<Login_Pay> paymentcardList = new ArrayList<>();
