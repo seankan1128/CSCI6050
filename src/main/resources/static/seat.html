@@ -15,12 +15,13 @@
     <link rel="stylesheet" href="./css/seat.css">
     <script src="js/jquery.seat-charts.min.js"></script>
     <script type="text/javascript">
-        var price = 4.99;
-        $(document).ready(function () {
-            var $cart = $('#seats_chose');
-            var $tickects_num = $('#tickects_num');
-            var $total_price = $('#total_price');
-            var sc = $('#seat_area').seatCharts({
+        function select_seat(reserved_seat) {
+            // let price = 4.99;
+
+            let $cart = $('#seats_chose');
+            let $tickects_num = $('#tickects_num');
+            // let $total_price = $('#total_price');
+            let sc = $('#seat_area').seatCharts({
                 map: [
                     //seat diagram
                     'aaaaaaaaaa',
@@ -56,12 +57,12 @@
                             .data('seatId', this.settings.id)
                             .appendTo($cart);
                         $tickects_num.text(sc.find('selected').length + 1);
-                        $total_price.text(((getTotalPrice(sc) + 1) * price).toFixed(2));
+                        // $total_price.text(((getTotalPrice(sc) + 1) * price).toFixed(2));
                         return 'selected';
                     }
                     else if (this.status() == 'selected') {
                         $tickects_num.text(sc.find('selected').length - 1);
-                        $total_price.text(((getTotalPrice(sc) - 1) * price).toFixed(2));
+                        // $total_price.text(((getTotalPrice(sc) - 1) * price).toFixed(2));
                         $('#cart-item-' + this.settings.id).remove();
                         return 'available';
                     }
@@ -73,13 +74,34 @@
                     }
                 }
             });
-
-            sc.get(['1_3', '1_4', '4_4', '4_5', '4_6', '4_7', '4_8']).status('unavailable');
-        });
+            sc.get(reserved_seat).status('unavailable');
+        }
 
         function getTotalPrice(sc) {
             return sc.find('selected').length;
         }
+    </script>
+    <script>
+        $(function () {
+            let data1 = new FormData();
+            data1.append('showtimeid', $.session.get('showid'));
+            $.ajax({
+                type: "post",
+                url: "getreserved",
+                contentType: false,
+                processData: false,
+                data: data1,
+                success: (data) => {
+                    console.log(data);
+                    select_seat(data.ReservedSeats);
+
+                    $('#btn_checkout').click(()=>{
+                        $.session.set('seat_cart',$('#seats_chose').children().toArray().map((e)=>$(e).data('seatId')));
+                        location.href='checkout.html';
+                    });
+                }
+            })
+        })
     </script>
     <script src="js/bar_login.js"></script>
 </head>
@@ -145,8 +167,8 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-6" id="legend"></div>
-                    <a href="select.html" class="btn  col-2 btn-danger my-auto">Cancel</a>
-                    <a href="checkout.html" class="btn offset-1 col-2 btn-success my-auto">Check Out</a>
+                    <a href="select.html" class="btn col-2 btn-danger my-auto">Cancel</a>
+                    <a id="btn_checkout" href="#" class="btn offset-1 col-2 btn-success my-auto">Check Out</a>
                 </div>
             </div>
         </div>
