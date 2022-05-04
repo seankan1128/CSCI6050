@@ -2,12 +2,12 @@ package com.csci6050.ebooking.tool;
 
 import com.csci6050.ebooking.entity.Promotions;
 import com.csci6050.ebooking.entity.User;
+import net.bytebuddy.build.Plugin;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -266,7 +266,7 @@ public class Email {
             }
         }
     }
-    public void checkoutEmail(User user, String movie, float price)
+    public void checkoutEmail(User user, String movie, float price, List<String> seatid, long unixTime)
     {
         // Recipient's email ID needs to be mentioned.
         String to = user.getEmail();
@@ -308,16 +308,23 @@ public class Email {
             message.setSubject("Ticket Confirmation Email");
 
             String content = "Dear [[name]],\n"
-                    + "You have just bought tickets to watch [[MOVIE]]\n"
+                    + "You have just bought tickets to watch [[MOVIE]] on [[DATE]]\n"
+                    + "The seats that have been reserved for you are as follows: [[SEAT]]\n"
                     + "The total price of your order was $[[PRICE]]\n"
                     + "Thank you for your order and we hope you enjoy your movie,\n"
                     + "Cinema E-booking System TeamB6";
 
             DecimalFormat df = new DecimalFormat("#.00");
             String dfPrice = df.format(price);
+            String seatIDString = seatid.toString();
+            Date date = new Date(unixTime*1000L);
+            SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+            String stringDate = jdf.format(date);
             content = content.replace("[[name]]", user.getFirstName());
             content = content.replace("[[MOVIE]]", movie);
             content = content.replace("[[PRICE]]", dfPrice);
+            content = content.replace("[[SEAT]]", seatIDString);
+            content = content.replace("[[DATE]]", stringDate);
 
             message.setText(content);
             Transport.send(message);
