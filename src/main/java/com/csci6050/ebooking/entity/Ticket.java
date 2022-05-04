@@ -22,6 +22,12 @@ public class Ticket {
     @Column(name="seatid")
     private String seatId;
 
+    public Ticket(Booking booking, String date, int type, String seatId){
+        this.setBooking(booking);
+        this.setDate(date);
+        this.setType(type);
+        this.setSeatId(seatId);
+    }
 
     public int getId() {
         return id;

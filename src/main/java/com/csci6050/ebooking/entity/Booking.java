@@ -16,7 +16,7 @@ public class Booking {
     @JoinColumn(name="showtimeid")
     private ShowSchedule showSchedule;
     @OneToOne
-    @JoinColumn(name="cardno")
+    @JoinColumn(name="cardid")
     private Paymentcard paymentcard;
     @Column(name="nooftickets")
     private int nooftickets;
