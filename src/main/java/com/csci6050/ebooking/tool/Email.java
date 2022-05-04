@@ -265,4 +265,64 @@ public class Email {
             }
         }
     }
+    public void checkoutEmail(User user, String movie, float price)
+    {
+        // Recipient's email ID needs to be mentioned.
+        String to = user.getEmail();
+        System.out.println(to);
+        // Sender's email ID needs to be mentioned
+        String from = "se22springb6@gmail.com";
+        final String username = "se22springb6@gmail.com";//change accordingly
+        final String password = "TeamB6Spring22";//change accordingly
+
+        // Assuming you are sending email through relay.jangosmtp.net
+        String host = "smtp.gmail.com";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "587");
+
+        // Get the Session object.
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            Message message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+
+            // Set Subject: header field
+            message.setSubject("Reset your password");
+
+            String content = "Dear [[name]],\n"
+                    + "You have just bought tickets to watch [[MOVIE]]\n"
+                    + "The total price of your order was [[PRICE]]\n"
+                    + "Thank you for your order and we hope you enjoy your movie,\n"
+                    + "Cinema E-booking System TeamB6";
+
+            content = content.replace("[[name]]", user.getFirstName());
+            content = content.replace("[[MOVIE]]", movie);
+            content = content.replace("[[PRICE]]", String.valueOf(price));
+
+            message.setText(content);
+            Transport.send(message);
+
+            System.out.println("Sent message successfully....");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

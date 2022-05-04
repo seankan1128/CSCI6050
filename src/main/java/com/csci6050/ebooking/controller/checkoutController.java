@@ -4,6 +4,7 @@ import com.csci6050.ebooking.DTO.Login_Pay;
 import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.entity.*;
 import com.csci6050.ebooking.repository.*;
+import com.csci6050.ebooking.tool.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -161,6 +162,8 @@ public class checkoutController {
 
         returnMap.put("ReturnStatus",SD);
 //        returnMap.put("PaymentInfo",paymentcardList);
+
+
 
         return returnMap;
     }
