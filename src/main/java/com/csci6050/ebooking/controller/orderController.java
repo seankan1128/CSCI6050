@@ -2,11 +2,10 @@ package com.csci6050.ebooking.controller;
 
 import com.csci6050.ebooking.DTO.StatusNDescription;
 import com.csci6050.ebooking.entity.Booking;
+import com.csci6050.ebooking.entity.ShowSchedule;
 import com.csci6050.ebooking.entity.Ticket;
 import com.csci6050.ebooking.entity.User;
-import com.csci6050.ebooking.repository.BookingRepository;
-import com.csci6050.ebooking.repository.TicketRepository;
-import com.csci6050.ebooking.repository.UserRepository;
+import com.csci6050.ebooking.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +29,12 @@ public class orderController {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private ShowScheduleRepository showScheduleRepository;
+
+    @Autowired
+    private PaymentcardRepository paymentcardRepository;
+
     @ResponseBody
     @RequestMapping("getorder")
     public Map<String, Object> getreservedseat(@RequestParam("username") String username) {
@@ -43,23 +48,59 @@ public class orderController {
         List<Booking> bookingList = new ArrayList<>();
         blist.forEach(bookingList::add);
 
-        if(bookingList.isEmpty()){
-            SD.setStatus(0);
-            SD.setDescription("No order history");
-            returnMap.put("ReturnStatus", SD);
-            return returnMap;
-        }
+//        if(bookingList.isEmpty()){
+//            SD.setStatus(0);
+//            SD.setDescription("No order history");
+//            returnMap.put("ReturnStatus", SD);
+//            return returnMap;
+//        }
 
         List<Map> returnBookingMap = new ArrayList<>();
 //        Map<Booking, List<Ticket>> bookingListMap = new HashMap<>();
-        for(Booking booking : bookingList){
-            Iterable<Ticket> tlist = ticketRepository.findAllByBooking(booking);
-            List<Ticket> ticketList = new ArrayList<>();
-            tlist.forEach(ticketList::add);
-            Map<Booking, List<Ticket>> bookingListMap = new HashMap<>();
-            bookingListMap.put(booking,ticketList);
-            returnBookingMap.add(bookingListMap);
-        }
+//        for(Booking booking : bookingList){
+//            Iterable<Ticket> tlist = ticketRepository.findAllByBooking(booking);
+//            List<Ticket> ticketList = new ArrayList<>();
+//            tlist.forEach(ticketList::add);
+//            Map<Booking, List<Ticket>> bookingListMap = new HashMap<>();
+//            bookingListMap.put(booking,ticketList);
+//            returnBookingMap.add(bookingListMap);
+//        }
+
+
+        Booking bookingtest = new Booking();
+        bookingtest.setTotalprice(333);
+        bookingtest.setDateofbooking("121212121");
+        bookingtest.setAddress("fdsfsdfsfds00");
+        bookingtest.setNooftickets(4);
+        ShowSchedule showScheduletest = showScheduleRepository.findById(9);
+        bookingtest.setShowSchedule(showScheduletest);
+        bookingtest.setUser(user);
+        bookingtest.setId(1);
+        bookingtest.setPaymentcard(paymentcardRepository.findByLastfourdigits("0000"));
+
+        Ticket tickettest = new Ticket();
+        tickettest.setPrice(12);
+        tickettest.setType(2);
+        tickettest.setBooking(bookingtest);
+        tickettest.setSeatId("1_1");
+        tickettest.setDate("121212121212");
+
+        Ticket tickettest2 = new Ticket();
+        tickettest2.setPrice(22);
+        tickettest2.setType(2);
+        tickettest2.setBooking(bookingtest);
+        tickettest2.setSeatId("1_2");
+        tickettest2.setDate("121212121212");
+
+        List<Ticket> ticketList = new ArrayList<>();
+        ticketList.add(tickettest);
+        ticketList.add(tickettest2);
+
+        Map<String, Object> bookingListMap = new HashMap<>();
+        bookingListMap.put("Booking",bookingtest);
+        bookingListMap.put("Tickets",ticketList);
+        returnBookingMap.add(bookingListMap);
+
 
         SD.setStatus(1);
         SD.setDescription("Order history returned");

@@ -14,7 +14,24 @@
     <script src="js/bar_login.js"></script>
     <script>
         $(function (){
+            let user_info=$.deparam(decodeURIComponent($.session.get('userInfo')));
+            let data1=new FormData();
+            data1.append('username',user_info.ReturnUser.email);
+            $.ajax({
+                type: "post",
+                url: "getorder",
+                contentType: false,
+                processData: false,
+                data: data1,
+                success: (data) => {
+                    console.log(data);
+                    if(data.ReturnStatus.status===1){
 
+                    }else {
+                        $('#content').append($('<h3 class="mt-5 text-center"></h3>').html('No Order History!'));
+                    }
+                }
+            })
         })
     </script>
 </head>
