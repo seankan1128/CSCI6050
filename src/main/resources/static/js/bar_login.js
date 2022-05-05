@@ -10,6 +10,7 @@ $(function () {
     }
     else if (cookieTemp != undefined) {
         user_info = $.deparam(decodeURIComponent(cookieTemp));
+        $.session.set('userInfo',$.param(user_info));
         if (user_info.remember !== undefined) {
             flag = 1;
         }
@@ -22,7 +23,7 @@ $(function () {
             $('<div class="dropdown">').append(
                 $('<button class="btn btn-secondary dropdown-toggle" type="button" id=userMenuButton" data-toggle="dropdown" aria-expanded="false"></button>').html(user_info.ReturnUser.firstname),
                 $('<div class="dropdown-menu" aria-labelledby="userMenuButton"></div>').append(
-                    $('<a class="dropdown-item" href="#"></a>').html('Order'),
+                    $('<a class="dropdown-item" href="order.html"></a>').html('Order'),
                     $('<a class="dropdown-item" href="edit_profile.html"></a>').html('Edit Profile'),
                     $('<a class="dropdown-item" type="button" id="log_out" href="#"></a>').html('Log out'),
                 ),
