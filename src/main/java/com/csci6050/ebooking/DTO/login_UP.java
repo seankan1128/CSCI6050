@@ -12,22 +12,23 @@ public class login_UP {
     private String phone;
     private String birthday;
     private String enrolledForPromotions;
+    private int userStatus;
     private int userType;
     private List<Login_Pay> PaymentCardList;
 
-    public String getFirstname() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstname(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastname() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setLastname(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -61,6 +62,14 @@ public class login_UP {
 
     public void setEnrolledForPromotions(String enrolledForPromotions) {
         this.enrolledForPromotions = enrolledForPromotions;
+    }
+
+    public int getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(int userStatus) {
+        this.userStatus = userStatus;
     }
 
     public int getUserType() {

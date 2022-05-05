@@ -46,7 +46,7 @@
         $("#totalFinalPrice2").html("应该是多少钱");
     }
 
-    function clickAddCreditCard(param) {
+    function clickAddAddress(param) {
         // console.log(param);
         $('#myModal').modal();
     }
@@ -100,16 +100,50 @@
 
         let data_send = new FormData();
         let user_info = $.deparam($.session.get('userInfo'));
-        data_send.append('email', user_info.ReturnUser.email);
+        let email = $.deparam($.session.get('userInfo')).ReturnUser.email;
+        data_send.append('username', user_info.ReturnUser.email);
         $.ajax({
             type: "post",
-            url: "getpaymentcardmethod", //change
+            url: "getpaymethod", //change
             contentType: false,
             processData: false,
             data: data_send,
             success(data) {
                 console.log(data);
+                let {ReturnStatus, PaymentInfo} = data;
+                if (ReturnStatus.status == 1) {
+                    let tb = document.getElementById("card");
+                    tb.innerHTML="";
 
+                    let tbAdd = document.getElementById("tableAdd");
+                    tbAdd.innerHTML="";
+
+                    for (let r of PaymentInfo) {
+                        let tr = document.createElement("div");
+                        tr.setAttribute("class","col-4");
+                        tr.setAttribute("style","height: 40px;");
+
+                        let trAdd = document.createElement("tr");
+                        trAdd.setAttribute("class","row");
+
+
+                        tr.innerHTML =
+                            `<div class="card" style="margin-bottom: 20px !important;">
+                                <div class="card-header btn text-left">
+                                    ${r.type} <hr/> *** **** **** ${r.lastfourdigits}
+                                </div>
+                            </div>`;
+                        tb.appendChild(tr);
+
+
+                        trAdd.innerHTML=`
+                            <th scope="row"  class="col-4"><input type="radio" name="address"></th>
+                            <td class="col-4">${email} </td>
+                            <td class="col-4">${r.billingaddress}, ${r.billingcity}, ${r.billingstate} </td>
+                        `;
+                        tbAdd.appendChild(trAdd)
+                    }
+                }
             }
         })
 
@@ -252,15 +286,12 @@
 
                                     <div class="row" id="card">
                                         <div class="col-4" style="height: 40px;">
-
                                             <div class="card" style="margin-bottom: 20px !important;">
                                                 <div class="card-header btn text-left">
                                                     xxxxBank <br/> ......1234
                                                 </div>
-
                                             </div>
                                         </div>
-
                                         <div class="col-4" style="height: 40px;">
                                             <div class="card">
                                                 <div class="card-header btn text-left">
@@ -279,7 +310,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="color:rgb(0, 2, 105);font-size: larger;margin-top: 50px;" onclick="">Add a
+                                <!--<div style="color:rgb(0, 2, 105);font-size: larger;margin-top: 50px;" onclick="">Add a
                                     credit
                                     or debit card
                                 </div>
@@ -294,9 +325,8 @@
                                     <div class="text-align" style="font-size:x-small;display: inline-block;">We
                                         accepts all major credit cards.
                                     </div>
-                                </div>
-
-                                <div style="color:rgb(0, 2, 105);font-size: larger; margin-top: 7px;">
+                                </div>-->
+                                <div style="color:rgb(0, 2, 105);font-size: larger; margin-top: 70px;">
                                     Your available discount
                                 </div>
                                 <hr style="margin-top: auto; margin-bottom: auto;">
@@ -341,31 +371,31 @@
                                 <div style="padding-left: 12px;">
                                     <table class="table table-hover" style="font-size:x-small;">
                                         <thead>
-                                        <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Address</th>
+                                        <tr class="row">
+                                            <th scope="col" class="col-4"></th>
+                                            <th scope="col" class="col-4">Name</th>
+                                            <th scope="col" class="col-4">Address</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <th scope="row"><input type="radio" name="address"></th>
-                                            <td>Cardi B</td>
-                                            <td>405 College Station Rd, Athens, GA 30602
-                                                <button class="btn btn-link text-left text-align" type="button"
-                                                        style="font-size:x-small;">
-                                                    edit address
-                                                </button>
+                                        <tbody id="tableAdd">
+                                        <tr class="row">
+                                            <th scope="row" class="col-4"><input type="radio" name="address"></th>
+                                            <td class="col-4">Cardi B</td>
+                                            <td class="col-4">405 College Station Rd, Athens, GA 30602
+                                                <!-- <button class="btn btn-link text-left text-align" type="button"
+                                                         style="font-size:x-small;">
+                                                     edit address
+                                                 </button>-->
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row"><input type="radio" name="address"></th>
-                                            <td>Twice</td>
-                                            <td>405 College Station Rd, Athens, GA 30602
-                                                <button class="btn btn-link text-left text-align" type="button"
+                                        <tr class="row">
+                                            <th scope="row" class="col-4"><input type="radio" name="address"></th>
+                                            <td class="col-4">Twice</td>
+                                            <td class="col-4">405 College Station Rd, Athens, GA 30602
+                                                <!--<button class="btn btn-link text-left text-align" type="button"
                                                         style="font-size:x-small;">
                                                     edit address
-                                                </button>
+                                                </button>-->
                                             </td>
                                         </tr>
                                         </tbody>
@@ -374,7 +404,8 @@
                                     <i class="bi bi-plus-lg"></i>
                                     <i class="bi bi-house-door"></i>
                                     <button class="btn btn-link text-left text-align" type="button"
-                                            style="font-size:x-small;">
+                                            style="font-size:x-small;"
+                                            onclick="clickAddAddress(this)">
                                         Add a new address
                                     </button>
                                 </div>
