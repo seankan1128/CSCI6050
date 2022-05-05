@@ -101,7 +101,7 @@ public class checkoutController {
     public Map<String, Object> promotioncheck(@RequestParam("promocode") String promocode) throws ParseException {
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
-
+        System.out.println(promocode);
         Promotions promotions = promotionsRepository.findByPromoCode(promocode);
         if(promotions == null){
             SD.setStatus(0);
@@ -114,7 +114,10 @@ public class checkoutController {
         long starttimestamp = date.getTime();
         Date date2 = format.parse(promotions.getPromoEnd());
         long endtimestamp = date2.getTime();
-        long unixTime = Instant.now().getEpochSecond(); //timestamp
+        long unixTime = date.getTime(); //timestamp
+        System.out.println(starttimestamp);
+        System.out.println(endtimestamp);
+        System.out.println(unixTime);
         if((unixTime<starttimestamp)||(unixTime>endtimestamp)){
             SD.setStatus(0);
             SD.setDescription("Promotion expired/not valid");
