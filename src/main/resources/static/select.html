@@ -38,7 +38,7 @@
                     if (data.ReturnStatus.status == 1) {
                         for (i of data.ScheduleList) {
                             // if (i.starttime > time_now) {
-                                day_list.push(i);
+                            day_list.push(i);
                             // }
                         }
                         for (let i of movie_info.StreamingNow) {
@@ -102,10 +102,23 @@
                     $('#movie_director').html(movie.director);
                     $('#movie_producer').html(movie.producer);
 
-                    $('#seat_select').click(()=>{
+                    $('#seat_select').click(() => {
+                        if($('#time_table .btn-info')[0]!=undefined){
+                            // let a=day_list.filter((e) => {
+                            //     return e.id == $('#time_table .btn-info').attr('data-showid')
+                            // })[0];
+                            // console.log(a);
+                            // console.log($.param(a))
+                            $.session.set('show_movie', $.param(day_list.filter((e) => {
+                                return e.id == $('#time_table .btn-info').attr('data-showid')
+                            })[0]));
+                            // $.session.set('show_movie', $.param(a));
+                            // $.session.set('showid', $('#time_table .btn-info').attr('data-showid'));
+                            location.href = 'seat.html';
+                        }else{
+                            alert('Please choose a show time')
+                        }
 
-                        $.session.set('showid',$('#time_table .btn-info').attr('data-showid'));
-                        location.href='seat.html';
                     });
                 }
             })

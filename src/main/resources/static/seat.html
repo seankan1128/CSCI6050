@@ -84,7 +84,14 @@
     <script>
         $(function () {
             let data1 = new FormData();
-            data1.append('showtimeid', $.session.get('showid'));
+            let movie_show = $.deparam(decodeURIComponent($.session.get('show_movie')));
+            console.log(movie_show);
+            $('#movie_pic').attr('src', '/image/' + movie_show.movie.trailerPicture);
+            $('#movie_title').html(movie_show.movie.title);
+            $('#movie_des').html(movie_show.movie.description);
+            let t=new Date(parseInt(movie_show.starttime))
+            $('#show_time').html(t.toDateString()+'<br>'+t.toLocaleTimeString());
+            data1.append('showtimeid', movie_show.id);
             $.ajax({
                 type: "post",
                 url: "getreserved",
@@ -95,9 +102,9 @@
                     console.log(data);
                     select_seat(data.ReservedSeats);
 
-                    $('#btn_checkout').click(()=>{
-                        $.session.set('seat_cart',$('#seats_chose').children().toArray().map((e)=>$(e).data('seatId')));
-                        location.href='checkout.html';
+                    $('#btn_checkout').click(() => {
+                        $.session.set('seat_cart', $('#seats_chose').children().toArray().map((e) => $(e).data('seatId')));
+                        location.href = 'checkout.html';
                     });
                 }
             })
@@ -126,17 +133,11 @@
     <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-4 sidebar-offcanvas" id="sidebar">
             <div class="card" style="width: 100%;">
-                <img src="image/Poster3.png" class="card-img-top" style="min-height: 20px;">
+                <img id="movie_pic" class="card-img-top" style="min-height: 20px;">
                 <div class="card-body">
-                    <h3 class="card-title" style="text-align: center;">Spider Man</h3>
-
-                    <footer class="blockquote-footer text-justify">
-                        <code>Spider-Man: Into the Spider-Verse</code> is an American animated superhero film
-                        released on December 14, 2018. The film's story follows the Marvel Comics character Miles
-                        Morales / Spider-Man as he teams up with
-                        other Spider-People from different dimensions to save New York City.
-                    </footer>
-
+                    <h3 id="movie_title" class="card-title" style="text-align: center;"></h3>
+                    <div id="movie_des" class=" text-justify">
+                    </div>
                 </div>
             </div>
 
@@ -153,14 +154,14 @@
                                 <div class="front">screen</div>
                             </div>
 
-                            <div class="booking_area">
-                                <p>movie:<span>Shang-Chi and the Legend of the Ten Rings</span></p>
-                                <p>time:<span>02/22/2022 14:00</span></p>
-                                <p>seat</p>
-                                <ul id="seats_chose" style="min-height: 150px"></ul>
-                                <p>ticket amount:<span id="tickects_num">0</span></p>
-                                <p style="display: none">price:<b>$<span id="total_price">0</span></b></p>
-
+                            <div class="booking_area" style="padding-top: 1rem">
+                                <h4>Time:<br>
+                                    <span id="show_time"></span>
+                                </h4>
+                                <h4>Seat:</h4>
+                                <ul id="seats_chose" style="min-height: 250px"></ul>
+                                <h5>Ticket Amount:<span id="tickects_num">0</span></h5>
+                                <!--                                <p style="display: none">price:<b>$<span id="total_price">0</span></b></p>-->
                             </div>
                         </div>
                     </div>
