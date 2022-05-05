@@ -13,10 +13,10 @@
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script src="js/bar_login.js"></script>
     <script>
-        $(function (){
-            let user_info=$.deparam(decodeURIComponent($.session.get('userInfo')));
-            let data1=new FormData();
-            data1.append('username',user_info.ReturnUser.email);
+        $(function () {
+            let user_info = $.deparam(decodeURIComponent($.session.get('userInfo')));
+            let data1 = new FormData();
+            data1.append('username', user_info.ReturnUser.email);
             $.ajax({
                 type: "post",
                 url: "getorder",
@@ -25,15 +25,77 @@
                 data: data1,
                 success: (data) => {
                     console.log(data);
-                    if(data.ReturnStatus.status===1){
-
-                    }else {
+                    if (data.ReturnStatus.status === 1) {
+                        let order_content = $('#content');
+                        for (let booking of data.OrderHistory) {
+                            let type = {adult: 0, senior: 0, child: 0};
+                            let seats = $('<ul id="seats" style="min-height: 7rem;max-height: 7rem;overflow-y: auto;"></ul>');
+                            for (let ticket of booking.Tickets) {
+                                let row_column = ticket.seatId.split('_');
+                                seats.append($('<li class="w-75 mt-1 mb-1"></li>').html('Row' + row_column[0] + 'Seats' + row_column[1]));
+                                if (ticket.type === 1) {
+                                    type.child++;
+                                }
+                                else if (ticket.type === 2) {
+                                    type.adult++;
+                                }
+                                else {
+                                    type.senior++;
+                                }
+                            }
+                            let price = 14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child;
+                            let orderT = new Date(parseInt(booking.Booking.dateofbooking));
+                            let ShowT = new Date(parseInt(booking.Booking.dateofbooking));
+                            let content = $('<div class="card"></div>').append(
+                                $('<div class="card-body"></div>').append(
+                                    $('<div class="card-title" style="display: flex;justify-content: space-between"></div>').append(
+                                        $('<h4></h4>').html(booking.Booking.showSchedule.movie.title),
+                                        $('<h4></h4>').html('Order time:' + orderT.toDateString() + ' ' + orderT.toLocaleTimeString()),
+                                    ),
+                                    $('<div class="row"></div>').append(
+                                        $('<div class="col-2"></div>').append(
+                                            $('<img class="w-100">').attr('src', 'image/' + booking.Booking.showSchedule.movie.trailerPicture),
+                                        ),
+                                        $('<div class="col-10"></div>').append(
+                                            $('<div class="row"></div>').append(
+                                                $('<div class="col-8"></div>').append(
+                                                    $('<h5 style="display: flex;justify-content: space-between"></h5>').html(
+                                                        'Adult:' + type.adult + '    Senior:' + type.senior + '    Child:' + type.child
+                                                    ),
+                                                    $('<h5></h5>').html('ShowTime:' + ShowT.toDateString() + ' ' + ShowT.toLocaleTimeString()),
+                                                    $('<h5></h5>').html('Payment Card: XXX' + booking.Booking.paymentcard.lastfourdigits),
+                                                    $('<h5></h5>').html('Billing Address:<br>' + booking.Booking.address),
+                                                ),
+                                                $('<div class="col-4"></div>').append(
+                                                    $('<h5></h5>').html('Ticket Number:' + booking.Booking.nooftickets),
+                                                    $('<h5></h5>').html('Seat:'),
+                                                    seats,
+                                                ),
+                                            ),
+                                            $('<div class=\'dropdown-divider\'></div>'),
+                                            $('<h5 style="display: flex;justify-content: right;color: red"></h5>').html('Total: $' + price.toFixed(2)),
+                                        ),
+                                    ),
+                                )
+                            );
+                            order_content.append(content);
+                        }
+                    }
+                    else {
                         $('#content').append($('<h3 class="mt-5 text-center"></h3>').html('No Order History!'));
                     }
                 }
             })
         })
     </script>
+    <style>
+        #seats li {
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid #d3d3d3;
+            background: #f7f7f7;
+        }
+    </style>
 </head>
 <body>
 <div class='container-fluid'>
@@ -53,42 +115,55 @@
 </div>
 <div class="container" style="min-height: 70vh;margin-top:10vh">
     <div id="content">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-title" style="display: flex;justify-content: space-between">
-                    <h4>
-                        Title
-                    </h4>
-                    <h4>
-                        Order time:Fir,25,May,2022 15:34:54
-                    </h4>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <img class="w-100" src="image/Poster1.png">
-                    </div>
-                    <div class="col-10">
-                        <div class="row">
-                            <div class="col-6">
-                                <h5>ShowTime:Fir,28,May,2022 15:34:54</h5>
-                                <h5>Payment Card: .... 5544</h5>
-                                <h5>Billing Address:lksldkglagljgj</h5>
-                            </div>
-                            <div class="col-6">
-                                <h5>Ticket Number:4</h5>
-                                <h5>Seat:
-                                    Row4Seats5,Row4Seats6,Row4Seats7,Row4Seats8
-                                </h5>
-                            </div>
-                        </div>
-                        <div class='dropdown-divider'></div>
-                        <h5 style="display: flex;justify-content: right;color: red">
-                            Total: $50.23
-                        </h5>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--        <div class="card">-->
+        <!--            <div class="card-body">-->
+        <!--                <div class="card-title" style="display: flex;justify-content: space-between">-->
+        <!--                    <h4>-->
+        <!--                        Title-->
+        <!--                    </h4>-->
+        <!--                    <h4>-->
+        <!--                        Order time:Fir,25,May,2022 15:34:54-->
+        <!--                    </h4>-->
+        <!--                </div>-->
+        <!--                <div class="row">-->
+        <!--                    <div class="col-2">-->
+        <!--                        <img class="w-100" src="image/Poster1.png">-->
+        <!--                    </div>-->
+        <!--                    <div class="col-10">-->
+        <!--                        <div class="row">-->
+        <!--                            <div class="col-8">-->
+        <!--                                <h5>Adult:2 Senior:1 Child:1</h5>-->
+        <!--                                <h5>ShowTime:Fir,28,May,2022 15:34:54</h5>-->
+        <!--                                <h5>Payment Card: .... 5544</h5>-->
+        <!--                                <h5>Billing Address:lksldkglagljgj</h5>-->
+        <!--                            </div>-->
+        <!--                            <div class="col-4">-->
+        <!--                                <h5>Ticket Number:4</h5>-->
+        <!--                                <h5>Seat:</h5>-->
+        <!--                                <ul id="seats" style="min-height: 7rem;max-height: 7rem;overflow-y: auto;">-->
+        <!--                                    <li class="w-75 mt-1 mb-1">-->
+        <!--                                        Row4Seats5-->
+        <!--                                    </li>-->
+        <!--                                    <li>-->
+        <!--                                        Row4Seats6-->
+        <!--                                    </li>-->
+        <!--                                    <li>-->
+        <!--                                        Row4Seats7-->
+        <!--                                    </li>-->
+        <!--                                    <li>-->
+        <!--                                        Row4Seats8-->
+        <!--                                    </li>-->
+        <!--                                </ul>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                        <div class='dropdown-divider'></div>-->
+        <!--                        <h5 style="display: flex;justify-content: right;color: red">-->
+        <!--                            Total: $50.23-->
+        <!--                        </h5>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 <div id="footer" class="container-fluid " style="background: black; color: white; margin-top: 50px;padding: 40px">
