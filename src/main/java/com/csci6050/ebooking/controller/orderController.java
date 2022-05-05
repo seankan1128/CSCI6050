@@ -35,6 +35,9 @@ public class orderController {
     @Autowired
     private PaymentcardRepository paymentcardRepository;
 
+    @Autowired
+    private PromotionsRepository promotionsRepository;
+
     @ResponseBody
     @RequestMapping("getorder")
     public Map<String, Object> getreservedseat(@RequestParam("username") String username) {
@@ -72,10 +75,11 @@ public class orderController {
         bookingtest.setDateofbooking("1648180800000");
         bookingtest.setAddress("fdsfsdfsfds00");
         bookingtest.setNooftickets(4);
-        ShowSchedule showScheduletest = showScheduleRepository.findById(13);
+        ShowSchedule showScheduletest = showScheduleRepository.findById(10);
         bookingtest.setShowSchedule(showScheduletest);
         bookingtest.setUser(user);
         bookingtest.setId(1);
+        bookingtest.setPromotions(promotionsRepository.findByPromoCode("test2"));
         bookingtest.setPaymentcard(paymentcardRepository.findByLastfourdigits("0000"));
 
         Ticket tickettest = new Ticket();

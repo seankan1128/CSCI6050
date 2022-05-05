@@ -43,14 +43,14 @@
                                     type.senior++;
                                 }
                             }
-                            let price = 14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child;
+                            let price = (14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child) * (1 - booking.Booking.promotions.promoDiscount / 100) * (1 + 0.08);
                             let orderT = new Date(parseInt(booking.Booking.dateofbooking));
-                            let ShowT = new Date(parseInt(booking.Booking.dateofbooking));
-                            let content = $('<div class="card mt-2 mb-2"></div>').append(
+                            let ShowT = new Date(parseInt(booking.Booking.showSchedule.starttime));
+                            let content = $('<div class="card mt-2 mb-4"></div>').append(
                                 $('<div class="card-body"></div>').append(
                                     $('<div class="card-title" style="display: flex;justify-content: space-between"></div>').append(
                                         $('<h4></h4>').html(booking.Booking.showSchedule.movie.title),
-                                        $('<h4></h4>').html('Order time:' + orderT.toDateString() + ' ' + orderT.toLocaleTimeString()),
+                                        $('<h4></h4>').html('Order Time: ' + orderT.toDateString() + ' ' + orderT.toLocaleTimeString()),
                                     ),
                                     $('<div class="row"></div>').append(
                                         $('<div class="col-2"></div>').append(
@@ -58,21 +58,32 @@
                                         ),
                                         $('<div class="col-10"></div>').append(
                                             $('<div class="row"></div>').append(
-                                                $('<div class="col-8"></div>').append(
-                                                    $('<h5 style="display: flex;justify-content: space-between"></h5>').html(
-                                                        'Adult:' + type.adult + '    Senior:' + type.senior + '    Child:' + type.child
+                                                $('<div class="col-8" style="border-right: 1px solid #ffb569"></div>').append(
+                                                    $('<h5 style="display: flex;justify-content: space-between"></h5>').append(
+                                                        $('<div>Ticket Number:</div>'),
+                                                        $('<div>' + booking.Booking.nooftickets + '</div>'),
                                                     ),
-                                                    $('<h5></h5>').html('ShowTime:' + ShowT.toDateString() + ' ' + ShowT.toLocaleTimeString()),
-                                                    $('<h5></h5>').html('Payment Card: XXX' + booking.Booking.paymentcard.lastfourdigits),
+                                                    $('<h5 style="display: flex;justify-content: space-between"></h5>').append(
+                                                        $('<div>Adult:' + type.adult + '</div>'),
+                                                        $('<div>Senior:' + type.senior + '</div>'),
+                                                        $('<div>Child:' + type.child + '</div>'),
+                                                    ),
+                                                    $('<h5 style="display: flex;justify-content: space-between"></h5>').append(
+                                                        $('<div>ShowTime:</div>'),
+                                                        $('<div>' + ShowT.toDateString() + ' ' + ShowT.toLocaleTimeString() + '</div>'),
+                                                    ),
+                                                    $('<h5 style="display: flex;justify-content: space-between"></h5>').append(
+                                                        $('<div>Payment Card:</div>'),
+                                                        $('<div>' + '•••• ' + booking.Booking.paymentcard.lastfourdigits + '</div>'),
+                                                    ),
                                                     $('<h5></h5>').html('Billing Address:<br>' + booking.Booking.address),
                                                 ),
                                                 $('<div class="col-4"></div>').append(
-                                                    $('<h5></h5>').html('Ticket Number:' + booking.Booking.nooftickets),
                                                     $('<h5></h5>').html('Seat:'),
                                                     seats,
                                                 ),
                                             ),
-                                            $('<div class=\'dropdown-divider\'></div>'),
+                                            $('<div class="dropdown-divider"></div>'),
                                             $('<h5 style="display: flex;justify-content: right;color: red"></h5>').html('Total: $' + price.toFixed(2)),
                                         ),
                                     ),
@@ -108,9 +119,8 @@
             <p class='h2' style='color: white'>Order</p>
         </div>
         <div id="user" class="col-1 offset-3">
-            <a class="btn btn-primary" type="button" href="login">Login</a>
+<!--            <a class="btn btn-primary" type="button" href="login">Login</a>-->
         </div>
-
     </nav>
 </div>
 <div class="container" style="min-height: 70vh;margin-top:10vh">
