@@ -76,7 +76,6 @@ public class checkoutController {
     @ResponseBody
     @RequestMapping("getpaymethod")
     public Map<String, Object> getpaymentcardmethod(@RequestParam("username") String username){
-
         Map<String, Object> returnMap = new HashMap<>();
         StatusNDescription SD = new StatusNDescription();
 
