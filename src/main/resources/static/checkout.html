@@ -28,8 +28,152 @@
         }
     </style>
 </head>
+<script>
+    var ticket = 6;
+    var total = {adult: ticket, senior: 0, child: 0};
 
+    function getTotal() {
+        total = $("#AdultTicket").val()
+            + $("#SeniorTicket").val()
+            + $("#ChildTicket").val();
+    }
+
+    function changeFinalPrice(){
+        $("#adultTotalPrice").html("$ 14.99*"+total.adult);
+        $("#seniorTotalPrice").html("$ 7.99*"+total.senior);
+        $("#childTotalPrice").html("$ 9.99*"+total.child);
+        $("#totalFinalPrice1").html(14.99*total.adult+7.99*total.senior+9.99*total.child);
+        $("#totalFinalPrice2").html("应该是多少钱");
+    }
+
+    function clickAddCreditCard(param) {
+        // console.log(param);
+        $('#myModal').modal();
+    }
+
+    function addCreditCard(){
+        $.ajax({
+            type: "post",
+            url: "发送添加银行卡信息的url", //change
+            contentType: false,
+            processData: false,
+            data: {},
+            success(data) {
+                console.log(data);
+            }
+        })
+    }
+
+    $(function () {
+    //     let data_send = new FormData();
+    //     let user_info = $.deparam($.session.get('userInfo'));
+    //     data_send.append('email', user_info.ReturnUser.email);
+    //     // console.log($.session.get('userInfo'));
+    //     $.ajax({
+    //         type: "post",
+    //         url: "getpaymentcardmethod", //change
+    //         contentType: false,
+    //         processData: false,
+    //         data: data_send,
+    //         success(data) {
+    //             console.log(data);
+    //             let {ReturnStatus, PaymentInfo} = data;
+    //             if (ReturnStatus.status == 1) {
+    //                 let tb = document.getElementById("card");
+    //                 tb.innerHTML="";
+    //                 for (let r of PaymentInfo) {
+    //                     let tr = document.createElement("tr");
+    //                     tr.innerHTML =
+    //                     `<div class="col-4" style="height: 40px;">
+    //                         <div class="card" style="margin-bottom: 20px !important;">
+    //                             <div class="card-header btn text-left">
+    //                                 ${r.type} <br/> ${r.lastfourdigits}
+    //                             </div>
+    //
+    //                         </div>
+    //                     </div>`;
+    //                     tb.appendChild(tr);
+    //                 }
+    //             }
+    //         }
+    //     })
+
+        let data_send = new FormData();
+        let user_info = $.deparam($.session.get('userInfo'));
+        data_send.append('email', user_info.ReturnUser.email);
+        $.ajax({
+            type: "post",
+            url: "getpaymentcardmethod", //change
+            contentType: false,
+            processData: false,
+            data: data_send,
+            success(data) {
+                console.log(data);
+
+            }
+        })
+
+        changeFinalPrice();
+
+        $("#SeniorTicket").attr("max",ticket-total.adult-total.child);
+        $("#ChildTicket").attr("max",ticket-total.adult-total.senior);
+        $("#AdultTicket").change(function () {
+            total.adult = this.value;
+            $("#SeniorTicket").attr("max",ticket-total.adult-total.child);
+            $("#ChildTicket").attr("max",ticket-total.adult-total.senior);
+            changeFinalPrice();
+        });
+
+        $("#SeniorTicket").change(function () {
+            total.senior = this.value;
+            $("#AdultTicket").attr("max",ticket-total.senior-total.child);
+            $("#ChildTicket").attr("max",ticket-total.adult-total.senior);
+            changeFinalPrice();
+        });
+
+        $("#ChildTicket").change(function () {
+            total.child = this.value;
+            $("#AdultTicket").attr("max",ticket-total.senior-total.child);
+            $("#SeniorTicket").attr("max",ticket-total.adult-total.child);
+            changeFinalPrice();
+        });
+    })
+</script>
 <body>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="txt_departmentname">部门名称</label>
+                    <input type="text" name="txt_departmentname" class="form-control" id="txt_departmentname" placeholder="部门名称">
+                </div>
+                <div class="form-group">
+                    <label for="txt_parentdepartment">上级部门</label>
+                    <input type="text" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment" placeholder="上级部门">
+                </div>
+                <div class="form-group">
+                    <label for="txt_departmentlevel">部门级别</label>
+                    <input type="text" name="txt_departmentlevel" class="form-control" id="txt_departmentlevel" placeholder="部门级别">
+                </div>
+                <div class="form-group">
+                    <label for="txt_statu">描述</label>
+                    <input type="text" name="txt_statu" class="form-control" id="txt_statu" placeholder="状态">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button onclick="addCreditCard()" type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container-fluid">
     <nav class='row navbar fixed-top navbar-expand-lg navbar-dark' style='background-color: #000000;'>
         <a class=' col-2 navbar-brand' href='/'>
@@ -106,7 +250,7 @@
                                 <hr style="margin-top: auto; margin-bottom: auto;">
                                 <div style="padding-left: 12px;">
 
-                                    <div class="row">
+                                    <div class="row" id="card">
                                         <div class="col-4" style="height: 40px;">
 
                                             <div class="card" style="margin-bottom: 20px !important;">
@@ -135,14 +279,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="color:rgb(0, 2, 105);font-size: larger;margin-top: 50px;">Add a credit
+                                <div style="color:rgb(0, 2, 105);font-size: larger;margin-top: 50px;" onclick="">Add a
+                                    credit
                                     or debit card
                                 </div>
                                 <hr style="margin-top: auto; margin-bottom: auto;">
                                 <div style="padding-left: 12px;">
                                     <i class="bi bi-plus-lg"></i>
                                     <i class="bi bi-credit-card"></i>
-                                    <button class="btn btn-link text-left text-align" type="button">Add a credit or
+                                    <button class="btn btn-link text-left text-align" type="button"
+                                            onclick="clickAddCreditCard(this)">Add a credit or
                                         debit card
                                     </button>
                                     <div class="text-align" style="font-size:x-small;display: inline-block;">We
@@ -151,7 +297,7 @@
                                 </div>
 
                                 <div style="color:rgb(0, 2, 105);font-size: larger; margin-top: 7px;">
-                                    Your available balance
+                                    Your available discount
                                 </div>
                                 <hr style="margin-top: auto; margin-bottom: auto;">
                                 <div style="padding-left: 12px;">
@@ -286,32 +432,31 @@
                             <td>
                                 Adult:
                             </td>
-                            <td>
-                                $ 4.99*2
+                            <td id="adultTotalPrice">
+                                $ 4.99*6
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Senior:
                             </td>
-                            <td>
-                                $ 4.59*2
+                            <td id="seniorTotalPrice">
+                                $ 4.59*0
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Child:
                             </td>
-                            <td>
-                                $ 3.99*2
+                            <td id="childTotalPrice">
+                                $ 3.99*0
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Total:
                             </td>
-                            <td>
-                                $ 9.5
+                            <td id="totalFinalPrice1">
                             </td>
                         </tr>
                         <tr>
@@ -332,8 +477,7 @@
                             <td>
                                 Order Total:
                             </td>
-                            <td>
-                                $ 10.4
+                            <td id="totalFinalPrice2">
                             </td>
                         </tr>
                         </tbody>
