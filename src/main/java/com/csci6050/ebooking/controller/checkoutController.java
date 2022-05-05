@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -192,7 +190,11 @@ public class checkoutController {
 
         SD.setStatus(1);
         SD.setDescription("Success");
-
+        returnMap.put("Booking", booking);
+        Iterable<Ticket> tlist = ticketRepository.findAllByBooking(booking);
+        List<Ticket> ticketList = new ArrayList<>();
+        tlist.forEach(ticketList::add);
+        returnMap.put("Ticket",ticketList);
         returnMap.put("ReturnStatus",SD);
 
         Email e = new Email();
