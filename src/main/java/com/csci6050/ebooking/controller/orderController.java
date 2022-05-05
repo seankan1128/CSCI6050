@@ -69,10 +69,10 @@ public class orderController {
 
         Booking bookingtest = new Booking();
         bookingtest.setTotalprice(333);
-        bookingtest.setDateofbooking("121212121");
+        bookingtest.setDateofbooking("1648180800000");
         bookingtest.setAddress("fdsfsdfsfds00");
         bookingtest.setNooftickets(4);
-        ShowSchedule showScheduletest = showScheduleRepository.findById(9);
+        ShowSchedule showScheduletest = showScheduleRepository.findById(13);
         bookingtest.setShowSchedule(showScheduletest);
         bookingtest.setUser(user);
         bookingtest.setId(1);
