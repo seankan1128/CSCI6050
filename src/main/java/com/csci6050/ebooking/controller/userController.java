@@ -7,6 +7,7 @@ import com.csci6050.ebooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -43,6 +44,23 @@ public class userController {
         SD.setStatus(1);
 
         returnMap.put("Userlist", userlist);
+        returnMap.put("ReturnStatus", SD);
+
+        return returnMap;
+    }
+
+    @ResponseBody
+    @RequestMapping("userform2")
+    public Map<String, Object> suspendUser(@RequestParam("userEmail") String email){
+        Map<String,Object> returnMap = new HashMap<>();
+        StatusNDescription SD = new StatusNDescription();
+
+        User user = userRepository.findByEmail(email);
+        user.setStatus(3);
+        userRepository.save(user);
+
+        SD.setDescription("Return success");
+        SD.setStatus(1);
         returnMap.put("ReturnStatus", SD);
 
         return returnMap;
