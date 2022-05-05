@@ -83,14 +83,14 @@ public class orderController {
         tickettest.setType(2);
         tickettest.setBooking(bookingtest);
         tickettest.setSeatId("1_1");
-        tickettest.setDate("121212121212");
+        tickettest.setDate("1648180800000");
 
         Ticket tickettest2 = new Ticket();
         tickettest2.setPrice(22);
         tickettest2.setType(2);
         tickettest2.setBooking(bookingtest);
         tickettest2.setSeatId("1_2");
-        tickettest2.setDate("121212121212");
+        tickettest2.setDate("1648180800000");
 
         List<Ticket> ticketList = new ArrayList<>();
         ticketList.add(tickettest);
@@ -99,6 +99,7 @@ public class orderController {
         Map<String, Object> bookingListMap = new HashMap<>();
         bookingListMap.put("Booking",bookingtest);
         bookingListMap.put("Tickets",ticketList);
+        returnBookingMap.add(bookingListMap);
         returnBookingMap.add(bookingListMap);
 
 
