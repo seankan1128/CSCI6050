@@ -78,8 +78,8 @@ public class loginController {
 
             login_UP up = new login_UP();
 
-            up.setFirstName(n.getFirstName());
-            up.setLastName(n.getLastName());
+            up.setFirstname(n.getFirstName());
+            up.setLastname(n.getLastName());
             up.setUserType(n.getUserType());
             up.setEmail(n.getEmail());
             up.setPhone(n.getPhone());

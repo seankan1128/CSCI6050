@@ -35,7 +35,7 @@ public class userController {
                 login_UP userinfo = new login_UP();
                 userinfo.setEmail(user.getEmail());
                 userinfo.setUserStatus(user.getStatus());
-                userinfo.setFirstName(user.getFirstName());
+                userinfo.setFirstname(user.getFirstName());
                 userlist.add(userinfo);
             }
         }
