@@ -103,7 +103,14 @@
                     $('#movie_producer').html(movie.producer);
 
                     $('#seat_select').click(() => {
-                        if($('#time_table .btn-info')[0]!=undefined){
+                        if($('#user .dropdown')[0]==undefined){
+                            if(confirm('You need to Login before booking')){
+                                $.session.set('page',window.location.pathname);
+                                console.log('yes')
+                                $('#user').click();
+                            }
+                        }
+                        else if($('#time_table .btn-info')[0]!=undefined){
                             // let a=day_list.filter((e) => {
                             //     return e.id == $('#time_table .btn-info').attr('data-showid')
                             // })[0];
