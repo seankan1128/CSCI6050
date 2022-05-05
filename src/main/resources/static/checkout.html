@@ -64,7 +64,38 @@
         })
     }
 
+
     $(function () {
+        $('#promo').click(() => {
+            let q = new FormData();
+            q.append("promocode",$('#promocode'));
+            let code = q.get("promocode");
+            if (code == ""){
+                alert("code is empty")
+            }
+            else {
+                $.ajax({
+                    type: "post",
+                    url: "promotioncheck", //change
+                    contentType: false,
+                    processData: false,
+                    data: q,
+                    success(data){
+                        if (data.ReturnStatus.status == 1) {
+                            alert("discount applied!");
+                            //change total price
+
+                        } else {
+                            alert(data.ReturnStatus.description);
+                        }
+
+                    }
+                })
+            }
+
+            }
+        )
+
     //     let data_send = new FormData();
     //     let user_info = $.deparam($.session.get('userInfo'));
     //     data_send.append('email', user_info.ReturnUser.email);
@@ -341,9 +372,9 @@
                                         <tr>
                                             <td><i class="bi bi-plus-lg"></i></td>
                                             <td class="" style="display: inline-flex">&nbsp;
-                                                <input class="" type="text" placeholder="Enter Code"
+                                                <input class="" type="text" id="promocode" placeholder="Enter Code"
                                                        style="vertical-align:bottom !important;">
-                                                <button class="btn btn-outline-primary btn-sm" type="submit"
+                                                <button class="btn btn-outline-primary btn-sm" id="promo" type="submit"
                                                         style="margin-left: 2%;vertical-align: center;">Apply
                                                 </button>
                                             </td>
