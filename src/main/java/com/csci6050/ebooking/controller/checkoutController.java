@@ -114,7 +114,7 @@ public class checkoutController {
         long starttimestamp = date.getTime();
         Date date2 = format.parse(promotions.getPromoEnd());
         long endtimestamp = date2.getTime();
-        long unixTime = Instant.now().getEpochSecond(); //timestamp
+        long unixTime = date.getTime(); //timestamp
         System.out.println(starttimestamp);
         System.out.println(endtimestamp);
         System.out.println(unixTime);
