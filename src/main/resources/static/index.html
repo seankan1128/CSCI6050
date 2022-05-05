@@ -21,7 +21,7 @@
                 data: {},
                 success(data) {
                     $.session.set('movieInfo', $.param(data));
-                    console.log(data);
+                    // console.log(data);
                     // console.log(data.StreamingNow);
                     var movieArr = data.StreamingNow;
                     var movieArr2 = data.ComingSoon;
@@ -86,7 +86,7 @@
                     var videotrailer = document.getElementById("videotrailer");
                     for (let i = 0; i < 3; i++) {
                         let data = movieArr3[i]
-                        console.log(data);
+                        // console.log(data);
                         let movie = document.getElementById("iframe-" + (i + 1));
                         let url = "https://www.youtube.com/embed/" + data.trailerVideo;
                         movie.src = url;

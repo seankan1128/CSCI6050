@@ -46,7 +46,7 @@
                             let price = 14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child;
                             let orderT = new Date(parseInt(booking.Booking.dateofbooking));
                             let ShowT = new Date(parseInt(booking.Booking.dateofbooking));
-                            let content = $('<div class="card"></div>').append(
+                            let content = $('<div class="card mt-2 mb-2"></div>').append(
                                 $('<div class="card-body"></div>').append(
                                     $('<div class="card-title" style="display: flex;justify-content: space-between"></div>').append(
                                         $('<h4></h4>').html(booking.Booking.showSchedule.movie.title),
