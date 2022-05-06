@@ -13,7 +13,67 @@
     <script src="js/jquery-deparam.min.js"></script>
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script src="js/bar_login.js"></script>
+    <script>
+        $(function () {
+            let booking = $.deparam(decodeURIComponent($.session.get('orderinfo')));
+            console.log(booking)
+            let seats = $('#seats');
+            let type = {adult: 0, senior: 0, child: 0};
+            let orderT = new Date(parseInt(booking.Booking.dateofbooking));
+            let ShowT = new Date(parseInt(booking.Booking.showSchedule.starttime));
+            $('');
+            $('#movie_img').attr('src', 'image/' + booking.Booking.showSchedule.movie.trailerPicture);
+            for (let ticket of booking.Ticket) {
+                let row_column = ticket.seatId.split('_');
+                seats.append($('<li class="w-50 mt-1 mb-1"></li>').html('Row' + row_column[0] + 'Seats' + row_column[1]));
+                if (ticket.type == 1) {
+                    type.child++;
+                }
+                else if (ticket.type == 2) {
+                    type.adult++;
+                }
+                else {
+                    type.senior++;
+                }
+            }
+            $('#order_time').html(orderT.toDateString() + ' ' + orderT.toLocaleTimeString());
+            $('#movie_title').html(booking.Booking.showSchedule.movie.title);
+            $('#show_time').html(ShowT.toDateString() + ' ' + ShowT.toLocaleTimeString());
+            $('#rate').html();
+            $('#adult').html(type.adult);
+            $('#senior').html(type.senior);
+            $('#child').html(type.child);
+            $('#payment_card').html('•••• ' + booking.Booking.paymentcard.lastfourdigits);
+            $('#address').html(booking.Booking.address);
+            let t_p = 14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child;
+            $('#ticket_p').html(t_p.toFixed(2));
+            $('#promotion').html('-' + (t_p * booking.Booking.promotions.promoDiscount / 100).toFixed(2));
+            $('#tax').html((t_p * (1 - booking.Booking.promotions.promoDiscount / 100) * 0.08).toFixed(2));
+            $('#total').html((t_p * (1 - booking.Booking.promotions.promoDiscount / 100) * 1.08).toFixed(2));
+        })
+    </script>
+    <style>
+        table tr {
+            display: flex;
+            justify-content: space-between;
+        }
 
+        .card-body table tr td:first-child {
+            padding-left: 2%;
+        }
+
+        .card-body table tr td:last-child {
+            padding-right: 2%;
+        }
+
+        #seats li {
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid #d3d3d3;
+            background: #f7f7f7;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -27,21 +87,95 @@
             <p class='h2' style='color: white'>Thanks For Booking</p>
         </div>
         <div id="user" class="col-1 offset-2">
-<!--            <a class="btn btn-primary" type="button" href="login">Login</a>-->
+            <!--            <a class="btn btn-primary" type="button" href="login">Login</a>-->
         </div>
     </nav>
 </div>
 <div class="container " style="height: 79.4vh">
-    <div class="row" style="padding-top: 30vh">
-        <div class="w-100 h-100">
-            <div class="card-body">
-                <h5 class="card-title text-center">Payment successful!</h5>
-                <p class="card-text text-center">The reciept and movie ticket has been sent via register email</p>
-                <div class="dropdown-divider"></div>
-                <a href="index_login.html" type="button" class="offset-5 col-2 btn btn-primary">Return</a>
-            </div>
-        </div>
+    <div style="padding-top: 10vh">
+        <div class="card-body">
+            <h3 class="card-title text-center">Payment successful!</h3>
+            <h5 class="card-text text-center">The reciept and movie ticket has been sent via register email</h5>
+            <div class="dropdown-divider"></div>
+            <div id="content">
+                <div class="row">
+                    <div class="col-4" style="border-right: 1px solid #b2b2b2">
+                        <img id="movie_img" class="w-100" src="image/Poster1.png"
+                             style=" display: flex ;justify-content: center">
+                    </div>
+                    <div class="col-8">
+                        <table class="table-striped table-hover w-100">
+                            <tr>
+                                <td>Order Time:</td>
+                                <td id="order_time"></td>
+                            </tr>
+                            <tr>
+                                <td>Movie:</td>
+                                <td id="movie_title"></td>
+                            </tr>
+                            <tr>
+                                <td>Show Time:</td>
+                                <td id="show_time"></td>
+                            </tr>
+                            <tr>
+                                <td>Rate:</td>
+                                <td id="rate"></td>
+                            </tr>
+                            <tr>
+                                <td>Adult:</td>
+                                <td id="adult"></td>
+                            </tr>
+                            <tr>
+                                <td>Senior:</td>
+                                <td id="senior"></td>
+                            </tr>
+                            <tr>
+                                <td>Child:</td>
+                                <td id="child"></td>
+                            </tr>
+                            <tr>
+                                <td>Seat:</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <div>
+                            <ul id="seats" style="min-height: 6rem;max-height: 6rem;overflow-y: auto;">
 
+                            </ul>
+                        </div>
+                        <hr>
+                        <table class="table-striped table-hover w-100">
+                            <tr>
+                                <td>Payment Card:</td>
+                                <td id="payment_card"></td>
+                            </tr>
+                            <tr>
+                                <td>Billing Address:</td>
+                                <td id="address"></td>
+                            </tr>
+                            <tr>
+                                <td>Ticket Price:</td>
+                                <td id="ticket_p"></td>
+                            </tr>
+                            <tr>
+                                <td>Promotion:</td>
+                                <td id="promotion"></td>
+                            </tr>
+                            <tr>
+                                <td>Tax:</td>
+                                <td id="tax"></td>
+                            </tr>
+                            <tr>
+                                <td>Total:</td>
+                                <td id="total"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="index_login.html" type="button" class="offset-5 col-2 btn btn-primary">Return</a>
+        </div>
     </div>
 </div>
 

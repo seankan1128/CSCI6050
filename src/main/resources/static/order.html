@@ -33,17 +33,17 @@
                             for (let ticket of booking.Tickets) {
                                 let row_column = ticket.seatId.split('_');
                                 seats.append($('<li class="w-75 mt-1 mb-1"></li>').html('Row' + row_column[0] + 'Seats' + row_column[1]));
-                                if (ticket.type === 1) {
+                                if (ticket.type == 1) {
                                     type.child++;
                                 }
-                                else if (ticket.type === 2) {
+                                else if (ticket.type == 2) {
                                     type.adult++;
                                 }
                                 else {
                                     type.senior++;
                                 }
                             }
-                            let price = (14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child) * (1 - booking.Booking.promotions.promoDiscount / 100) * (1 + 0.08);
+                            let price = (14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child) * (1 - booking.Booking.promotions.promoDiscount / 100) * 1.08;
                             let orderT = new Date(parseInt(booking.Booking.dateofbooking));
                             let ShowT = new Date(parseInt(booking.Booking.showSchedule.starttime));
                             let content = $('<div class="card mt-2 mb-4"></div>').append(

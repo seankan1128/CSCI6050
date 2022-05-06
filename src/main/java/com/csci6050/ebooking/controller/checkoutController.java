@@ -199,7 +199,7 @@ public class checkoutController {
         Iterable<Ticket> tlist = ticketRepository.findAllByBooking(booking);
         List<Ticket> ticketList = new ArrayList<>();
         tlist.forEach(ticketList::add);
-        returnMap.put("Ticket", ticketList);
+        returnMap.put("Tickets", ticketList);
         returnMap.put("ReturnStatus", SD);
 
         Email e = new Email();
