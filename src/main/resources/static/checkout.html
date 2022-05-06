@@ -194,7 +194,7 @@
                         let m = data.Promotion.promoDiscount;
                         let pay = (1 - m / 100) * (14.99 * total.adult + 7.99 * total.senior + 9.99 * total.child)
                         //console.log(data.Promotion.promoDiscount);
-                        $("#promodiscount").html(m / 100);
+                        $("#promodiscount").html(m / 100)
                         $("#totalFinalPrice2").html((pay * 1.08).toFixed(2));
 
 
@@ -283,7 +283,7 @@
 
 
                         trAdd.innerHTML = `
-                            <th scope="row"  class="col-1"><input type="radio" name="address" onclick="clickAddr(this)"></th>
+                            <th scope="row"  class="col-1"><input type="radio" name="address" onchange="clickAddr(this)"></th>
                             <td class="col-2">${r.lastfourdigits} </td>
                             <td class="col-9">${r.billingaddress}, ${r.billingcity}, ${r.billingstate} </td>
                         `;

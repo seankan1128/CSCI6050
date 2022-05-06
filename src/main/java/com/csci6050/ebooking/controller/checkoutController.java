@@ -173,6 +173,7 @@ public class checkoutController {
         }
         booking.setDateofbooking(String.valueOf(unixTime));
         booking.setAddress(billingadress);
+        System.out.println(billingadress);
 
         bookingRepository.save(booking); // save the booking
 
