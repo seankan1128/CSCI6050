@@ -89,8 +89,8 @@
             $('#movie_pic').attr('src', '/image/' + movie_show.movie.trailerPicture);
             $('#movie_title').html(movie_show.movie.title);
             $('#movie_des').html(movie_show.movie.description);
-            let t=new Date(parseInt(movie_show.starttime))
-            $('#show_time').html(t.toDateString()+'<br>'+t.toLocaleTimeString());
+            let t = new Date(parseInt(movie_show.starttime))
+            $('#show_time').html(t.toDateString() + '<br>' + t.toLocaleTimeString());
             data1.append('showtimeid', movie_show.id);
             $.ajax({
                 type: "post",
@@ -102,9 +102,10 @@
                     console.log(data);
                     select_seat(data.ReservedSeats);
                     $('#btn_checkout').click(() => {
-                        if($('#tickects_num').text()==0){
+                        if ($('#tickects_num').text() == '0') {
                             alert('Need select at least 1 seat')
-                        }else{
+                        }
+                        else {
                             $.session.set('seat_cart', $('#seats_chose').children().toArray().map((e) => $(e).data('seatId')));
                             location.href = 'checkout.html';
                         }

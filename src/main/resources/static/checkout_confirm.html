@@ -24,7 +24,7 @@
             let ShowT = new Date(parseInt(booking.Booking.showSchedule.starttime));
             $('');
             $('#movie_img').attr('src', 'image/' + booking.Booking.showSchedule.movie.trailerPicture);
-            for (let ticket of booking.Ticket) {
+            for (let ticket of booking.Tickets) {
                 let row_column = ticket.seatId.split('_');
                 seats.append($('<li class="w-50 mt-1 mb-1"></li>').html('Row' + row_column[0] + 'Seats' + row_column[1]));
                 if (ticket.type == 1) {
@@ -40,7 +40,7 @@
             $('#order_time').html(orderT.toDateString() + ' ' + orderT.toLocaleTimeString());
             $('#movie_title').html(booking.Booking.showSchedule.movie.title);
             $('#show_time').html(ShowT.toDateString() + ' ' + ShowT.toLocaleTimeString());
-            $('#rate').html(movie_rate[parseInt(booking.Booking.showSchedule.movie.ratingID)]);
+            $('#rate').html(movie_rate[parseInt(booking.Booking.showSchedule.movie.ratingID)-1]);
             $('#adult').html(type.adult);
             $('#senior').html(type.senior);
             $('#child').html(type.child);
