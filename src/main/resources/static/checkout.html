@@ -33,7 +33,8 @@
     var total = {adult: ticket, senior: 0, child: 0};
     let node;
     let fourDigit = 0;
-    let chosenAddr;
+    let chosenAddr="";
+    let checkTicket=true;
 
     function getTotal() {
         total = $("#AdultTicket").val()
@@ -63,22 +64,35 @@
         let user_info = $.deparam($.session.get('userInfo'));
         data_send.append('username', user_info.ReturnUser.email);
 
-        $.ajax({
-            type: "post",
-            url: "createbooking", //change
-            contentType: false,
-            processData: false,
-            data: data_send,
-            success(data) {
-                console.log(data)
-                let {ReturnStatus} = data;
-                if (ReturnStatus.status == 1) {
-                    let serial = $.param(data);
-                    $.session.set("orderinfo", serial);
-                    location.href = "checkout_confirm.html";
+
+
+        let checkFourDigit = fourDigit == 0;
+        let checkAddr = chosenAddr == "";
+
+        console.log(checkTicket)
+        console.log(checkFourDigit)
+        console.log(checkAddr)
+        if (checkTicket || checkFourDigit || checkAddr) {
+            console.log(checkTicket || checkFourDigit || checkAddr)
+            alert("payment not complete");
+        } else {
+
+            $.ajax({
+                type: "post",
+                url: "createbooking", //change
+                contentType: false,
+                processData: false,
+                data: data_send,
+                success(data) {
+                    let {ReturnStatus} = data;
+                    if (ReturnStatus.status == 1) {
+                        let serial = $.param(data);
+                        $.session.set("orderinfo", serial);
+                        location.href = "checkout_confirm.html";
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function changeFinalPrice() {
@@ -108,13 +122,13 @@
         let money = 14.99 * total.adult + 7.99 * total.senior + 9.99 * total.child;
         $("#totalFinalPrice1").html(14.99 * total.adult + 7.99 * total.senior + 9.99 * total.child);
         $("#tax").html((money * 0.08).toFixed(2));
-        $("#poster").attr("src", 'image/'+trailerPicture);
+        $("#poster").attr("src", 'image/' + trailerPicture);
         $("#movieRate").html(movieRate);
         $("#chooseSeat").html($.session.get('seat_cart'));
         $('#moviename').html(title);
         $("#totalFinalPrice2").html((money * 1.08).toFixed(2));
 
-
+        checkTicket = Number(Number(total.child) + Number(total.adult) + Number(total.senior)) !== ticket;
         let date = new Date(Number(starttime));
         let hour = date.getHours();
         let min = date.getMinutes();
@@ -131,18 +145,6 @@
         $('#myModal').modal();
     }
 
-    // function addCreditCard() {
-    //     $.ajax({
-    //         type: "post",
-    //         url: "发送添加银行卡信息的url", //change
-    //         contentType: false,
-    //         processData: false,
-    //         data: {},
-    //         success(data) {
-    //             console.log(data);
-    //         }
-    //     })
-    // }
 
     function clickCard(param) {
         // node = param;
@@ -164,8 +166,7 @@
         // console.log(param);
         if (param.parentNode.parentNode != param.parentNode.parentNode.parentElement.lastElementChild) {
             chosenAddr = node.parentNode.nextElementSibling.nextElementSibling.innerHTML;
-        }
-        else {
+        } else {
             chosenAddr = node.parentElement.nextElementSibling.firstElementChild.value;
         }
         // console.log(chosenAddr);
@@ -200,8 +201,7 @@
 
                         //change total price
 
-                    }
-                    else {
+                    } else {
                         alert(data.ReturnStatus.description);
                     }
 
@@ -209,40 +209,6 @@
             })
 
         })
-
-
-        //     let data_send = new FormData();
-        //     let user_info = $.deparam($.session.get('userInfo'));
-        //     data_send.append('email', user_info.ReturnUser.email);
-        //     // console.log($.session.get('userInfo'));
-        //     $.ajax({
-        //         type: "post",
-        //         url: "getpaymentcardmethod", //change
-        //         contentType: false,
-        //         processData: false,
-        //         data: data_send,
-        //         success(data) {
-        //             console.log(data);
-        //             let {ReturnStatus, PaymentInfo} = data;
-        //             if (ReturnStatus.status == 1) {
-        //                 let tb = document.getElementById("card");
-        //                 tb.innerHTML="";
-        //                 for (let r of PaymentInfo) {
-        //                     let tr = document.createElement("tr");
-        //                     tr.innerHTML =
-        //                     `<div class="col-4" style="height: 40px;">
-        //                         <div class="card" style="margin-bottom: 20px !important;">
-        //                             <div class="card-header btn text-left">
-        //                                 ${r.type} <br/> ${r.lastfourdigits}
-        //                             </div>
-        //
-        //                         </div>
-        //                     </div>`;
-        //                     tb.appendChild(tr);
-        //                 }
-        //             }
-        //         }
-        //     })
 
         let data_send = new FormData();
         let user_info = $.deparam($.session.get('userInfo'));
