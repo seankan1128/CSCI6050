@@ -51,60 +51,60 @@ public class orderController {
         List<Booking> bookingList = new ArrayList<>();
         blist.forEach(bookingList::add);
 
-//        if(bookingList.isEmpty()){
-//            SD.setStatus(0);
-//            SD.setDescription("No order history");
-//            returnMap.put("ReturnStatus", SD);
-//            return returnMap;
-//        }
+        if(bookingList.isEmpty()){
+            SD.setStatus(0);
+            SD.setDescription("No order history");
+            returnMap.put("ReturnStatus", SD);
+            return returnMap;
+        }
 
         List<Map> returnBookingMap = new ArrayList<>();
-//        Map<Booking, List<Ticket>> bookingListMap = new HashMap<>();
-//        for(Booking booking : bookingList){
-//            Iterable<Ticket> tlist = ticketRepository.findAllByBooking(booking);
-//            List<Ticket> ticketList = new ArrayList<>();
-//            tlist.forEach(ticketList::add);
-//            Map<Booking, List<Ticket>> bookingListMap = new HashMap<>();
-//            bookingListMap.put(booking,ticketList);
-//            returnBookingMap.add(bookingListMap);
-//        }
+        for(Booking booking : bookingList){
+            Iterable<Ticket> tlist = ticketRepository.findAllByBooking(booking);
+            List<Ticket> ticketList = new ArrayList<>();
+            tlist.forEach(ticketList::add);
+            Map<String, Object> bookingListMap = new HashMap<>();
+            bookingListMap.put("Booking",booking);
+            bookingListMap.put("Tickets",ticketList);
+            returnBookingMap.add(bookingListMap);
+        }
 
 
-        Booking bookingtest = new Booking();
-        bookingtest.setTotalprice(333);
-        bookingtest.setDateofbooking("1648180800000");
-        bookingtest.setAddress("fdsfsdfsfds00");
-        bookingtest.setNooftickets(4);
-        ShowSchedule showScheduletest = showScheduleRepository.findById(13);
-        bookingtest.setShowSchedule(showScheduletest);
-        bookingtest.setUser(user);
-        bookingtest.setId(1);
-        bookingtest.setPromotions(promotionsRepository.findByPromoCode("test2"));
-        bookingtest.setPaymentcard(paymentcardRepository.findByLastfourdigits("0000"));
-
-        Ticket tickettest = new Ticket();
-        tickettest.setPrice(12);
-        tickettest.setType(2);
-        tickettest.setBooking(bookingtest);
-        tickettest.setSeatId("1_1");
-        tickettest.setDate("1648180800000");
-
-        Ticket tickettest2 = new Ticket();
-        tickettest2.setPrice(22);
-        tickettest2.setType(2);
-        tickettest2.setBooking(bookingtest);
-        tickettest2.setSeatId("1_2");
-        tickettest2.setDate("1648180800000");
-
-        List<Ticket> ticketList = new ArrayList<>();
-        ticketList.add(tickettest);
-        ticketList.add(tickettest2);
-
-        Map<String, Object> bookingListMap = new HashMap<>();
-        bookingListMap.put("Booking",bookingtest);
-        bookingListMap.put("Tickets",ticketList);
-        returnBookingMap.add(bookingListMap);
-        returnBookingMap.add(bookingListMap);
+//        Booking bookingtest = new Booking();
+//        bookingtest.setTotalprice(333);
+//        bookingtest.setDateofbooking("1648180800000");
+//        bookingtest.setAddress("fdsfsdfsfds00");
+//        bookingtest.setNooftickets(4);
+//        ShowSchedule showScheduletest = showScheduleRepository.findById(13);
+//        bookingtest.setShowSchedule(showScheduletest);
+//        bookingtest.setUser(user);
+//        bookingtest.setId(1);
+//        bookingtest.setPromotions(promotionsRepository.findByPromoCode("test2"));
+//        bookingtest.setPaymentcard(paymentcardRepository.findByLastfourdigits("0000"));
+//
+//        Ticket tickettest = new Ticket();
+//        tickettest.setPrice(12);
+//        tickettest.setType(2);
+//        tickettest.setBooking(bookingtest);
+//        tickettest.setSeatId("1_1");
+//        tickettest.setDate("1648180800000");
+//
+//        Ticket tickettest2 = new Ticket();
+//        tickettest2.setPrice(22);
+//        tickettest2.setType(2);
+//        tickettest2.setBooking(bookingtest);
+//        tickettest2.setSeatId("1_2");
+//        tickettest2.setDate("1648180800000");
+//
+//        List<Ticket> ticketList = new ArrayList<>();
+//        ticketList.add(tickettest);
+//        ticketList.add(tickettest2);
+//
+//        Map<String, Object> bookingListMap = new HashMap<>();
+//        bookingListMap.put("Booking",bookingtest);
+//        bookingListMap.put("Tickets",ticketList);
+//        returnBookingMap.add(bookingListMap);
+//        returnBookingMap.add(bookingListMap);
 
 
         SD.setStatus(1);
