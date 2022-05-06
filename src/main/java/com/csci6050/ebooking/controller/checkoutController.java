@@ -143,8 +143,8 @@ public class checkoutController {
         Paymentcard paymentcard = paymentcardRepository.findByLastfourdigits(cardlastfourdigit);
         Promotions promotions = promotionsRepository.findByPromoCode(promocode);
         ShowSchedule showSchedule = showScheduleRepository.findById(Integer.parseInt(showtimeid));
-
-        long unixTime = Instant.now().getEpochSecond(); //timestamp
+        Date date = new Date();
+        long unixTime = date.getTime(); //timestamp
 
         int ticketsize = seatidlist.size();
 
