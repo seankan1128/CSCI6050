@@ -37,9 +37,9 @@
                     let time_now = new Date().getTime();
                     if (data.ReturnStatus.status == 1) {
                         for (i of data.ScheduleList) {
-                            // if (i.starttime > time_now) {
-                            day_list.push(i);
-                            // }
+                            if (i.starttime > time_now) {
+                                day_list.push(i);
+                            }
                         }
                         for (let i of movie_info.StreamingNow) {
                             if (i.title == movie_title) {
@@ -103,14 +103,14 @@
                     $('#movie_producer').html(movie.producer);
 
                     $('#seat_select').click(() => {
-                        if($('#user .dropdown')[0]==undefined){
-                            if(confirm('You need to Login before booking')){
-                                $.session.set('page',window.location.pathname);
+                        if ($('#user .dropdown')[0] == undefined) {
+                            if (confirm('You need to Login before booking')) {
+                                $.session.set('page', window.location.pathname);
                                 console.log('yes')
                                 $('#user').click();
                             }
                         }
-                        else if($('#time_table .btn-info')[0]!=undefined){
+                        else if ($('#time_table .btn-info')[0] != undefined) {
                             // let a=day_list.filter((e) => {
                             //     return e.id == $('#time_table .btn-info').attr('data-showid')
                             // })[0];
@@ -122,7 +122,8 @@
                             // $.session.set('show_movie', $.param(a));
                             // $.session.set('showid', $('#time_table .btn-info').attr('data-showid'));
                             location.href = 'seat.html';
-                        }else{
+                        }
+                        else {
                             alert('Please choose a show time')
                         }
 
