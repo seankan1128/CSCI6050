@@ -41,7 +41,7 @@
                 let cardi = $('<div class="row"></div>').attr('id', 'card' + i);
                 let cardinfo_i = $('<div class="col-3 mt-5"></div>').append(
                     $('<div class="card"></div>').append(
-                        $('<div class="card-header"></div>').html(`Visa<br>•••• ${user_info.ReturnUser.paymentCardList[i].lastfourdigits}`)
+                        $('<div class="card-header"></div>').html(`${user_info.ReturnUser.paymentCardList[i].type}<br>•••• ${user_info.ReturnUser.paymentCardList[i].lastfourdigits}`)
                     ),
                 );
                 let cardform_i = $('<form class="col-9"></form>').attr('id', 'card_form' + i).append(
@@ -246,7 +246,7 @@
                         data-toggle='dropdown' aria-expanded='false'>
                 </button>
                 <div class='dropdown-menu' aria-labelledby='userMenuButton'>
-                    <a class='dropdown-item' href='#'>Order</a>
+                    <a class='dropdown-item' href='order.html'>Order</a>
                     <a class='dropdown-item' href='#'>Edit Profile</a>
                     <a class='dropdown-item' type="button" id="log_out" href='#'>Log out</a>
                 </div>
