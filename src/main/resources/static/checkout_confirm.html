@@ -19,6 +19,7 @@
             console.log(booking)
             let seats = $('#seats');
             let type = {adult: 0, senior: 0, child: 0};
+            let movie_rate = ['G', 'PG', 'PG-13', 'R'];
             let orderT = new Date(parseInt(booking.Booking.dateofbooking));
             let ShowT = new Date(parseInt(booking.Booking.showSchedule.starttime));
             $('');
@@ -39,7 +40,7 @@
             $('#order_time').html(orderT.toDateString() + ' ' + orderT.toLocaleTimeString());
             $('#movie_title').html(booking.Booking.showSchedule.movie.title);
             $('#show_time').html(ShowT.toDateString() + ' ' + ShowT.toLocaleTimeString());
-            $('#rate').html();
+            $('#rate').html(movie_rate[parseInt(booking.Booking.showSchedule.movie.ratingID)]);
             $('#adult').html(type.adult);
             $('#senior').html(type.senior);
             $('#child').html(type.child);
@@ -47,9 +48,17 @@
             $('#address').html(booking.Booking.address);
             let t_p = 14.99 * type.adult + 7.99 * type.senior + 9.99 * type.child;
             $('#ticket_p').html(t_p.toFixed(2));
-            $('#promotion').html('-' + (t_p * booking.Booking.promotions.promoDiscount / 100).toFixed(2));
-            $('#tax').html((t_p * (1 - booking.Booking.promotions.promoDiscount / 100) * 0.08).toFixed(2));
-            $('#total').html((t_p * (1 - booking.Booking.promotions.promoDiscount / 100) * 1.08).toFixed(2));
+            if (booking.Booking.promotions == '') {
+                $('#promotion').html('-');
+                $('#tax').html((t_p * 0.08).toFixed(2));
+                $('#total').html((t_p * 1.08).toFixed(2));
+            }
+            else {
+                $('#promotion').html('-' + (t_p * booking.Booking.promotions.promoDiscount / 100).toFixed(2));
+                $('#tax').html((t_p * (1 - booking.Booking.promotions.promoDiscount / 100) * 0.08).toFixed(2));
+                $('#total').html((t_p * (1 - booking.Booking.promotions.promoDiscount / 100) * 1.08).toFixed(2));
+            }
+
         })
     </script>
     <style>
@@ -174,7 +183,7 @@
                 </div>
             </div>
             <div class="dropdown-divider"></div>
-            <a href="index_login.html" type="button" class="offset-5 col-2 btn btn-primary">Return</a>
+            <a href="/" type="button" class="offset-5 col-2 btn btn-primary">Return</a>
         </div>
     </div>
 </div>
