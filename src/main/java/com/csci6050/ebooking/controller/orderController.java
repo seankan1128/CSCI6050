@@ -75,7 +75,7 @@ public class orderController {
         bookingtest.setDateofbooking("1648180800000");
         bookingtest.setAddress("fdsfsdfsfds00");
         bookingtest.setNooftickets(4);
-        ShowSchedule showScheduletest = showScheduleRepository.findById(10);
+        ShowSchedule showScheduletest = showScheduleRepository.findById(13);
         bookingtest.setShowSchedule(showScheduletest);
         bookingtest.setUser(user);
         bookingtest.setId(1);

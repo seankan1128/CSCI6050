@@ -24,10 +24,9 @@ public class Ticket {
 
     public Ticket(){};
 
-    public Ticket(Booking booking, String date, int type, String seatId){
+    public Ticket(Booking booking, String date, String seatId){
         this.setBooking(booking);
         this.setDate(date);
-        this.setType(type);
         this.setSeatId(seatId);
     }
 

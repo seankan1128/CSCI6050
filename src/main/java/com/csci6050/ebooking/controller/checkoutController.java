@@ -178,7 +178,8 @@ public class checkoutController {
 
 
         for (int i = 0; i < ticketsize; i++) {
-            Ticket ticket = new Ticket(booking, showSchedule.getStarttime(), tickettypelist.get(i), seatidlist.get(i));
+            System.out.println(tickettypelist.get(i));
+            Ticket ticket = new Ticket(booking, showSchedule.getStarttime(), seatidlist.get(i));
             if (tickettypelist.get(i) == 1) {
                 ticket.setPrice((float) 9.99);
             }
@@ -188,6 +189,7 @@ public class checkoutController {
             if (tickettypelist.get(i) == 3) {
                 ticket.setPrice((float) 7.99);
             }
+            ticket.setType((int) tickettypelist.get(i));
             ticketRepository.save(ticket);
         }// create tickets for booking
 
