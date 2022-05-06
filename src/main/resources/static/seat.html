@@ -101,10 +101,13 @@
                 success: (data) => {
                     console.log(data);
                     select_seat(data.ReservedSeats);
-
                     $('#btn_checkout').click(() => {
-                        $.session.set('seat_cart', $('#seats_chose').children().toArray().map((e) => $(e).data('seatId')));
-                        location.href = 'checkout.html';
+                        if($('#tickects_num').text()==0){
+                            alert('Need select at least 1 seat')
+                        }else{
+                            $.session.set('seat_cart', $('#seats_chose').children().toArray().map((e) => $(e).data('seatId')));
+                            location.href = 'checkout.html';
+                        }
                     });
                 }
             })
