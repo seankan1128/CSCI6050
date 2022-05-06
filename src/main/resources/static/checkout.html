@@ -55,7 +55,7 @@
         for (let i = 0; i < total.senior; i++) {
             ticket.push(3);
         }
-        data_send.append('ticket', [total.adult, total.senior, total.child]);
+        data_send.append('ticket', ticket);
         data_send.append('cardinfo', fourDigit);
         data_send.append('billingaddress', chosenAddr);
         data_send.append('promocode', $("#promocode").val());
