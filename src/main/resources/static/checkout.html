@@ -70,7 +70,12 @@
             processData: false,
             data: data_send,
             success(data) {
-                console.log(data)
+                let {ReturnStatus} = data;
+                if(ReturnStatus.status==1){
+                    let serial = $.param(data);
+                    $.session.set("orderinfo",serial);
+                    location.href="checkout_confirm.html";
+                }
             }
         });
     }
