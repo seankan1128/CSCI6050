@@ -29,8 +29,11 @@
     </style>
 </head>
 <script>
-    var ticket = 6;
+    var ticket = $.session.get('seat_cart').split(",").length;
     var total = {adult: ticket, senior: 0, child: 0};
+    let node;
+    let fourDigit = 0;
+    let chosenAddr;
 
     function getTotal() {
         total = $("#AdultTicket").val()
@@ -38,12 +41,73 @@
             + $("#ChildTicket").val();
     }
 
-    function changeFinalPrice(){
-        $("#adultTotalPrice").html("$ 14.99*"+total.adult);
-        $("#seniorTotalPrice").html("$ 7.99*"+total.senior);
-        $("#childTotalPrice").html("$ 9.99*"+total.child);
-        $("#totalFinalPrice1").html(14.99*total.adult+7.99*total.senior+9.99*total.child);
-        $("#totalFinalPrice2").html("应该是多少钱");
+    function pay() {
+        let data_send = new FormData();
+        let seatId = $.session.get('seat_cart').split(",")
+        data_send.append('seatidlist', seatId);
+        data_send.append('ticket', [total.adult, total.senior, total.child]);
+        data_send.append('cardinfo', fourDigit);
+        data_send.append('billingaddress', chosenAddr);
+        data_send.append('promocode', $("#promocode").val());
+        data_send.append('showtimeid', $.deparam($.session.get('show_movie')).id);
+        let user_info = $.deparam($.session.get('userInfo'));
+        data_send.append('username', user_info.ReturnUser.email);
+
+        $.ajax({
+            type: "post",
+            url: "createbooking", //change
+            contentType: false,
+            processData: false,
+            data: data_send,
+            success(data) {
+                console.log(data)
+            }
+        });
+    }
+
+    function changeFinalPrice() {
+        let {starttime, movie} = $.deparam($.session.get('show_movie'));
+        let {trailerPicture, ratingID, title} = movie;
+        let movieRate;
+        switch (ratingID) {
+            case 1:
+                movieRate = "G";
+                break;
+            case 2:
+                movieRate = "PG";
+                break;
+            case 3:
+                movieRate = "PG-13";
+                break;
+            case 4:
+                movieRate = "R";
+                break;
+            default:
+                movieRate = "R";
+        }
+
+        $("#adultTotalPrice").html(" 14.99*" + total.adult);
+        $("#seniorTotalPrice").html(" 7.99*" + total.senior);
+        $("#childTotalPrice").html(" 9.99*" + total.child);
+        let money = 14.99 * total.adult + 7.99 * total.senior + 9.99 * total.child;
+        $("#totalFinalPrice1").html(14.99 * total.adult + 7.99 * total.senior + 9.99 * total.child);
+        $("#tax").html((money * 0.08).toFixed(2));
+        $("#poster").attr("src", trailerPicture);
+        $("#movieRate").html(movieRate);
+        $("#chooseSeat").html($.session.get('seat_cart'));
+        $('#moviename').html(title);
+        $("#totalFinalPrice2").html((money * 1.08).toFixed(2));
+
+
+        let date = new Date(Number(starttime));
+        let hour = date.getHours();
+        let min = date.getMinutes();
+        if (min < 10)
+            min = "0" + min;
+
+        $("#movieTime").html(hour + ":" + min);
+        $("#movieDate").html((date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear());
+
     }
 
     function clickAddAddress(param) {
@@ -51,26 +115,55 @@
         $('#myModal').modal();
     }
 
-    function addCreditCard(){
-        $.ajax({
-            type: "post",
-            url: "发送添加银行卡信息的url", //change
-            contentType: false,
-            processData: false,
-            data: {},
-            success(data) {
-                console.log(data);
-            }
-        })
+    // function addCreditCard() {
+    //     $.ajax({
+    //         type: "post",
+    //         url: "发送添加银行卡信息的url", //change
+    //         contentType: false,
+    //         processData: false,
+    //         data: {},
+    //         success(data) {
+    //             console.log(data);
+    //         }
+    //     })
+    // }
+
+    function clickCard(param) {
+        // node = param;
+        fourDigit = Number(param.getAttribute("id").split("-")[1]);
+        // console.log(param);
+
+        let children = param.parentElement.parentNode.childNodes;
+
+        for (let card of children) {
+            let node = card.firstChild;
+            node.setAttribute("style", "margin-bottom: 20px; !important;")
+        }
+
+        param.setAttribute("style", "margin-bottom: 20px; background-color: #00b4ef !important;")
     }
 
+    function clickAddr(param) {
+        node = param;
+        // console.log(param);
+        if (param.parentNode.parentNode != param.parentNode.parentNode.parentElement.lastElementChild) {
+            chosenAddr = node.parentNode.nextElementSibling.nextElementSibling.innerHTML;
+        } else {
+            chosenAddr = node.parentElement.nextElementSibling.firstElementChild.value;
+        }
+        // console.log(chosenAddr);
+    }
 
     $(function () {
+        ticket = $.session.get('seat_cart').split(",").length;
+        total = {adult: ticket, senior: 0, child: 0};
+        $("#TotalTicket").attr("value", ticket);
+        $("#AdultTicket").attr("value", ticket);
+        $("#AdultTicket").attr("max", ticket);
+
         $('#promo').click(() => {
             let q = new FormData();
-            q.append("promocode",$('#promocode').val());
-
-
+            q.append("promocode", $('#promocode').val());
 
             $.ajax({
                 type: "post",
@@ -78,10 +171,17 @@
                 contentType: false,
                 processData: false,
                 data: q,
-                success(data){
+                success(data) {
                     if (data.ReturnStatus.status == 1) {
-                        alert("discount applied!");
-                            //change total price
+                        alert(data.ReturnStatus.description);
+                        let m = data.Promotion.promoDiscount;
+                        let pay = (1 - m / 100) * (14.99 * total.adult + 7.99 * total.senior + 9.99 * total.child)
+                        //console.log(data.Promotion.promoDiscount);
+                        $("#promodiscount").html(m / 100);
+                        $("#totalFinalPrice2").html((pay * 1.08).toFixed(2));
+
+
+                        //change total price
 
                     } else {
                         alert(data.ReturnStatus.description);
@@ -90,41 +190,41 @@
                 }
             })
 
-            })
+        })
 
 
-    //     let data_send = new FormData();
-    //     let user_info = $.deparam($.session.get('userInfo'));
-    //     data_send.append('email', user_info.ReturnUser.email);
-    //     // console.log($.session.get('userInfo'));
-    //     $.ajax({
-    //         type: "post",
-    //         url: "getpaymentcardmethod", //change
-    //         contentType: false,
-    //         processData: false,
-    //         data: data_send,
-    //         success(data) {
-    //             console.log(data);
-    //             let {ReturnStatus, PaymentInfo} = data;
-    //             if (ReturnStatus.status == 1) {
-    //                 let tb = document.getElementById("card");
-    //                 tb.innerHTML="";
-    //                 for (let r of PaymentInfo) {
-    //                     let tr = document.createElement("tr");
-    //                     tr.innerHTML =
-    //                     `<div class="col-4" style="height: 40px;">
-    //                         <div class="card" style="margin-bottom: 20px !important;">
-    //                             <div class="card-header btn text-left">
-    //                                 ${r.type} <br/> ${r.lastfourdigits}
-    //                             </div>
-    //
-    //                         </div>
-    //                     </div>`;
-    //                     tb.appendChild(tr);
-    //                 }
-    //             }
-    //         }
-    //     })
+        //     let data_send = new FormData();
+        //     let user_info = $.deparam($.session.get('userInfo'));
+        //     data_send.append('email', user_info.ReturnUser.email);
+        //     // console.log($.session.get('userInfo'));
+        //     $.ajax({
+        //         type: "post",
+        //         url: "getpaymentcardmethod", //change
+        //         contentType: false,
+        //         processData: false,
+        //         data: data_send,
+        //         success(data) {
+        //             console.log(data);
+        //             let {ReturnStatus, PaymentInfo} = data;
+        //             if (ReturnStatus.status == 1) {
+        //                 let tb = document.getElementById("card");
+        //                 tb.innerHTML="";
+        //                 for (let r of PaymentInfo) {
+        //                     let tr = document.createElement("tr");
+        //                     tr.innerHTML =
+        //                     `<div class="col-4" style="height: 40px;">
+        //                         <div class="card" style="margin-bottom: 20px !important;">
+        //                             <div class="card-header btn text-left">
+        //                                 ${r.type} <br/> ${r.lastfourdigits}
+        //                             </div>
+        //
+        //                         </div>
+        //                     </div>`;
+        //                     tb.appendChild(tr);
+        //                 }
+        //             }
+        //         }
+        //     })
 
         let data_send = new FormData();
         let user_info = $.deparam($.session.get('userInfo'));
@@ -141,22 +241,22 @@
                 let {ReturnStatus, PaymentInfo} = data;
                 if (ReturnStatus.status == 1) {
                     let tb = document.getElementById("card");
-                    tb.innerHTML="";
+                    tb.innerHTML = "";
 
                     let tbAdd = document.getElementById("tableAdd");
-                    tbAdd.innerHTML="";
-
+                    tbAdd.innerHTML = "";
+                    let iter = 0;
                     for (let r of PaymentInfo) {
                         let tr = document.createElement("div");
-                        tr.setAttribute("class","col-4");
-                        tr.setAttribute("style","height: 40px;");
+                        tr.setAttribute("class", "col-4");
+                        tr.setAttribute("style", "height: 40px;");
 
                         let trAdd = document.createElement("tr");
-                        trAdd.setAttribute("class","row");
+                        trAdd.setAttribute("class", "row");
 
 
                         tr.innerHTML =
-                            `<div class="card" style="margin-bottom: 20px !important;">
+                            `<div id="card-${r.lastfourdigits}" class="card" style="margin-bottom: 20px !important;" onclick="clickCard(this)">
                                 <div class="card-header btn text-left">
                                     ${r.type} <hr/> *** **** **** ${r.lastfourdigits}
                                 </div>
@@ -164,39 +264,48 @@
                         tb.appendChild(tr);
 
 
-                        trAdd.innerHTML=`
-                            <th scope="row"  class="col-4"><input type="radio" name="address"></th>
-                            <td class="col-4">${email} </td>
-                            <td class="col-4">${r.billingaddress}, ${r.billingcity}, ${r.billingstate} </td>
+                        trAdd.innerHTML = `
+                            <th scope="row"  class="col-1"><input type="radio" name="address" onclick="clickAddr(this)"></th>
+                            <td class="col-2">${r.lastfourdigits} </td>
+                            <td class="col-9">${r.billingaddress}, ${r.billingcity}, ${r.billingstate} </td>
                         `;
                         tbAdd.appendChild(trAdd)
+                        iter++;
                     }
+
+                    let trAdd = document.createElement("tr");
+                    trAdd.setAttribute("class", "row");
+                    trAdd.innerHTML = `
+                            <th scope="row"  class="col-1"><input type="radio" name="address"  onclick="clickAddr(this)"></th>
+                            <td class="col-11"><input type="text" name="newAddress" placeholder="other address" style="width: 100%"></td>
+                        `;
+                    tbAdd.appendChild(trAdd)
                 }
             }
         })
 
         changeFinalPrice();
 
-        $("#SeniorTicket").attr("max",ticket-total.adult-total.child);
-        $("#ChildTicket").attr("max",ticket-total.adult-total.senior);
+        $("#SeniorTicket").attr("max", ticket - total.adult - total.child);
+        $("#ChildTicket").attr("max", ticket - total.adult - total.senior);
         $("#AdultTicket").change(function () {
             total.adult = this.value;
-            $("#SeniorTicket").attr("max",ticket-total.adult-total.child);
-            $("#ChildTicket").attr("max",ticket-total.adult-total.senior);
+            $("#SeniorTicket").attr("max", ticket - total.adult - total.child);
+            $("#ChildTicket").attr("max", ticket - total.adult - total.senior);
             changeFinalPrice();
         });
 
         $("#SeniorTicket").change(function () {
             total.senior = this.value;
-            $("#AdultTicket").attr("max",ticket-total.senior-total.child);
-            $("#ChildTicket").attr("max",ticket-total.adult-total.senior);
+            $("#AdultTicket").attr("max", ticket - total.senior - total.child);
+            $("#ChildTicket").attr("max", ticket - total.adult - total.senior);
             changeFinalPrice();
         });
 
         $("#ChildTicket").change(function () {
             total.child = this.value;
-            $("#AdultTicket").attr("max",ticket-total.senior-total.child);
-            $("#SeniorTicket").attr("max",ticket-total.adult-total.child);
+            $("#AdultTicket").attr("max", ticket - total.senior - total.child);
+            $("#SeniorTicket").attr("max", ticket - total.adult - total.child);
             changeFinalPrice();
         });
     })
@@ -206,21 +315,25 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
 
                 <div class="form-group">
                     <label for="txt_departmentname">部门名称</label>
-                    <input type="text" name="txt_departmentname" class="form-control" id="txt_departmentname" placeholder="部门名称">
+                    <input type="text" name="txt_departmentname" class="form-control" id="txt_departmentname"
+                           placeholder="部门名称">
                 </div>
                 <div class="form-group">
                     <label for="txt_parentdepartment">上级部门</label>
-                    <input type="text" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment" placeholder="上级部门">
+                    <input type="text" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment"
+                           placeholder="上级部门">
                 </div>
                 <div class="form-group">
                     <label for="txt_departmentlevel">部门级别</label>
-                    <input type="text" name="txt_departmentlevel" class="form-control" id="txt_departmentlevel" placeholder="部门级别">
+                    <input type="text" name="txt_departmentlevel" class="form-control" id="txt_departmentlevel"
+                           placeholder="部门级别">
                 </div>
                 <div class="form-group">
                     <label for="txt_statu">描述</label>
@@ -228,8 +341,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                <button onclick="addCreditCard()" type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                </button>
+                <button onclick="addCreditCard()" type="button" id="btn_submit" class="btn btn-primary"
+                        data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                </button>
             </div>
         </div>
     </div>
@@ -360,10 +477,10 @@
                                 <hr style="margin-top: auto; margin-bottom: auto;">
                                 <div style="padding-left: 12px;">
                                     <table style="margin-top: 5px;">
-                                        <tr>
+                                        <tr style="font-size: x-small; width: 100%">
                                             <td></td>
-                                            <td style="font-size: x-small;">&nbsp;Enter a gift card, voucher or
-                                                promotional code
+                                            <td style="font-size: x-small; width: 100%">&nbsp;Enter a gift card or promo
+                                                code
                                             </td>
                                         </tr>
                                         <tr>
@@ -400,9 +517,9 @@
                                     <table class="table table-hover" style="font-size:x-small;">
                                         <thead>
                                         <tr class="row">
-                                            <th scope="col" class="col-4"></th>
-                                            <th scope="col" class="col-4">Name</th>
-                                            <th scope="col" class="col-4">Address</th>
+                                            <th scope="col" class="col-1"></th>
+                                            <th scope="col" class="col-2">Last 4 Digits</th>
+                                            <th scope="col" class="col-9">Address</th>
                                         </tr>
                                         </thead>
                                         <tbody id="tableAdd">
@@ -429,13 +546,13 @@
                                         </tbody>
                                     </table>
 
-                                    <i class="bi bi-plus-lg"></i>
+                                    <!--<i class="bi bi-plus-lg"></i>
                                     <i class="bi bi-house-door"></i>
                                     <button class="btn btn-link text-left text-align" type="button"
                                             style="font-size:x-small;"
                                             onclick="clickAddAddress(this)">
                                         Add a new address
-                                    </button>
+                                    </button>-->
                                 </div>
                             </div>
                         </div>
@@ -445,16 +562,16 @@
         </div>
         <div class="col-3 sidebar-offcanvas" id="sidebar">
             <div class="card" style="width: 100%;">
-                <img src="image/Poster3.png" class="card-img-top" style="min-height: 20px;">
+                <img src="" id="poster" class="card-img-top" style="min-height: 20px;">
                 <div class="card-body">
-                    <h5 class="card-title" style="text-align: center;">Spider Man</h5>
+                    <h5 class="card-title" id="moviename" style="text-align: center;">Spider Man</h5>
                     <table class="table-striped table-hover" style="width: 100%;">
                         <tbody style="font-size: x-small;">
                         <tr>
                             <td>
                                 Rate:
                             </td>
-                            <td>
+                            <td id="movieRate">
                                 PG-13
                             </td>
                         </tr>
@@ -462,7 +579,7 @@
                             <td>
                                 Seats:
                             </td>
-                            <td>
+                            <td id="chooseSeat">
                                 r5-7 & r5-8
                             </td>
                         </tr>
@@ -470,7 +587,7 @@
                             <td>
                                 Time:
                             </td>
-                            <td>
+                            <td id="movieTime">
                                 16:00
                             </td>
                         </tr>
@@ -478,7 +595,7 @@
                             <td>
                                 Date:
                             </td>
-                            <td>
+                            <td id="movieDate">
                                 03/16/22
                             </td>
                         </tr>
@@ -511,6 +628,7 @@
                                 $ 3.99*0
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                                 Total:
@@ -520,10 +638,18 @@
                         </tr>
                         <tr>
                             <td>
+                                Discount:
+                            </td>
+                            <td id="promodiscount">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 Tax:
                             </td>
-                            <td>
-                                $ 0.21
+
+                            <td id="tax">
                             </td>
                         </tr>
                         </tbody>
@@ -544,7 +670,7 @@
 
                     <div style="display: flex; justify-content: space-around;">
                         <a href="seat.html" class="btn btn-danger" style="margin-right: 3%;">Cancel</a>
-                        <a href="checkout_confirm.html" class="btn btn-primary">Pay</a>
+                        <a href="#" class="btn btn-primary" onclick="pay()">Pay</a>
                     </div>
                 </div>
             </div>
