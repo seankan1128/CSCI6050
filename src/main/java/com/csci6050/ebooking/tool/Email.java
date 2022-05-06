@@ -318,7 +318,7 @@ public class Email {
             String dfPrice = df.format(price);
             String seatIDString = seatid.toString();
             Date date = new Date(unixTime*1000L);
-            SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+            SimpleDateFormat jdf = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
             String stringDate = jdf.format(date);
             content = content.replace("[[name]]", user.getFirstName());
             content = content.replace("[[MOVIE]]", movie);
