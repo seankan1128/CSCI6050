@@ -169,7 +169,7 @@ public class checkoutController {
         booking.setTotalprice(totalprice);
         if (promotions != null) {
             booking.setPromotions(promotions);
-            booking.setTotalprice((float) (totalprice * (1 - promotions.getPromoDiscount() / 100) * 1.08));
+            booking.setTotalprice((float) (totalprice * 1.08 * (1 - promotions.getPromoDiscount() / 100)));
         }
         booking.setDateofbooking(String.valueOf(unixTime));
         booking.setAddress(billingadress);
@@ -203,7 +203,7 @@ public class checkoutController {
         returnMap.put("ReturnStatus", SD);
 
         Email e = new Email();
-        e.checkoutEmail(user, showSchedule.getMovie().getTitle(), totalprice, seatidlist, Long.parseLong(showSchedule.getStarttime()));
+        e.checkoutEmail(user, showSchedule.getMovie().getTitle(), booking.getTotalprice(), seatidlist, Long.parseLong(showSchedule.getStarttime()));
 
         return returnMap;
     }
