@@ -98,23 +98,9 @@
     function changeFinalPrice() {
         let {starttime, movie} = $.deparam($.session.get('show_movie'));
         let {trailerPicture, ratingID, title} = movie;
-        let movieRate;
-        switch (ratingID) {
-            case 1:
-                movieRate = "G";
-                break;
-            case 2:
-                movieRate = "PG";
-                break;
-            case 3:
-                movieRate = "PG-13";
-                break;
-            case 4:
-                movieRate = "R";
-                break;
-            default:
-                movieRate = "R";
-        }
+        let movie_rate = ['G', 'PG', 'PG-13', 'R'];
+        let movieRate=movie_rate[parseInt(ratingID)-1];
+
 
         $("#adultTotalPrice").html(" 14.99*" + total.adult);
         $("#seniorTotalPrice").html(" 7.99*" + total.senior);
@@ -178,6 +164,12 @@
         $("#TotalTicket").attr("value", ticket);
         $("#AdultTicket").attr("value", ticket);
         $("#AdultTicket").attr("max", ticket);
+        let r= $.deparam($.session.get("show_movie"));
+        console.log(r)
+        if (r.movie.ratingID == '4' ){
+            console.log('ye')
+            $("#ChildTicket").attr("disabled",'');
+        }
 
         $('#promo').click(() => {
             let q = new FormData();
