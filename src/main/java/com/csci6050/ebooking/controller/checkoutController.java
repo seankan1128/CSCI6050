@@ -63,7 +63,6 @@ public class checkoutController {
 
         }
 
-        reservedlist.add("1_6");
         SD.setStatus(1);
         SD.setDescription("List of seat returned");
         returnMap.put("ReturnStatus", SD);
@@ -166,7 +165,7 @@ public class checkoutController {
                 totalprice += 7.99;
             }
         }
-        booking.setTotalprice(totalprice);
+        booking.setTotalprice((float) (totalprice * 1.08 ));
         if (promotions != null) {
             booking.setPromotions(promotions);
             booking.setTotalprice((float) (totalprice * 1.08 * (1 - promotions.getPromoDiscount() / 100)));

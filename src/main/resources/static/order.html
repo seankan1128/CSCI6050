@@ -27,7 +27,7 @@
                     console.log(data);
                     if (data.ReturnStatus.status === 1) {
                         let order_content = $('#content');
-                        for (let booking of data.OrderHistory) {
+                        for (let booking of data.OrderHistory.reverse()) {
                             let type = {adult: 0, senior: 0, child: 0};
                             let seats = $('<ul id="seats" style="min-height: 8rem;max-height: 8rem;overflow-y: auto;"></ul>');
                             for (let ticket of booking.Tickets) {

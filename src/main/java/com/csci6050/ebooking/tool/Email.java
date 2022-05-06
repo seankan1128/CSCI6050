@@ -5,6 +5,7 @@ import com.csci6050.ebooking.entity.User;
 import net.bytebuddy.build.Plugin;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -317,9 +318,12 @@ public class Email {
             DecimalFormat df = new DecimalFormat("#.00");
             String dfPrice = df.format(price);
             String seatIDString = seatid.toString();
-            Date date = new Date(unixTime*1000L);
-            SimpleDateFormat jdf = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
-            String stringDate = jdf.format(date);
+            Date date = new Date(unixTime);
+            DateFormat ada = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+//            System.out.println("Milliseconds to Date: " + df.format(date));
+            String stringDate = ada.format(date);
+
+
             content = content.replace("[[name]]", user.getFirstName());
             content = content.replace("[[MOVIE]]", movie);
             content = content.replace("[[PRICE]]", dfPrice);
